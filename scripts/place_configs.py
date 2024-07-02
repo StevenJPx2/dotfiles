@@ -73,7 +73,7 @@ def main():
                             continue
                 shutil.copy(
                     file,
-                    dst_path,
+                    dst_path.with_stem(dst_path.stem.replace("dot_", ".")),
                 )
 
 
