@@ -1,0 +1,4 @@
+{
+  "install_path": "~/.config/fish",
+  "pre_install": "echo /usr/local/bin/fish | sudo tee -a /etc/shells"
+}

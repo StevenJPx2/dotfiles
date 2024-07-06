@@ -12,6 +12,7 @@ from typing import TypedDict
 class ConfigDict(TypedDict, total=False):
     install_path: str
     pre_install: str
+    post_install: str
 
 
 def main():
@@ -29,6 +30,7 @@ def main():
         config: ConfigDict = json.loads(config_json.read_text())
         install_path = config.get("install_path")
         pre_install_command = config.get("pre_install")
+        post_install_command = config.get("post_install")
 
         if install_path is None:
             raise ValueError(f"'install_path' not found in {config_json}")
@@ -75,6 +77,9 @@ def main():
                     file,
                     dst_path.with_stem(dst_path.stem.replace("dot_", ".")),
                 )
+
+        if post_install_command is not None:
+            subprocess.run(post_install_command.split())
 
 
 if __name__ == "__main__":
