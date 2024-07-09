@@ -1,5 +1,5 @@
 script file *args:
-  python3.8 scripts/{{file}} {{args}}
+  python3 scripts/{{file}} {{args}}
 
 create +args:
   just script new_config.py {{args}}
