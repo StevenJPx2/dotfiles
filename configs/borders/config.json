@@ -1,0 +1,5 @@
+{
+  "install_path": "~/.config/borders",
+  "post_install": "brew services restart borders"
+}
+

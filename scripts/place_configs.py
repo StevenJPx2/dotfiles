@@ -6,13 +6,8 @@ import shutil
 import subprocess
 from difflib import SequenceMatcher
 from pathlib import Path
-from typing import TypedDict
 
-
-class ConfigDict(TypedDict, total=False):
-    install_path: str
-    pre_install: str
-    post_install: str
+from config_dict import ConfigDict
 
 
 def main():
