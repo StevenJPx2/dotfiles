@@ -1,4 +1,5 @@
 {
+  "pre_install": "[ ! -z $(grep /opt/homebrew/bin/fish /etc/shells) ] && echo /opt/homebrew/bin/fish | sudo tee -a /etc/shells",
   "install_path": "~/.config/fish",
-  "pre_install": "echo /usr/local/bin/fish | sudo tee -a /etc/shells"
+  "post_install": "chsh -s /opt/homebrew/bin/fish"
 }

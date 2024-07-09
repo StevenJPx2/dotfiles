@@ -1,4 +1,4 @@
-import = ["/Users/stevenjohn/.config/alacritty/themes/themes/gruvbox_dark.toml"]
+import = ["~/.config/alacritty/themes/themes/gruvbox_dark.toml"]
 
 [cursor]
 style = "Block"
@@ -141,6 +141,9 @@ decorations = "buttonless"
 opacity = 0.6
 blur = true
 startup_mode = "Maximized"
+
+[shell]
+program = "/opt/homebrew/bin/fish"
 
 [window.padding]
 x = 5
