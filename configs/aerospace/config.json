@@ -1,0 +1,4 @@
+{
+  "install_path": "~/.config/aerospace",
+  "post_install": "aerospace reload-config"
+}

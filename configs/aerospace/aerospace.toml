@@ -1,0 +1,77 @@
+# Reference: https://github.com/i3/i3/blob/next/etc/config
+
+# i3 didn't have "normalizations" feature that why we disable them here.
+# But the feature is very helpful.
+# Normalizations eliminate all sorts of weird tree configurations that don't make sense.
+# Give normalizations a chance and enable them back.
+
+[mode.main.binding]
+alt-enter = 'exec-and-forget open -a Alacritty'
+
+alt-left = 'focus left'
+alt-down = 'focus down'
+alt-up = 'focus up'
+alt-right = 'focus right'
+
+alt-shift-left = 'move left'
+alt-shift-down = 'move down'
+alt-shift-up = 'move up'
+alt-shift-right = 'move right'
+
+# Consider using 'join-with' command as a 'split' replacement if you want to enable normalizations
+alt-h = 'join-with left'
+alt-v = 'join-with up'
+
+alt-f = 'fullscreen'
+
+alt-s = 'layout v_accordion'               # 'layout stacking' in i3
+alt-w = 'layout h_accordion'               # 'layout tabbed' in i3
+alt-e = 'layout tiles horizontal vertical' # 'layout toggle split' in i3
+
+alt-shift-space = 'layout floating tiling' # 'floating toggle' in i3
+
+# Not supported, because this command is redundant in AeroSpace mental model.
+# See: https://nikitabobko.github.io/AeroSpace/guide#floating-windows
+#alt-space = 'focus toggle_tiling_floating'
+
+# `focus parent`/`focus child` are not yet supported, and it's not clear whether they
+# should be supported at all https://github.com/nikitabobko/AeroSpace/issues/5
+# alt-a = 'focus parent'
+
+ctrl-cmd-1 = 'workspace 1'
+ctrl-cmd-2 = 'workspace 2'
+ctrl-cmd-3 = 'workspace 3'
+ctrl-cmd-4 = 'workspace 4'
+ctrl-cmd-5 = 'workspace 5'
+ctrl-cmd-6 = 'workspace 6'
+ctrl-cmd-7 = 'workspace 7'
+ctrl-cmd-8 = 'workspace 8'
+ctrl-cmd-9 = 'workspace 9'
+ctrl-cmd-0 = 'workspace 10'
+ctrl-cmd-left = 'workspace prev'
+ctrl-cmd-right = 'workspace next'
+
+alt-cmd-1 = 'move-node-to-workspace 1'
+alt-cmd-2 = 'move-node-to-workspace 2'
+alt-cmd-3 = 'move-node-to-workspace 3'
+alt-cmd-4 = 'move-node-to-workspace 4'
+alt-cmd-5 = 'move-node-to-workspace 5'
+alt-cmd-6 = 'move-node-to-workspace 6'
+alt-cmd-7 = 'move-node-to-workspace 7'
+alt-cmd-8 = 'move-node-to-workspace 8'
+alt-cmd-9 = 'move-node-to-workspace 9'
+alt-cmd-0 = 'move-node-to-workspace 10'
+alt-cmd-left = 'move-node-to-workspace prev'
+alt-cmd-right = 'move-node-to-workspace next'
+
+alt-shift-c = 'reload-config'
+
+alt-r = 'mode resize'
+
+[mode.resize.binding]
+h = 'resize width -50'
+j = 'resize height +50'
+k = 'resize height -50'
+l = 'resize width +50'
+enter = 'mode main'
+esc = 'mode main'

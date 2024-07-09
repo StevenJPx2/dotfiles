@@ -49,9 +49,12 @@ def main():
                     continue
 
                 dst_path = install_path / "/".join(file_root.split("/")[2:]) / file_name
-
-                if dst_path.is_file() and not args.yes_all:
+                try:
                     file_text = file.open().readlines()
+                except UnicodeDecodeError:
+                    file_text = None
+
+                if dst_path.is_file() and not args.yes_all and file_text is not None:
                     dst_text = dst_path.open().readlines()
 
                     diff = SequenceMatcher(lambda x: x in " \t", file_text, dst_text)
@@ -75,7 +78,7 @@ def main():
                             continue
                 shutil.copy(
                     file,
-                    dst_path.with_stem(dst_path.stem.replace("dot_", ".")),
+                    dst_path.with_name(dst_path.name.replace("dot_", ".")),
                 )
 
         if post_install_command is not None:
