@@ -19,7 +19,7 @@ echo "Installed brew bundle!"
 
 # ~~~~~~
 
-gum spin --title "Moving configs to locations.." --spinner monkey -- just config
+gum spin --title "Moving configs to locations.." --spinner monkey -- just update
 
 echo "Success! 🎉"
 
