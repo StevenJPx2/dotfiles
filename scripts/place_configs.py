@@ -43,7 +43,10 @@ def main():
                 if file.name == "config.json":
                     continue
 
-                dst_path = install_path / "/".join(file_root.split("/")[2:]) / file_name
+                dst_dir = install_path / "/".join(file_root.split("/")[2:])
+                dst_dir.mkdir(parents=True, exist_ok=True)
+                dst_path = dst_dir / file_name
+
                 try:
                     file_text = file.open().readlines()
                 except UnicodeDecodeError:

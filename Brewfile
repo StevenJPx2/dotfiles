@@ -2,27 +2,20 @@ tap "adoptopenjdk/openjdk"
 tap "aws/tap"
 tap "dart-lang/dart"
 tap "dopplerhq/cli"
+tap "felixkratz/formulae"
 tap "hashicorp/tap"
 tap "homebrew/bundle"
 tap "homebrew/cask-fonts"
+tap "homebrew/core"
 tap "homebrew/services"
 tap "jakehilborn/jakehilborn"
 tap "koekeishiya/formulae"
 tap "nikitabobko/tap"
 tap "pkgxdev/made"
 tap "pulumi/tap"
+tap "universal-ctags/universal-ctags"
 # Run your GitHub Actions locally
 brew "act"
-# TIFF library and utilities
-brew "libtiff"
-# Color management engine supporting ICC profiles
-brew "little-cms2"
-# Image format providing lossless and lossy compression for web images
-brew "webp"
-# New file format for still image compression
-brew "jpeg-xl"
-# Codec library for encoding and decoding AV1 video streams
-brew "aom"
 # Companion library to apr, the Apache Portable Runtime library
 brew "apr-util"
 # Tool for generating GNU Standards-compliant Makefiles
@@ -33,8 +26,12 @@ brew "bento4"
 brew "bison"
 # Collection of portable C++ source libraries
 brew "boost"
+# Yet another cross-platform graphical process/system monitor
+brew "bottom"
 # Software library to render fonts
 brew "freetype"
+# Core application library for C
+brew "glib"
 # Vector graphics library with cross-device output support
 brew "cairo"
 # C parser in Python
@@ -54,15 +51,13 @@ brew "qemu"
 # Linux virtual machines
 brew "lima"
 # Container runtimes on MacOS (and Linux) with minimal setup
-brew "colima"
+brew "colima", restart_service: true
 # C library implementing the SSH2 protocol
 brew "libssh2"
 # Tool for downloading RTMP streaming media
 brew "rtmpdump"
 # Libraries to talk to Microsoft SQL Server and Sybase databases
 brew "freetds"
-# Graphics library to dynamically manipulate images
-brew "gd"
 # C library for reading, creating, and modifying zip archives
 brew "libzip"
 # General-purpose scripting language
@@ -77,6 +72,8 @@ brew "copier"
 brew "csvlens"
 # Load/unload environment variables based on $PWD
 brew "direnv"
+# Pack, ship and run any application as a lightweight container
+brew "docker"
 # Collection of reusable C++ library artifacts developed at Facebook
 brew "folly"
 # C++14 implementation of the TLS-1.3 standard
@@ -91,20 +88,24 @@ brew "fbthrift"
 brew "fb303"
 # Shared library for Watchman and Eden projects
 brew "edencommon"
+# Platform built on V8 to build network applications
+brew "node"
 # AST-based pattern checker for JavaScript
 brew "eslint"
 # Modern, maintained replacement for ls
 brew "eza"
 # Like neofetch, but much faster because written mostly in C
 brew "fastfetch"
-# GNU compiler collection
-brew "gcc"
+# Simple, fast and user-friendly alternative to find
+brew "fd"
 # Collection of GNU find, xargs, and locate
 brew "findutils"
 # User-friendly command-line shell for UNIX-like operating systems
 brew "fish"
 # Command-line fuzzy finder written in Go
 brew "fzf"
+# GNU compiler collection
+brew "gcc"
 # GNU database manager
 brew "gdbm"
 # GitHub command-line tool
@@ -113,16 +114,30 @@ brew "gh"
 brew "git"
 # GNU Pretty Good Privacy (PGP) package
 brew "gnupg"
+# Open source programming language to build simple/reliable/efficient software
+brew "go"
 # GNU Ubiquitous Intelligent Language for Extensions
 brew "guile"
 # Tool for glamorous shell scripts
 brew "gum"
 # User-friendly cURL replacement (command-line HTTP client)
 brew "httpie"
+# Database of common MIME types
+brew "shared-mime-info"
+# ISO/IEC 23008-12:2017 HEIF file format decoder and encoder
+brew "libheif"
+# Portable Foreign Function Interface library
+brew "libffi"
+# Cryptography and SSL/TLS Toolkit
+brew "openssl@1.1"
+# Interpreted, interactive, object-oriented programming language
+brew "python@3.8", link: false
 # Tools and libraries to manipulate images in many formats
 brew "imagemagick"
 # Lightweight and flexible command-line JSON processor
 brew "jq"
+# Fast, Dynamic Programming Language
+brew "julia"
 # Handy way to save and run project-specific commands
 brew "just"
 # Easy way to access the system keyring service from python
@@ -131,10 +146,14 @@ brew "keyring"
 brew "lazydocker"
 # Simple terminal UI for git commands
 brew "lazygit"
-# Portable Foreign Function Interface library
-brew "libffi"
+# Just-In-Time Compiler (JIT) for the Lua programming language
+brew "luajit", args: ["HEAD"]
+# Package manager for the Lua programming language
+brew "luarocks"
 # Mac App Store command-line interface
 brew "mas"
+# Parser generator tool and incremental parsing library
+brew "tree-sitter", link: false
 # Ambitious Vim-fork focused on extensibility and agility
 brew "neovim"
 # No Nonsense Neovim Client in Rust
@@ -143,8 +162,6 @@ brew "neovide"
 brew "nvm"
 # Create, run, and share large language models (LLMs)
 brew "ollama", restart_service: true
-# Cryptography and SSL/TLS Toolkit
-brew "openssl@1.1"
 # Shell command parallelization utility
 brew "parallel"
 # Fast, disk space efficient package manager
@@ -161,8 +178,12 @@ brew "python@3.10"
 brew "python@3.11"
 # Ultra-fast CSV data-wrangling toolkit
 brew "qsv"
+# Search tool like grep and The Silver Searcher
+brew "ripgrep"
 # Install Ruby, JRuby, Rubinius, TruffleRuby, or mruby
 brew "ruby-install"
+# Rust toolchain installer
+brew "rustup-init"
 # Automate your tmux workflow
 brew "smug"
 # Cross-shell prompt for astronauts
@@ -183,6 +204,8 @@ brew "wget"
 brew "woff2"
 # Feature-rich command-line audio/video downloader
 brew "yt-dlp"
+# Programming language designed for robustness, optimality, and clarity
+brew "zig"
 # Shell extension to navigate your filesystem faster
 brew "zoxide"
 # Copilot CLI - build, release and operate your container apps on AWS
@@ -191,14 +214,12 @@ brew "aws/tap/copilot-cli"
 brew "dart-lang/dart/dart"
 # The official Doppler CLI for managing your secrets
 brew "dopplerhq/cli/doppler", link: false
+# A window border system for macOS
+brew "felixkratz/formulae/borders"
 # Terraform
 brew "hashicorp/tap/terraform"
 # macOS command line utility to configure multi-display resolutions and arrangements. Essentially XRandR for macOS.
 brew "jakehilborn/jakehilborn/displayplacer"
-# Simple hotkey-daemon for macOS.
-brew "koekeishiya/formulae/skhd"
-# A tiling window manager for macOS based on binary space partitioning.
-brew "koekeishiya/formulae/yabai"
 # Run Anything
 brew "pkgxdev/made/pkgx"
 # Pulumi ESC - Manage Environments, Secrets, and Configuration
@@ -216,6 +237,7 @@ cask "dbeaver-community"
 # All-in-one toolbox for developers
 cask "devutils"
 cask "font-0xproto-nerd-font"
+cask "font-hack-nerd-font"
 # Cross-platform Git credential storage for multiple hosting providers
 cask "git-credential-manager"
 # Desktop client for GitHub repositories
@@ -246,8 +268,8 @@ cask "spaceman"
 cask "tableplus"
 # Mesh VPN based on Wireguard
 cask "tailscale"
-# Multimedia player
-cask "vlc"
+# Open-source BitTorrent client
+cask "transmission"
 mas "AdGuard for Safari", id: 1440147259
 mas "Alto's Adventure", id: 1287752517
 mas "Alto's Odyssey", id: 1495097700
