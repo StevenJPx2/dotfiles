@@ -1,5 +1,4 @@
 {
   "install_path": "~/.config/borders",
-  "post_install": "brew services restart borders"
+  "post_install": "brew tap felixkratz/formulae && brew services restart felixkratz/formulae/borders"
 }
-

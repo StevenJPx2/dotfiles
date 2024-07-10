@@ -698,46 +698,6 @@ local function load_plugins()
 	local lsp = require("lsp-zero").preset("recommended")
 	local navbuddy = require("nvim-navbuddy")
 
-	lsp.configure("pyright", { settings = { python = { venvPath = ".venv" } } })
-	lsp.configure("tsserver", {
-		init_options = {
-			plugins = {
-				{
-					name = "@vue/typescript-plugin",
-					location = "/opt/homebrew/lib/node_modules/@vue/typescript-plugin",
-					languages = { "javascript", "typescript", "vue" },
-				},
-			},
-		},
-		filetypes = {
-			"javascript",
-			"typescript",
-			"javascriptreact",
-			"typescriptreact",
-			"vue",
-		},
-	})
-	lsp.configure("volar", {
-		filetypes = { "vue", "javascript", "typescript", "javascriptreact", "typescriptreact" },
-		root_dir = require("lspconfig").util.root_pattern(
-			"vue.config.js",
-			"vue.config.ts",
-			"nuxt.config.js",
-			"nuxt.config.ts"
-		),
-		init_options = {
-			vue = {
-				hybridMode = false,
-			},
-			typescript = {
-				tsdk = vim.fn.getcwd() .. "/node_modules/typescript/lib",
-			},
-		},
-	})
-	lsp.configure("biome", {
-		single_file_support = true,
-	})
-
 	lsp.on_attach(function(client, bufnr)
 		local bindn = function(mode, keymap, command, noremap)
 			vim.keymap.set(mode, keymap, command, { buffer = bufnr, noremap = not not noremap, silent = true })
@@ -763,6 +723,41 @@ local function load_plugins()
 		ensure_installed = {},
 		handlers = {
 			lsp.default_setup,
+			volar = function()
+				require("lspconfig").volar.setup({})
+			end,
+			tsserver = function()
+				local vue_typescript_plugin = require("mason-registry")
+					.get_package("vue-language-server")
+					:get_install_path() .. "/node_modules/@vue/language-server" .. "/node_modules/@vue/typescript-plugin"
+
+				require("lspconfig").tsserver.setup({
+					init_options = {
+						plugins = {
+							{
+								name = "@vue/typescript-plugin",
+								location = vue_typescript_plugin,
+								languages = { "javascript", "typescript", "vue" },
+							},
+						},
+					},
+					filetypes = {
+						"javascript",
+						"javascriptreact",
+						"javascript.jsx",
+						"typescript",
+						"typescriptreact",
+						"typescript.tsx",
+						"vue",
+					},
+				})
+			end,
+			pyright = function()
+				require("lspconfig").pyright.setup({ settings = { python = { venvPath = ".venv" } } })
+			end,
+			biome = function()
+				require("lspconfig").biome.setup({ single_file_support = true })
+			end,
 			lua_ls = function()
 				local lua_opts = lsp.nvim_lua_ls()
 				require("lspconfig").lua_ls.setup(lua_opts)

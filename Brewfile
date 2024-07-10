@@ -5,8 +5,6 @@ tap "dopplerhq/cli"
 tap "felixkratz/formulae"
 tap "hashicorp/tap"
 tap "homebrew/bundle"
-tap "homebrew/cask-fonts"
-tap "homebrew/core"
 tap "homebrew/services"
 tap "jakehilborn/jakehilborn"
 tap "koekeishiya/formulae"
@@ -131,7 +129,7 @@ brew "libffi"
 # Cryptography and SSL/TLS Toolkit
 brew "openssl@1.1"
 # Interpreted, interactive, object-oriented programming language
-brew "python@3.8", link: false
+brew "python@3.8"
 # Tools and libraries to manipulate images in many formats
 brew "imagemagick"
 # Lightweight and flexible command-line JSON processor
@@ -158,6 +156,8 @@ brew "tree-sitter", link: false
 brew "neovim"
 # No Nonsense Neovim Client in Rust
 brew "neovide"
+# Tiny, lightning fast, feature-packed file manager
+brew "nnn"
 # Manage multiple Node.js versions
 brew "nvm"
 # Create, run, and share large language models (LLMs)
@@ -217,7 +217,7 @@ brew "dart-lang/dart/dart"
 # The official Doppler CLI for managing your secrets
 brew "dopplerhq/cli/doppler", link: false
 # A window border system for macOS
-brew "felixkratz/formulae/borders"
+brew "felixkratz/formulae/borders", restart_service: true
 # Terraform
 brew "hashicorp/tap/terraform"
 # macOS command line utility to configure multi-display resolutions and arrangements. Essentially XRandR for macOS.
@@ -226,7 +226,7 @@ brew "jakehilborn/jakehilborn/displayplacer"
 brew "pkgxdev/made/pkgx"
 # Pulumi ESC - Manage Environments, Secrets, and Configuration
 brew "pulumi/tap/esc"
-# Pulumi - Modern Infrastructure as Code. Any cloud, any language 
+# Pulumi - Modern Infrastructure as Code. Any cloud, any language
 brew "pulumi/tap/pulumi"
 # GPU-accelerated terminal emulator
 cask "alacritty"
