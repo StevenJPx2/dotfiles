@@ -202,6 +202,8 @@ brew "watchman"
 brew "wget"
 # Utilities to create and convert Web Open Font File (WOFF) files
 brew "woff2"
+# JavaScript package manager
+brew "yarn"
 # Feature-rich command-line audio/video downloader
 brew "yt-dlp"
 # Programming language designed for robustness, optimality, and clarity
