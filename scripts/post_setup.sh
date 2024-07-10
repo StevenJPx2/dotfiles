@@ -1,4 +1,4 @@
-#!/bin/fish
+#!/bin/sh
 
 # Rust
 rustup-init
