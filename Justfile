@@ -18,4 +18,6 @@ install:
   just post_setup
 
 bundle:
-  brew bundle dump --formula --cask --tap --mas --describe -f
+  brew update
+  brew upgrade
+  brew bundle dump --formula --cask --tap --describe -f

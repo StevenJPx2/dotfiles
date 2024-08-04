@@ -94,7 +94,7 @@ vim.diagnostic.config({
 })
 
 local prettier = { "prettier", "prettierd" }
-local js = { "biome-check", prettier }
+local js = { prettier }
 
 local function load_plugins()
 	require("lazy").setup({
@@ -756,7 +756,7 @@ local function load_plugins()
 				require("lspconfig").pyright.setup({ settings = { python = { venvPath = ".venv" } } })
 			end,
 			biome = function()
-				require("lspconfig").biome.setup({ single_file_support = true })
+				require("lspconfig").biome.setup({ single_file_support = false })
 			end,
 			lua_ls = function()
 				local lua_opts = lsp.nvim_lua_ls()

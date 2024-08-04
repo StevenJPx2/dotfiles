@@ -9,6 +9,7 @@ tap "homebrew/services"
 tap "jakehilborn/jakehilborn"
 tap "koekeishiya/formulae"
 tap "nikitabobko/tap"
+tap "oven-sh/bun"
 tap "pkgxdev/made"
 tap "pulumi/tap"
 tap "universal-ctags/universal-ctags"
@@ -18,6 +19,10 @@ brew "act"
 brew "apr-util"
 # Tool for generating GNU Standards-compliant Makefiles
 brew "automake"
+# C library implementing the SSH2 protocol
+brew "libssh2"
+# Clone of cat(1) with syntax highlighting and Git integration
+brew "bat"
 # Full-featured MP4 format and MPEG DASH library and tools
 brew "bento4"
 # Parser generator
@@ -50,8 +55,6 @@ brew "qemu"
 brew "lima"
 # Container runtimes on MacOS (and Linux) with minimal setup
 brew "colima", restart_service: true
-# C library implementing the SSH2 protocol
-brew "libssh2"
 # Tool for downloading RTMP streaming media
 brew "rtmpdump"
 # Libraries to talk to Microsoft SQL Server and Sybase databases
@@ -72,6 +75,10 @@ brew "csvlens"
 brew "direnv"
 # Pack, ship and run any application as a lightweight container
 brew "docker"
+# Isolated development environments using Docker
+brew "docker-compose"
+# Platform keystore credential helper for Docker
+brew "docker-credential-helper"
 # Collection of reusable C++ library artifacts developed at Facebook
 brew "folly"
 # C++14 implementation of the TLS-1.3 standard
@@ -120,16 +127,12 @@ brew "guile"
 brew "gum"
 # User-friendly cURL replacement (command-line HTTP client)
 brew "httpie"
+# Website copier/offline browser
+brew "httrack"
 # Database of common MIME types
 brew "shared-mime-info"
 # ISO/IEC 23008-12:2017 HEIF file format decoder and encoder
 brew "libheif"
-# Portable Foreign Function Interface library
-brew "libffi"
-# Cryptography and SSL/TLS Toolkit
-brew "openssl@1.1"
-# Interpreted, interactive, object-oriented programming language
-brew "python@3.8"
 # Tools and libraries to manipulate images in many formats
 brew "imagemagick"
 # Lightweight and flexible command-line JSON processor
@@ -144,6 +147,8 @@ brew "keyring"
 brew "lazydocker"
 # Simple terminal UI for git commands
 brew "lazygit"
+# Portable Foreign Function Interface library
+brew "libffi"
 # Just-In-Time Compiler (JIT) for the Lua programming language
 brew "luajit", args: ["HEAD"]
 # Package manager for the Lua programming language
@@ -162,12 +167,16 @@ brew "nnn"
 brew "nvm"
 # Create, run, and share large language models (LLMs)
 brew "ollama", restart_service: true
+# Cryptography and SSL/TLS Toolkit
+brew "openssl@1.1"
 # Shell command parallelization utility
 brew "parallel"
 # Fast, disk space efficient package manager
 brew "pnpm"
 # Python package management tool
 brew "poetry"
+# Code formatter for JavaScript, CSS, JSON, GraphQL, Markdown, YAML
+brew "prettier"
 # Python version management
 brew "pyenv"
 # Pyenv plugin to manage virtualenv
@@ -176,14 +185,18 @@ brew "pyenv-virtualenv"
 brew "python@3.10"
 # Interpreted, interactive, object-oriented programming language
 brew "python@3.11"
+# Interpreted, interactive, object-oriented programming language
+brew "python@3.8"
 # Ultra-fast CSV data-wrangling toolkit
 brew "qsv"
+# Messaging and streaming broker
+brew "rabbitmq"
 # Search tool like grep and The Silver Searcher
 brew "ripgrep"
 # Install Ruby, JRuby, Rubinius, TruffleRuby, or mruby
 brew "ruby-install"
 # Rust toolchain installer
-brew "rustup-init"
+brew "rustup"
 # Automate your tmux workflow
 brew "smug"
 # Cross-shell prompt for astronauts
@@ -217,16 +230,18 @@ brew "dart-lang/dart/dart"
 # The official Doppler CLI for managing your secrets
 brew "dopplerhq/cli/doppler", link: false
 # A window border system for macOS
-brew "felixkratz/formulae/borders", restart_service: true
+brew "felixkratz/formulae/borders"
 # Terraform
 brew "hashicorp/tap/terraform"
 # macOS command line utility to configure multi-display resolutions and arrangements. Essentially XRandR for macOS.
 brew "jakehilborn/jakehilborn/displayplacer"
+# Incredibly fast JavaScript runtime, bundler, transpiler and package manager - all in one.
+brew "oven-sh/bun/bun"
 # Run Anything
 brew "pkgxdev/made/pkgx"
 # Pulumi ESC - Manage Environments, Secrets, and Configuration
 brew "pulumi/tap/esc"
-# Pulumi - Modern Infrastructure as Code. Any cloud, any language
+# Pulumi - Modern Infrastructure as Code. Any cloud, any language 
 brew "pulumi/tap/pulumi"
 # GPU-accelerated terminal emulator
 cask "alacritty"
@@ -266,61 +281,11 @@ cask "raycast"
 cask "slack"
 # View Spaces / Virtual Desktops in the menu bar
 cask "spaceman"
+# System monitor for the menu bar
+cask "stats"
 # Native GUI tool for relational databases
 cask "tableplus"
-# Mesh VPN based on Wireguard
+# Mesh VPN based on WireGuard
 cask "tailscale"
 # Open-source BitTorrent client
 cask "transmission"
-mas "AdGuard for Safari", id: 1440147259
-mas "Alto's Adventure", id: 1287752517
-mas "Alto's Odyssey", id: 1495097700
-mas "Amphetamine", id: 937984704
-mas "Asphalt 8+", id: 1563005359
-mas "Auto HD FPS for YouTube", id: 1546729687
-mas "Be Focused", id: 973134470
-mas "Boop", id: 1518425043
-mas "ColorSlurp", id: 1287239339
-mas "Compressor", id: 424390742
-mas "Couverture", id: 1552415914
-mas "DaVinci Resolve", id: 571213070
-mas "Developer", id: 640199958
-mas "Doodle God Universe", id: 1539947531
-mas "Final Cut Pro", id: 424389933
-mas "Friendly Streaming", id: 553245401
-mas "GarageBand", id: 682658836
-mas "Gifski", id: 1351639930
-mas "Grammarly for Safari", id: 1462114288
-mas "Hidden Bar", id: 1452453066
-mas "Houseparty", id: 1381523962
-mas "iMovie", id: 408981434
-mas "JSONPeep", id: 1458969831
-mas "Keynote", id: 409183694
-mas "Klack", id: 6446206067
-mas "LilyView", id: 529490330
-mas "Linearity Curve", id: 1219074514
-mas "Logic Pro", id: 634148309
-mas "MainStage", id: 634159523
-mas "Memory Diag", id: 748212890
-mas "Microsoft Word", id: 462054704
-mas "MindNode", id: 1289197285
-mas "Mini Motorways", id: 1456188526
-mas "Motion", id: 434290957
-mas "Numbers", id: 409203825
-mas "Pages", id: 409201541
-mas "PDF Viewer", id: 1120099014
-mas "PiPer", id: 1421915518
-mas "Pixelmator Pro", id: 1289583905
-mas "Prime Video", id: 545519333
-mas "Save to Pocket", id: 1477385213
-mas "Spark", id: 1176895641
-mas "Speedtest", id: 1153157709
-mas "Stela", id: 1476456353
-mas "Stockfish", id: 801463932
-mas "Tampermonkey", id: 1482490089
-mas "Telegram", id: 747648890
-mas "The Unarchiver", id: 425424353
-mas "Trello", id: 1278508951
-mas "WhatFont", id: 1437138382
-mas "WhatsApp", id: 1147396723
-mas "Xcode", id: 497799835
