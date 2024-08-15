@@ -8,7 +8,6 @@ tap "homebrew/bundle"
 tap "homebrew/services"
 tap "jakehilborn/jakehilborn"
 tap "koekeishiya/formulae"
-tap "nikitabobko/tap"
 tap "oven-sh/bun"
 tap "pkgxdev/made"
 tap "pulumi/tap"
@@ -117,6 +116,8 @@ brew "gdbm"
 brew "gh"
 # Distributed revision control system
 brew "git"
+# Highly customizable changelog generator
+brew "git-cliff"
 # GNU Pretty Good Privacy (PGP) package
 brew "gnupg"
 # Open source programming language to build simple/reliable/efficient software
@@ -229,19 +230,21 @@ brew "aws/tap/copilot-cli"
 brew "dart-lang/dart/dart"
 # The official Doppler CLI for managing your secrets
 brew "dopplerhq/cli/doppler", link: false
-# A window border system for macOS
-brew "felixkratz/formulae/borders"
 # Terraform
 brew "hashicorp/tap/terraform"
 # macOS command line utility to configure multi-display resolutions and arrangements. Essentially XRandR for macOS.
 brew "jakehilborn/jakehilborn/displayplacer"
+# Simple hotkey-daemon for macOS.
+brew "koekeishiya/formulae/skhd"
+# A tiling window manager for macOS based on binary space partitioning.
+brew "koekeishiya/formulae/yabai"
 # Incredibly fast JavaScript runtime, bundler, transpiler and package manager - all in one.
 brew "oven-sh/bun/bun"
 # Run Anything
 brew "pkgxdev/made/pkgx"
 # Pulumi ESC - Manage Environments, Secrets, and Configuration
 brew "pulumi/tap/esc"
-# Pulumi - Modern Infrastructure as Code. Any cloud, any language 
+# Pulumi - Modern Infrastructure as Code. Any cloud, any language
 brew "pulumi/tap/pulumi"
 # GPU-accelerated terminal emulator
 cask "alacritty"
