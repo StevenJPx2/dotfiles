@@ -1,0 +1,4 @@
+{
+  "install_path": "~/.config/skhd",
+  "post_install": "skhd --install-service & skhd --restart-service"
+}
