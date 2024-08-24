@@ -1,5 +1,5 @@
 {
-  "pre_install": "[ ! -z $(grep /opt/homebrew/bin/fish /etc/shells) ] && echo /opt/homebrew/bin/fish | sudo tee -a /etc/shells || :",
+  "pre_install": "grep -q /opt/homebrew/bin/fish /etc/shells && : || { echo /opt/homebrew/bin/fish | sudo tee -a /etc/shells; }",
   "install_path": "~/.config/fish",
-  "post_install": "[ $SHELL -ne /opt/homebrew/bin/fish ] && chsh -s /opt/homebrew/bin/fish || :"
+  "post_install": "[[ $SHELL != /opt/homebrew/bin/fish ]] && chsh -s /opt/homebrew/bin/fish || :"
 }

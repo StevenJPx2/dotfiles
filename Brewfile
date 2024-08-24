@@ -8,6 +8,7 @@ tap "homebrew/bundle"
 tap "homebrew/services"
 tap "jakehilborn/jakehilborn"
 tap "koekeishiya/formulae"
+tap "nikitabobko/tap"
 tap "oven-sh/bun"
 tap "pkgxdev/made"
 tap "pulumi/tap"
@@ -74,6 +75,8 @@ brew "csvlens"
 brew "direnv"
 # Pack, ship and run any application as a lightweight container
 brew "docker"
+# Docker CLI plugin for extended build capabilities with BuildKit
+brew "docker-buildx"
 # Isolated development environments using Docker
 brew "docker-compose"
 # Platform keystore credential helper for Docker
@@ -196,8 +199,6 @@ brew "rabbitmq"
 brew "ripgrep"
 # Install Ruby, JRuby, Rubinius, TruffleRuby, or mruby
 brew "ruby-install"
-# Rust toolchain installer
-brew "rustup"
 # Automate your tmux workflow
 brew "smug"
 # Cross-shell prompt for astronauts
@@ -244,7 +245,7 @@ brew "oven-sh/bun/bun"
 brew "pkgxdev/made/pkgx"
 # Pulumi ESC - Manage Environments, Secrets, and Configuration
 brew "pulumi/tap/esc"
-# Pulumi - Modern Infrastructure as Code. Any cloud, any language
+# Pulumi - Modern Infrastructure as Code. Any cloud, any language 
 brew "pulumi/tap/pulumi"
 # GPU-accelerated terminal emulator
 cask "alacritty"
@@ -256,6 +257,8 @@ cask "betterdisplay"
 cask "dbeaver-community"
 # All-in-one toolbox for developers
 cask "devutils"
+# Run Stable Diffusion locally
+cask "diffusionbee"
 cask "font-0xproto-nerd-font"
 cask "font-hack-nerd-font"
 # Cross-platform Git credential storage for multiple hosting providers

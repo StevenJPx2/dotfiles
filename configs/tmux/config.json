@@ -1,5 +1,5 @@
 {
-  "pre_install": "[ -d ~/.tmux/plugins/tpm ] && : || git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm",
+  "pre_install": "[ -d ~/.tmux/plugins/tpm ] && : || { git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm; }",
   "install_path": "~/.config/tmux",
   "post_install": "tmux source ~/.config/tmux/tmux.conf"
 }

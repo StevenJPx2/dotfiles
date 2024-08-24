@@ -31,6 +31,7 @@ def main():
             raise ValueError(f"'install_path' not found in {config_json}")
 
         if pre_install_command is not None:
+            print("running", pre_install_command)
             subprocess.run(pre_install_command, shell=True)
 
         install_path = Path(install_path).expanduser().resolve()
@@ -80,6 +81,7 @@ def main():
                 )
 
         if post_install_command is not None:
+            print("running", post_install_command)
             subprocess.run(post_install_command, shell=True)
 
 
