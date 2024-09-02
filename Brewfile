@@ -160,7 +160,7 @@ brew "luarocks"
 # Mac App Store command-line interface
 brew "mas"
 # Parser generator tool and incremental parsing library
-brew "tree-sitter", link: false
+brew "tree-sitter"
 # Ambitious Vim-fork focused on extensibility and agility
 brew "neovim"
 # No Nonsense Neovim Client in Rust
@@ -205,6 +205,8 @@ brew "smug"
 brew "starship"
 # Organize software neatly under a single directory tree (e.g. /usr/local)
 brew "stow"
+# Simplified and community-driven man pages
+brew "tldr"
 # Terminal multiplexer
 brew "tmux"
 # Secures, stores, and tightly controls access to secrets

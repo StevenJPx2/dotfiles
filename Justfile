@@ -13,6 +13,9 @@ setup:
 post_setup:
   ./scripts/post_setup.sh
 
+refresh:
+  ./scripts/update.sh
+
 install:
   brew bundle install -f --cleanup
   just post_setup
