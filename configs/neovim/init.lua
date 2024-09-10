@@ -207,8 +207,15 @@ local function load_plugins()
 
 		-- COPILOT / LLM
 		{ "David-Kunz/gen.nvim", opts = { model = "codegemma:2b-code" } },
+
+		{
+			"Exafunction/codeium.vim",
+			event = "BufEnter",
+		},
+
 		{
 			"huggingface/llm.nvim",
+			enabled = false,
 			opts = {
 				backend = "ollama",
 				model = "codegemma:2b-code",
@@ -406,62 +413,50 @@ local function load_plugins()
 				vim.o.timeoutlen = 300
 			end,
 			config = function()
-				require("which-key").register({
-					["<space>"] = { [[<cmd>lua require('telescope.builtin').buffers()<CR>]], "Buffers" },
-					s = {
-						name = "file",
-						f = {
-							"<cmd>lua require('telescope.builtin').find_files({ find_command = { 'rg', '--files', '--iglob', '!.git', '--hidden' }})<cr>",
-							"Find File",
-						},
-						b = { "<cmd>Telescope file_browser<cr>", "File Browser" },
-						["/"] = {
-							[[<cmd>lua require('telescope.builtin').current_buffer_fuzzy_find()<CR>]],
-							"Grep File",
-						},
-						["?"] = { [[<cmd>lua require('telescope.builtin').oldfiles()<CR>]], "Open Recent File" },
-						h = { [[<cmd>lua require('telescope.builtin').help_tags()<CR>]], "Help Tags" },
-						t = { [[<cmd>lua require('telescope.builtin').tags()<CR>]], "Tags" },
-						d = { [[<cmd>lua require('telescope.builtin').grep_string()<CR>]], "Grep String" },
-						p = { [[<cmd>lua require('telescope.builtin').live_grep()<CR>]], "Live Grep" },
-						o = { [[<cmd>lua require('telescope.builtin').help_tags()<CR>]], "Help Tags" },
-						e = "Edit File",
+				require("which-key").add({
+					{ "<leader><space>", "<cmd>lua require('telescope.builtin').buffers()<CR>", desc = "Buffers" },
+					{ "<leader>b", group = "buffer" },
+					{ "<leader>bd", "<cmd>lua MiniBufremove.delete()<cr>", desc = "Delete Buffer" },
+					{ "<leader>bq", "<cmd>lua MiniBufremove.unshow_in_window()<cr>", desc = "Unshow Buffer In Window" },
+					{ "<leader>bw", "<cmd>lua MiniBufremove.wipeout()<cr>", desc = "Delete Buffer" },
+					{ "<leader>gg", "<cmd>FloatermNew --disposable --name=lazygit lazygit<cr>", desc = "Open Lazygit" },
+					{ "<leader>l", group = "LSP" },
+					{ "<leader>li", "<cmd>Mason<CR>", desc = "Show Mason" },
+					{ "<leader>ln", "<cmd>LspInfo<CR>", desc = "Show all active LSPs" },
+					{ "<leader>lp", "<cmd>lua require('persistence').load()<cr>", desc = "Load Project" },
+					{ "<leader>lr", "<cmd>LspRestart<CR>", desc = "Restart the LSP" },
+					{ "<leader>n", "<cmd>NnnPicker %:p:h<cr>", desc = "Open n³" },
+					{ "<leader>p", group = "Plugins" },
+					{ "<leader>pc", "<cmd>Lazy clean<CR>", desc = "Clean plugins" },
+					{ "<leader>pi", "<cmd>Lazy install<CR>", desc = "Install plugins" },
+					{ "<leader>pp", "<cmd>Lazy<cr>", desc = "Open Lazy" },
+					{ "<leader>ps", "<cmd>Lazy sync<CR>", desc = "Sync plugins" },
+					{ "<leader>pu", "<cmd>Lazy update<CR>", desc = "Update plugins" },
+					{ "<leader>q", "<cmd>lua MiniBufremove.unshow()<cr>", desc = "Unshow Buffer" },
+					{ "<leader>s", group = "file" },
+					{
+						"<leader>s/",
+						"<cmd>lua require('telescope.builtin').current_buffer_fuzzy_find()<CR>",
+						desc = "Grep File",
 					},
-					p = {
-						name = "Plugins",
-						p = { "<cmd>Lazy<cr>", "Open Lazy" },
-						s = { "<cmd>Lazy sync<CR>", "Sync plugins" },
-						i = { "<cmd>Lazy install<CR>", "Install plugins" },
-						c = { "<cmd>Lazy clean<CR>", "Clean plugins" },
-						u = { "<cmd>Lazy update<CR>", "Update plugins" },
+					{ "<leader>s?", "<cmd>lua require('telescope.builtin').oldfiles()<CR>", desc = "Open Recent File" },
+					{ "<leader>sb", "<cmd>Telescope file_browser<cr>", desc = "File Browser" },
+					{ "<leader>sd", "<cmd>lua require('telescope.builtin').grep_string()<CR>", desc = "Grep String" },
+					{ "<leader>se", desc = "Edit File" },
+					{
+						"<leader>sf",
+						"<cmd>lua require('telescope.builtin').find_files({ find_command = { 'rg', '--files', '--iglob', '!.git', '--hidden' }})<cr>",
+						desc = "Find File",
 					},
-					l = {
-						name = "LSP",
-						n = { "<cmd>LspInfo<CR>", "Show all active LSPs" },
-						r = { "<cmd>LspRestart<CR>", "Restart the LSP" },
-						i = { "<cmd>Mason<CR>", "Show Mason" },
-						p = { "<cmd>lua require('persistence').load()<cr>", "Load Project" },
-					},
-					t = {
-						t = { "<cmd>TroubleToggle<cr>", "Toggle Trouble" },
-						e = { "<cmd>Telescope<cr>", "Toggle Telescope" },
-						p = { "<cmd>Telescope projects<cr>", "Toggle Recent Projects" },
-						b = { "<cmd>Telescope builtin<cr>", "Toggle Telescope builtins" },
-					},
-					n = { "<cmd>NnnPicker %:p:h<cr>", "Open n³" },
-					g = {
-						g = { "<cmd>FloatermNew --disposable --name=lazygit lazygit<cr>", "Open Lazygit" },
-					},
-					w = { "<cmd>w<cr>", "Write File" },
-					q = { "<cmd>lua MiniBufremove.unshow()<cr>", "Unshow Buffer" },
-					b = {
-						name = "buffer",
-						q = { "<cmd>lua MiniBufremove.unshow_in_window()<cr>", "Unshow Buffer In Window" },
-						d = { "<cmd>lua MiniBufremove.delete()<cr>", "Delete Buffer" },
-						w = { "<cmd>lua MiniBufremove.wipeout()<cr>", "Delete Buffer" },
-					},
-				}, {
-					prefix = "<leader>",
+					{ "<leader>sh", "<cmd>lua require('telescope.builtin').help_tags()<CR>", desc = "Help Tags" },
+					{ "<leader>so", "<cmd>lua require('telescope.builtin').help_tags()<CR>", desc = "Help Tags" },
+					{ "<leader>sp", "<cmd>lua require('telescope.builtin').live_grep()<CR>", desc = "Live Grep" },
+					{ "<leader>st", "<cmd>lua require('telescope.builtin').tags()<CR>", desc = "Tags" },
+					{ "<leader>tb", "<cmd>Telescope builtin<cr>", desc = "Toggle Telescope builtins" },
+					{ "<leader>te", "<cmd>Telescope<cr>", desc = "Toggle Telescope" },
+					{ "<leader>tp", "<cmd>Telescope projects<cr>", desc = "Toggle Recent Projects" },
+					{ "<leader>tt", "<cmd>TroubleToggle<cr>", desc = "Toggle Trouble" },
+					{ "<leader>w", "<cmd>w<cr>", desc = "Write File" },
 				})
 			end,
 		},
@@ -726,12 +721,12 @@ local function load_plugins()
 			volar = function()
 				require("lspconfig").volar.setup({})
 			end,
-			tsserver = function()
+			ts_ls = function()
 				local vue_typescript_plugin = require("mason-registry")
 					.get_package("vue-language-server")
 					:get_install_path() .. "/node_modules/@vue/language-server" .. "/node_modules/@vue/typescript-plugin"
 
-				require("lspconfig").tsserver.setup({
+				require("lspconfig").ts_ls.setup({
 					init_options = {
 						plugins = {
 							{
