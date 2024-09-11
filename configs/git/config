@@ -1,0 +1,16 @@
+[diff]
+  tool = difftastic
+  external = difft
+
+[difftool]
+  prompt = false
+
+[difftool "difftastic"]
+  cmd = difft "$LOCAL" "$REMOTE"
+
+[pager]
+  difftool = true
+
+[alias]
+  dft = difftool
+  dlog = -c diff.external=difft log -p --ext-diff

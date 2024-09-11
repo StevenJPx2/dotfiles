@@ -71,6 +71,8 @@ brew "libyaml"
 brew "copier"
 # Command-line csv viewer
 brew "csvlens"
+# Diff that understands syntax
+brew "difftastic"
 # Load/unload environment variables based on $PWD
 brew "direnv"
 # Pack, ship and run any application as a lightweight container
