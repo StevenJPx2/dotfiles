@@ -234,7 +234,7 @@ brew "aws/tap/copilot-cli"
 # SDK
 brew "dart-lang/dart/dart"
 # The official Doppler CLI for managing your secrets
-brew "dopplerhq/cli/doppler", link: false
+brew "dopplerhq/cli/doppler"
 # Terraform
 brew "hashicorp/tap/terraform"
 # macOS command line utility to configure multi-display resolutions and arrangements. Essentially XRandR for macOS.
