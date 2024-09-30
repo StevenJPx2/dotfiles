@@ -193,6 +193,8 @@ brew "python@3.10"
 brew "python@3.11"
 # Interpreted, interactive, object-oriented programming language
 brew "python@3.8"
+# Interpreted, interactive, object-oriented programming language
+brew "python@3.9"
 # Ultra-fast CSV data-wrangling toolkit
 brew "qsv"
 # Messaging and streaming broker
