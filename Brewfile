@@ -301,3 +301,5 @@ cask "tableplus"
 cask "tailscale"
 # Open-source BitTorrent client
 cask "transmission"
+# Native desktop client for WhatsApp
+cask "whatsapp"
