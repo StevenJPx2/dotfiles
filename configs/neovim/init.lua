@@ -211,6 +211,15 @@ local function load_plugins()
 		{
 			"Exafunction/codeium.vim",
 			event = "BufEnter",
+			enabled = false,
+		},
+
+		{
+			"supermaven-inc/supermaven-nvim",
+			event = "BufEnter",
+			config = function()
+				require("supermaven-nvim").setup({})
+			end,
 		},
 
 		{
@@ -659,17 +668,23 @@ local function load_plugins()
 					},
 					-- you can enable a preset for easier configuration
 					presets = {
-						bottom_search = true, -- use a classic bottom cmdline for search
+						bottom_search = false, -- use a classic bottom cmdline for search
 						command_palette = true, -- position the cmdline and popupmenu together
 						long_message_to_split = true, -- long messages will be sent to a split
-						inc_rename = false, -- enables an input dialog for inc-rename.nvim
-						lsp_doc_border = false, -- add a border to hover docs and signature help
+						inc_rename = true, -- enables an input dialog for inc-rename.nvim
+						lsp_doc_border = true, -- add a border to hover docs and signature help
 					},
 				})
 			end,
 			dependencies = {
 				"MunifTanjim/nui.nvim",
 				"rcarriga/nvim-notify",
+				{
+					"smjonas/inc-rename.nvim",
+					config = function()
+						require("inc_rename").setup()
+					end,
+				},
 			},
 		},
 
@@ -694,15 +709,22 @@ local function load_plugins()
 	local navbuddy = require("nvim-navbuddy")
 
 	lsp.on_attach(function(client, bufnr)
-		local bindn = function(mode, keymap, command, noremap)
-			vim.keymap.set(mode, keymap, command, { buffer = bufnr, noremap = not not noremap, silent = true })
+		local bindn = function(mode, keymap, command, noremap, expr)
+			vim.keymap.set(
+				mode,
+				keymap,
+				command,
+				{ buffer = bufnr, noremap = not not noremap, silent = true, expr = not not expr }
+			)
 		end
 		lsp.default_keymaps({ buffer = bufnr, preserve_mappings = false, exclude = { "gd", "gr", "gi", "go" } })
 		if client.server_capabilities.documentSymbolProvider then
 			navbuddy.attach(client, bufnr)
 		end
 
-		bindn("n", "<leader>rn", "<cmd>lua vim.lsp.buf.rename()<cr>")
+		bindn("n", "<leader>rn", function()
+			return ":IncRename " .. vim.fn.expand("<cword>")
+		end, false, true)
 
 		bindn("n", "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<cr>")
 		bindn("v", "<leader>ca", "<cmd>lua vim.lsp.buf.range_code_action()<cr>")

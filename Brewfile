@@ -149,6 +149,8 @@ brew "julia"
 brew "just"
 # Easy way to access the system keyring service from python
 brew "keyring"
+# Kubernetes command-line interface
+brew "kubernetes-cli"
 # Lazier way to manage everything docker
 brew "lazydocker"
 # Simple terminal UI for git commands
@@ -271,6 +273,10 @@ cask "font-hack-nerd-font"
 cask "git-credential-manager"
 # Desktop client for GitHub repositories
 cask "github"
+# Web browser
+cask "google-chrome"
+# Set of tools to manage resources and applications hosted on Google Cloud
+cask "google-cloud-sdk"
 # Testing client for REST, GraphQL, and HTTP APIs
 cask "httpie"
 # Free and open-source media player
