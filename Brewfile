@@ -27,6 +27,8 @@ brew "bat"
 brew "bento4"
 # Parser generator
 brew "bison"
+# C/C++ and Java libraries for Unicode and globalization
+brew "icu4c@76"
 # Collection of portable C++ source libraries
 brew "boost"
 # Yet another cross-platform graphical process/system monitor
@@ -87,8 +89,6 @@ brew "docker-credential-helper"
 brew "folly"
 # C++14 implementation of the TLS-1.3 standard
 brew "fizz"
-# QUIC transport protocol implementation
-brew "mvfst"
 # Modular, composable client/server abstractions framework
 brew "wangle"
 # Facebook's branch of Apache Thrift, including a new C++ server
@@ -132,7 +132,7 @@ brew "guile"
 # Tool for glamorous shell scripts
 brew "gum"
 # User-friendly cURL replacement (command-line HTTP client)
-brew "httpie"
+brew "httpie", link: false
 # Website copier/offline browser
 brew "httrack"
 # Database of common MIME types
@@ -163,6 +163,8 @@ brew "luajit", args: ["HEAD"]
 brew "luarocks"
 # Mac App Store command-line interface
 brew "mas"
+# QUIC transport protocol implementation
+brew "mvfst"
 # Parser generator tool and incremental parsing library
 brew "tree-sitter"
 # Ambitious Vim-fork focused on extensibility and agility

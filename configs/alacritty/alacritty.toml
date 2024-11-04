@@ -1,3 +1,4 @@
+[general]
 import = ["~/.config/alacritty/themes/themes/gruvbox_dark.toml"]
 
 [cursor]
@@ -138,17 +139,17 @@ save_to_clipboard = true
 
 [window]
 decorations = "buttonless"
-opacity = 0.6
+opacity = 0.9
 blur = true
 startup_mode = "Maximized"
 
-[shell]
+[terminal.shell]
 program = "/opt/homebrew/bin/fish"
 
 [window.padding]
-x = 5
-y = 5
+x = 0
+y = 0
 
 [window.position]
-x = 10
-y = 10
+x = 0
+y = 0
