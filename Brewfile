@@ -45,14 +45,6 @@ brew "pycparser"
 brew "cffi"
 # Ruby environment tool
 brew "chruby"
-# International domain name library (IDNA2008, Punycode and TR46)
-brew "libidn2"
-# Validating, recursive, caching DNS resolver
-brew "unbound"
-# GNU Transport Layer Security (TLS) Library
-brew "gnutls"
-# Generic machine emulator and virtualizer
-brew "qemu"
 # Linux virtual machines
 brew "lima"
 # Container runtimes on MacOS (and Linux) with minimal setup
@@ -123,6 +115,12 @@ brew "gh"
 brew "git"
 # Highly customizable changelog generator
 brew "git-cliff"
+# International domain name library (IDNA2008, Punycode and TR46)
+brew "libidn2"
+# Validating, recursive, caching DNS resolver
+brew "unbound"
+# GNU Transport Layer Security (TLS) Library
+brew "gnutls"
 # GNU Pretty Good Privacy (PGP) package
 brew "gnupg"
 # Open source programming language to build simple/reliable/efficient software
@@ -199,6 +197,8 @@ brew "python@3.11"
 brew "python@3.8"
 # Interpreted, interactive, object-oriented programming language
 brew "python@3.9"
+# Generic machine emulator and virtualizer
+brew "qemu"
 # Ultra-fast CSV data-wrangling toolkit
 brew "qsv"
 # Messaging and streaming broker
