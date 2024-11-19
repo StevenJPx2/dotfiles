@@ -13,3 +13,4 @@ end
 zoxide init fish | source
 starship init fish | source
 direnv hook fish | source
+fzf --fish | source
