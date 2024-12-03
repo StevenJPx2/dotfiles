@@ -196,8 +196,6 @@ brew "python@3.10"
 # Interpreted, interactive, object-oriented programming language
 brew "python@3.11"
 # Interpreted, interactive, object-oriented programming language
-brew "python@3.8"
-# Interpreted, interactive, object-oriented programming language
 brew "python@3.9"
 # Generic machine emulator and virtualizer
 brew "qemu"
