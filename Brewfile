@@ -48,7 +48,7 @@ brew "chruby"
 # Linux virtual machines
 brew "lima"
 # Container runtimes on MacOS (and Linux) with minimal setup
-brew "colima", restart_service: true
+brew "colima", restart_service: :changed
 # Tool for downloading RTMP streaming media
 brew "rtmpdump"
 # Libraries to talk to Microsoft SQL Server and Sybase databases
@@ -176,7 +176,7 @@ brew "nnn"
 # Manage multiple Node.js versions
 brew "nvm"
 # Create, run, and share large language models (LLMs)
-brew "ollama", restart_service: true
+brew "ollama", restart_service: :changed
 # Cryptography and SSL/TLS Toolkit
 brew "openssl@1.1"
 # Shell command parallelization utility
@@ -230,7 +230,7 @@ brew "woff2"
 # JavaScript package manager
 brew "yarn"
 # Feature-rich command-line audio/video downloader
-brew "yt-dlp"
+brew "yt-dlp", link: false
 # Programming language designed for robustness, optimality, and clarity
 brew "zig"
 # Shell extension to navigate your filesystem faster
