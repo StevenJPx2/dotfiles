@@ -1,0 +1,5 @@
+{
+  "pre_install": "rm -rf ~/Library/Application\\ Support/k9s/",
+  "install_path": "~/.config/k9s",
+  "post_install": "ln -s ~/.config/k9s/ ~/Library/Application\\ Support/k9s"
+}
