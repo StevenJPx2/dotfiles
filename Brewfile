@@ -230,7 +230,7 @@ brew "woff2"
 # JavaScript package manager
 brew "yarn"
 # Feature-rich command-line audio/video downloader
-brew "yt-dlp", link: false
+brew "yt-dlp"
 # Programming language designed for robustness, optimality, and clarity
 brew "zig"
 # Shell extension to navigate your filesystem faster
@@ -269,6 +269,8 @@ cask "dbeaver-community"
 cask "devutils"
 # Run Stable Diffusion locally
 cask "diffusionbee"
+# API documentation viewer
+cask "dteoh-devdocs"
 cask "font-0xproto-nerd-font"
 cask "font-hack-nerd-font"
 # Cross-platform Git credential storage for multiple hosting providers
