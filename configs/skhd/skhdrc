@@ -1,5 +1,5 @@
 # opens iTerm2
-alt - return : open -a Ghostty
+alt - return : open -a Alacritty
 
 # Show system statistics
 fn + lalt - 1 : "${HOME}"/.config/yabai/scripts/show_cpu.sh
