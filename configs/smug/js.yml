@@ -1,0 +1,11 @@
+session: ${session_name}
+
+root: .
+
+windows:
+  - name: code
+    commands:
+      - f
+  - name: run
+    commands:
+      - nr dev
