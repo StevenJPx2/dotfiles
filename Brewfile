@@ -15,6 +15,22 @@ tap "pulumi/tap"
 tap "universal-ctags/universal-ctags"
 # Run your GitHub Actions locally
 brew "act"
+# Software library to render fonts
+brew "freetype"
+# Core application library for C
+brew "glib"
+# Vector graphics library with cross-device output support
+brew "cairo"
+# C parser in Python
+brew "pycparser"
+# C Foreign Function Interface for Python
+brew "cffi"
+# GNU compiler collection
+brew "gcc"
+# YAML Parser
+brew "libyaml"
+# AI pair programming in your terminal
+brew "aider"
 # Companion library to apr, the Apache Portable Runtime library
 brew "apr-util"
 # Tool for generating GNU Standards-compliant Makefiles
@@ -27,22 +43,10 @@ brew "bat"
 brew "bento4"
 # Parser generator
 brew "bison"
-# C/C++ and Java libraries for Unicode and globalization
-brew "icu4c@76"
 # Collection of portable C++ source libraries
 brew "boost"
 # Yet another cross-platform graphical process/system monitor
 brew "bottom"
-# Software library to render fonts
-brew "freetype"
-# Core application library for C
-brew "glib"
-# Vector graphics library with cross-device output support
-brew "cairo"
-# C parser in Python
-brew "pycparser"
-# C Foreign Function Interface for Python
-brew "cffi"
 # Ruby environment tool
 brew "chruby"
 # Linux virtual machines
@@ -53,14 +57,14 @@ brew "colima", restart_service: :changed
 brew "rtmpdump"
 # Libraries to talk to Microsoft SQL Server and Sybase databases
 brew "freetds"
+# C/C++ and Java libraries for Unicode and globalization
+brew "icu4c@76"
 # C library for reading, creating, and modifying zip archives
 brew "libzip"
 # General-purpose scripting language
 brew "php"
 # Dependency Manager for PHP
 brew "composer"
-# YAML Parser
-brew "libyaml"
 # Utility for rendering projects templates
 brew "copier"
 # Command-line csv viewer
@@ -105,8 +109,6 @@ brew "findutils"
 brew "fish"
 # Command-line fuzzy finder written in Go
 brew "fzf"
-# GNU compiler collection
-brew "gcc"
 # GNU database manager
 brew "gdbm"
 # GitHub command-line tool
