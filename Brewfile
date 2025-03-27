@@ -7,6 +7,7 @@ tap "hashicorp/tap"
 tap "homebrew/bundle"
 tap "homebrew/services"
 tap "jakehilborn/jakehilborn"
+tap "jstkdng/programs"
 tap "koekeishiya/formulae"
 tap "nikitabobko/tap"
 tap "oven-sh/bun"
@@ -47,6 +48,8 @@ brew "bison"
 brew "boost"
 # Yet another cross-platform graphical process/system monitor
 brew "bottom"
+# Insanely fast image printing in your terminal
+brew "catimg"
 # Ruby environment tool
 brew "chruby"
 # Linux virtual machines
@@ -247,6 +250,8 @@ brew "dopplerhq/cli/doppler"
 brew "hashicorp/tap/terraform"
 # macOS command line utility to configure multi-display resolutions and arrangements. Essentially XRandR for macOS.
 brew "jakehilborn/jakehilborn/displayplacer"
+# Drop in replacement for ueberzug written in C++
+brew "jstkdng/programs/ueberzugpp"
 # Simple hotkey-daemon for macOS.
 brew "koekeishiya/formulae/skhd"
 # A tiling window manager for macOS based on binary space partitioning.

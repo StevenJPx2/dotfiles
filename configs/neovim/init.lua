@@ -28,6 +28,10 @@ vim.o.tabstop = 2
 vim.o.laststatus = 3
 vim.o.so = 999
 
+-- Lualine fix
+vim.api.nvim_set_hl(0, "StatusLine", { reverse = false })
+vim.api.nvim_set_hl(0, "StatusLineNC", { reverse = false })
+
 --Enable break indent
 vim.o.breakindent = true
 
