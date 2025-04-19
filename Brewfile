@@ -60,8 +60,6 @@ brew "colima", restart_service: :changed
 brew "rtmpdump"
 # Libraries to talk to Microsoft SQL Server and Sybase databases
 brew "freetds"
-# C/C++ and Java libraries for Unicode and globalization
-brew "icu4c@76"
 # C library for reading, creating, and modifying zip archives
 brew "libzip"
 # General-purpose scripting language
@@ -140,6 +138,8 @@ brew "gum"
 brew "httpie", link: false
 # Website copier/offline browser
 brew "httrack"
+# C/C++ and Java libraries for Unicode and globalization
+brew "icu4c@76"
 # Database of common MIME types
 brew "shared-mime-info"
 # ISO/IEC 23008-12:2017 HEIF file format decoder and encoder

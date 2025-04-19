@@ -1,3 +1,6 @@
+-- global variables
+_G.colorscheme = "gruvbox"
+
 -- general options
 vim.o.completeopt = "menu,menuone,popup,fuzzy" -- modern completion menu
 
@@ -28,7 +31,7 @@ vim.o.rnu = true -- relativenumber
 vim.o.nu = true -- line number
 
 vim.o.pumheight = 10 -- max height of completion menu
-vim.o.winborder = "shadow" -- enable window border
+vim.o.winborder = "rounded" -- enable window border
 
 vim.o.list = true -- use special characters to represent things like tabs or trailing spaces
 vim.opt.listchars = { -- NOTE: using `vim.opt` instead of `vim.o` to pass rich object
@@ -77,6 +80,12 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 	end,
 	group = highlight_group,
 	pattern = "*",
+})
+
+vim.diagnostic.config({
+	virtual_lines = {
+		current_line = true,
+	},
 })
 
 -- Make background transparent
