@@ -1,6 +1,3 @@
--- global variables
-_G.colorscheme = "gruvbox"
-
 -- general options
 vim.o.completeopt = "menu,menuone,popup,fuzzy" -- modern completion menu
 

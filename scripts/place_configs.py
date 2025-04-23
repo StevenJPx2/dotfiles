@@ -11,7 +11,24 @@ from config_dict import ConfigDict
 
 
 def main():
+    config_dir = Path("./configs")
+    config_subdirs = [x.stem for x in config_dir.iterdir() if x.is_dir()]
+
     parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "config",
+        help="Space separated list of configs to install [optional]",
+        nargs="*",
+        default=None,
+        choices=config_subdirs,
+    )
+    parser.add_argument(
+        "-r",
+        "--replace",
+        action="store_true",
+        default=False,
+        help="Replace existing files",
+    )
     parser.add_argument(
         "-y",
         "--yes-all",
@@ -21,7 +38,10 @@ def main():
     )
     args = parser.parse_args()
 
-    for config_json in Path("./configs").glob("*/config.json"):
+    for config_json in config_dir.glob("*/config.json"):
+        if args.config is not None and config_json.parent.stem not in args.config:
+            continue
+
         config: ConfigDict = json.loads(config_json.read_text())
         install_path = config.get("install_path")
         pre_install_command = config.get("pre_install")
@@ -35,6 +55,9 @@ def main():
             subprocess.run(pre_install_command, shell=True)
 
         install_path = Path(install_path).expanduser().resolve()
+
+        if args.replace and install_path.exists():
+            shutil.rmtree(install_path)
 
         install_path.mkdir(parents=True, exist_ok=True)
 
