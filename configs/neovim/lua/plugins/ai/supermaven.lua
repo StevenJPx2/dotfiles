@@ -1,5 +1,5 @@
 return {
 	"supermaven-inc/supermaven-nvim",
-	event = "BufEnter",
+	event = "VeryLazy",
 	opts = {},
 }

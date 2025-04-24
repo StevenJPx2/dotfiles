@@ -20,7 +20,8 @@ return {
 					local opts = { buffer = event.buf }
 
 					vim.keymap.set("n", "K", "<cmd>lua vim.lsp.buf.hover()<cr>", opts)
-					vim.keymap.set("n", "<leader>rn", "<cmd>lua vim.lsp.buf.rename()<cr>", opts)
+					vim.keymap.set("n", "K", "<cmd>lua vim.lsp.buf.hover()<cr>", opts)
+					vim.keymap.set("n", "<leader>rn", "<cmd>IncRename<cr>", opts)
 					vim.keymap.set("n", "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<cr>", opts)
 				end,
 			})
@@ -31,6 +32,34 @@ return {
 				handlers = {
 					function(server_name)
 						vim.lsp.enable(server_name)
+					end,
+
+					ts_ls = function()
+						local vue_typescript_plugin = require("mason-registry")
+							.get_package("vue-language-server")
+							:get_install_path() .. "/node_modules/@vue/language-server" .. "/node_modules/@vue/typescript-plugin"
+
+						vim.lsp.config.ts_ls = {
+							init_options = {
+								plugins = {
+									{
+										name = "@vue/typescript-plugin",
+										location = vue_typescript_plugin,
+										languages = { "javascript", "typescript", "vue" },
+									},
+								},
+							},
+							filetypes = {
+								"javascript",
+								"javascriptreact",
+								"javascript.jsx",
+								"typescript",
+								"typescriptreact",
+								"typescript.tsx",
+								"vue",
+							},
+						}
+						vim.lsp.enable("ts_ls")
 					end,
 				},
 			})

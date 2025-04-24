@@ -17,7 +17,7 @@ end
 
 return {
 	set_colorscheme_table("ray-x/aurora", "aurora"),
-	set_colorscheme_table("ellisonleao/gruvbox.nvim", "gruvbox", { transparent_mode = false, contrast = "hard" }),
+	set_colorscheme_table("ellisonleao/gruvbox.nvim", "gruvbox"),
 	set_colorscheme_table("sainnhe/gruvbox-material", "gruvbox-material"),
 	set_colorscheme_table("folke/tokyonight.nvim", "tokyonight"),
 }

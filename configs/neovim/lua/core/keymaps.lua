@@ -9,8 +9,8 @@ vim.keymap.set("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = tr
 local opts = { noremap = true, silent = true }
 
 -- open file(s) in tab
-vim.keymap.set("n", "vgd", "<cmd>vs | norm gd<cr>", opts)
-vim.keymap.set("n", "vgf", "<cmd>vs | norm gf<cr>", opts)
+vim.keymap.set("n", "gdv", "<cmd>vs | norm gd<cr>", opts)
+vim.keymap.set("n", "gfv", "<cmd>vs | norm gf<cr>", opts)
 
 vim.keymap.set("t", "<Esc>", "<C-\\><C-n>", opts) -- exit terminal mode quickly
 vim.keymap.set("n", "<Esc>", "<cmd>nohl<cr>", opts) -- remove highlight with esc

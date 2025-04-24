@@ -2,11 +2,82 @@ return {
 	"folke/snacks.nvim",
 	priority = 1000,
 	lazy = false,
+
 	---@type snacks.Config
 	opts = {
 		bigfile = { enabled = true },
 		bufdelete = { enabled = true },
-		dashboard = { enabled = true },
+		dashboard = {
+			enabled = true,
+			preset = {
+				keys = {
+					{ icon = " ", key = "f", desc = "Find File", action = ":lua Snacks.dashboard.pick('files')" },
+					{
+						icon = " ",
+						key = "r",
+						desc = "Recent Files",
+						action = ":lua Snacks.dashboard.pick('oldfiles')",
+					},
+					{ icon = " ", key = "s", desc = "Restore Session", section = "session" },
+					{
+						icon = "󰒲 ",
+						key = "L",
+						desc = "Lazy",
+						action = ":Lazy",
+						enabled = package.loaded.lazy ~= nil,
+					},
+					{ icon = " ", key = "q", desc = "Quit", action = ":qa" },
+				},
+			},
+			sections = {
+				{ section = "header" },
+				{
+					icon = " ",
+					section = "recent_files",
+					cwd = true,
+					title = "Browse Repo",
+					padding = 1,
+					key = "b",
+					action = function()
+						Snacks.gitbrowse()
+					end,
+				},
+				function()
+					local in_git = Snacks.git.get_root() ~= nil
+					local cmds = {
+						{
+							icon = " ",
+							title = "Open PRs",
+							cmd = "gh pr list -L 3",
+							key = "P",
+							action = function()
+								vim.fn.jobstart("gh pr list --web", { detach = true })
+							end,
+							height = 7,
+							padding = 3,
+						},
+						{
+							icon = " ",
+							title = "Git Status",
+							cmd = "git --no-pager diff --stat -B -M -C",
+							height = 10,
+						},
+					}
+					return vim.tbl_map(function(cmd)
+						return vim.tbl_extend("force", {
+							section = "terminal",
+							enabled = in_git,
+							padding = 1,
+							pane = 2,
+							ttl = 5 * 60,
+							indent = 3,
+						}, cmd)
+					end, cmds)
+				end,
+				{ section = "keys" },
+				{ section = "startup" },
+			},
+		},
 		git = { enabled = true },
 		gitbrowse = { enabled = true },
 		image = { enabled = true },

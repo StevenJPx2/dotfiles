@@ -39,7 +39,7 @@ def main():
     args = parser.parse_args()
 
     for config_json in config_dir.glob("*/config.json"):
-        if args.config is not None and config_json.parent.stem not in args.config:
+        if len(args.config) > 0 and config_json.parent.stem not in args.config:
             continue
 
         config: ConfigDict = json.loads(config_json.read_text())
