@@ -33,14 +33,17 @@ return {
 				{ section = "header" },
 				{
 					icon = " ",
-					section = "recent_files",
-					cwd = true,
 					title = "Browse Repo",
-					padding = 1,
+					pane = 1,
 					key = "b",
 					action = function()
 						Snacks.gitbrowse()
 					end,
+				},
+				{
+					section = "recent_files",
+					cwd = true,
+					padding = 1,
 				},
 				function()
 					local in_git = Snacks.git.get_root() ~= nil
@@ -61,6 +64,7 @@ return {
 							title = "Git Status",
 							cmd = "git --no-pager diff --stat -B -M -C",
 							height = 10,
+							padding = 3,
 						},
 					}
 					return vim.tbl_map(function(cmd)

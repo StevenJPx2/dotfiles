@@ -17,7 +17,16 @@ end
 
 return {
 	set_colorscheme_table("ray-x/aurora", "aurora"),
-	set_colorscheme_table("ellisonleao/gruvbox.nvim", "gruvbox"),
+	set_colorscheme_table("ellisonleao/gruvbox.nvim", "gruvbox", {
+		overrides = {
+			SnacksPickerBorder = { link = "GruvboxBlue" },
+			SnacksPickerPathHidden = { link = "GruvboxGray" },
+			SnacksPickerPathIgnored = { link = "GruvboxBg3" },
+			SnacksPickerGitStatusUntracked = { link = "GruvboxGray" },
+			SnacksPickerDir = { link = "GruvboxGray" },
+			NormalFloat = { link = "Normal" },
+		},
+	}),
 	set_colorscheme_table("sainnhe/gruvbox-material", "gruvbox-material"),
 	set_colorscheme_table("folke/tokyonight.nvim", "tokyonight"),
 }
