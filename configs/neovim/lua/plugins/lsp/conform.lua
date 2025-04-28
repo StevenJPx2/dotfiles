@@ -23,6 +23,8 @@ return {
 			javascript = { "eslint", "prettier" },
 			typescript = { "eslint", "prettier" },
 			vue = { "eslint", "prettier" },
+			markdown = { "prettier" },
+			json = { "prettier" },
 		},
 		-- Set default options
 		default_format_opts = {

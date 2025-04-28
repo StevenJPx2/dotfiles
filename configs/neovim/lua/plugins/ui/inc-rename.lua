@@ -5,9 +5,10 @@ return {
 	keys = {
 		{
 			"<leader>rn",
-			-- we cannot use <cmd> here because vim will shout at us
-			-- for not ending it with <cr>
-			":IncRename ",
+			function()
+				return ":IncRename " .. vim.fn.expand("<cword>")
+			end,
+			expr = true,
 			desc = "[R]e[n]ame",
 		},
 	},
