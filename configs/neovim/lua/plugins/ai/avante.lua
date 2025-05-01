@@ -8,8 +8,9 @@ return {
 			openrouter = {
 				__inherited_from = "openai",
 				endpoint = "https://openrouter.ai/api/v1",
-				api_key_name = vim.env.OPENROUTER_API_KEY_AVANTE,
+				api_key_name = "OPENROUTER_API_KEY_AVANTE",
 				model = "thudm/glm-z1-32b:free",
+				disable_tools = true,
 			},
 		},
 		openai = {

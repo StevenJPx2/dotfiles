@@ -3,6 +3,7 @@ return {
 	priority = 1000,
 	lazy = false,
 
+	---@module "snacks"
 	---@type snacks.Config
 	opts = {
 		bigfile = { enabled = true },
@@ -170,7 +171,7 @@ return {
 			desc = "Git Grep",
 		},
 		{
-			"<leader>sgf",
+			"<leader>ss",
 			function()
 				Snacks.picker.grep()
 			end,
@@ -275,5 +276,42 @@ return {
 			end,
 			desc = "LSP Workspace Symbols",
 		},
+
+		-- Words
+		{
+			"]]",
+			function()
+				Snacks.words.jump(vim.v.count1)
+			end,
+			desc = "Next Reference",
+			mode = { "n", "t" },
+		},
+		{
+			"[[",
+			function()
+				Snacks.words.jump(-vim.v.count1)
+			end,
+			desc = "Prev Reference",
+			mode = { "n", "t" },
+		},
 	},
+
+	init = function()
+		vim.api.nvim_create_autocmd("User", {
+			pattern = "VeryLazy",
+			callback = function()
+				-- Setup some globals for debugging (lazy-loaded)
+				_G.dd = function(...)
+					Snacks.debug.inspect(...)
+				end
+				_G.bt = function()
+					Snacks.debug.backtrace()
+				end
+				vim.print = _G.dd -- Override print to use snacks for `:=` command
+
+				-- For some reason it doesn't do it by default
+				vim.ui.select = Snacks.picker.select
+			end,
+		})
+	end,
 }
