@@ -49,3 +49,15 @@ just update
 ```
 
 This will also diff the files with your current config and ensure you are informed of all the changes you'll be making.
+
+#### Update all configs, skipping the diff
+
+```sh
+just update -y
+```
+
+### Update a single config
+
+```sh
+just update [[name]]
+```
