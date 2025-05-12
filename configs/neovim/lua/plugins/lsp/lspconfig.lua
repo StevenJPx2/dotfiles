@@ -7,8 +7,8 @@ return {
 		event = { "BufReadPre", "BufNewFile" },
 
 		dependencies = {
-			{ "williamboman/mason.nvim" },
-			{ "williamboman/mason-lspconfig.nvim" },
+			{ "mason-org/mason.nvim" },
+			{ "mason-org/mason-lspconfig.nvim" },
 			{ "zapling/mason-conform.nvim" },
 			{ "stevearc/conform.nvim" },
 		},
@@ -31,6 +31,7 @@ return {
 			require("mason-lspconfig").setup({
 				ensure_installed = {},
 				automatic_installation = true,
+				automatic_enable = true,
 				handlers = {
 					function(server_name)
 						vim.lsp.enable(server_name)

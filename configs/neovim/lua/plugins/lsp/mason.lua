@@ -1,18 +1,13 @@
 return {
 	{
-		"williamboman/mason.nvim",
-		lazy = false,
-		opts = {
-			ui = {
-				border = vim.o.winborder,
-			},
-		},
+		"mason-org/mason.nvim",
 		keys = {
 			{ "<leader>m", "<cmd>Mason<cr>", desc = "Mason" },
 		},
+    opts = {}
 	},
 
-	"williamboman/mason-lspconfig.nvim",
+	"mason-org/mason-lspconfig.nvim",
 
 	{ "zapling/mason-conform.nvim", dependencies = { "stevearc/conform.nvim" } },
 }
