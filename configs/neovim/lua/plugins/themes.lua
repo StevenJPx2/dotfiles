@@ -12,7 +12,7 @@ local function set_colorscheme_table(git, colorscheme, opts)
 		}
 	end
 
-	return { git, opts = opts }
+	return { git, lazy = true, opts = opts }
 end
 
 return {

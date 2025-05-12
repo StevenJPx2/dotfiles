@@ -13,7 +13,7 @@ return {
 			{ "stevearc/conform.nvim" },
 		},
 
-		config = function()
+		init = function()
 			vim.api.nvim_create_autocmd("LspAttach", {
 				desc = "LSP actions",
 				callback = function(event)
@@ -26,45 +26,6 @@ return {
 						vim.lsp.buf.code_action()
 					end, opts)
 				end,
-			})
-
-			require("mason-lspconfig").setup({
-				ensure_installed = {},
-				automatic_installation = true,
-				automatic_enable = true,
-				handlers = {
-					function(server_name)
-						vim.lsp.enable(server_name)
-					end,
-
-					ts_ls = function()
-						local vue_typescript_plugin = require("mason-registry")
-							.get_package("vue-language-server")
-							:get_install_path() .. "/node_modules/@vue/language-server" .. "/node_modules/@vue/typescript-plugin"
-
-						vim.lsp.config.ts_ls = {
-							init_options = {
-								plugins = {
-									{
-										name = "@vue/typescript-plugin",
-										location = vue_typescript_plugin,
-										languages = { "javascript", "typescript", "vue" },
-									},
-								},
-							},
-							filetypes = {
-								"javascript",
-								"javascriptreact",
-								"javascript.jsx",
-								"typescript",
-								"typescriptreact",
-								"typescript.tsx",
-								"vue",
-							},
-						}
-						vim.lsp.enable("ts_ls")
-					end,
-				},
 			})
 		end,
 	},

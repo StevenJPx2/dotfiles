@@ -4,10 +4,10 @@ return {
 		keys = {
 			{ "<leader>m", "<cmd>Mason<cr>", desc = "Mason" },
 		},
-    opts = {}
+		opts = {},
 	},
 
-	"mason-org/mason-lspconfig.nvim",
+	{ "mason-org/mason-lspconfig.nvim", opts = {} },
 
 	{ "zapling/mason-conform.nvim", dependencies = { "stevearc/conform.nvim" } },
 }
