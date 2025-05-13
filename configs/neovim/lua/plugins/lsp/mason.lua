@@ -7,7 +7,7 @@ return {
 		opts = {},
 	},
 
-	{ "mason-org/mason-lspconfig.nvim", opts = {} },
+	{ "mason-org/mason-lspconfig.nvim", lazy = true, opts = {} },
 
 	{ "zapling/mason-conform.nvim", dependencies = { "stevearc/conform.nvim" } },
 }

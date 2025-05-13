@@ -65,7 +65,7 @@ return {
 			default_format_opts = {
 				lsp_format = "fallback",
 			},
-			format_on_save = { timeout_ms = 200 },
+			format_on_save = { timeout_ms = 500 },
 
 			format_after_save = function(bufnr)
 				-- Weird feedback loop when after save

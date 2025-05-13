@@ -92,3 +92,7 @@ vim.api.nvim_create_autocmd("VimEnter", {
 	end,
 	pattern = "*",
 })
+
+-- Dirty fix for 0.11 bug for html and vue files
+-- https://github.com/neovim/neovim/issues/32660
+vim.g._ts_force_sync_parsing = true
