@@ -268,6 +268,8 @@ brew "pulumi/tap/pulumi"
 cask "alacritty"
 # Chromium based browser
 cask "arc"
+# Multi-track audio editor and recorder
+cask "audacity"
 # Display management tool
 cask "betterdisplay"
 # Universal database tool and SQL client

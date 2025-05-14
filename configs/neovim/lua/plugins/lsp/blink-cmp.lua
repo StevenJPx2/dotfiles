@@ -8,6 +8,27 @@ return {
 
 		version = "1.*",
 
+		init = function()
+			-- turn Snacks off while the cmp menu is open, turn it back on afterward
+			local group = vim.api.nvim_create_augroup("BlinkCmpSnacksToggle", { clear = true })
+
+			vim.api.nvim_create_autocmd("User", {
+				group = group,
+				pattern = "BlinkCmpMenuOpen",
+				callback = function()
+					vim.g.snacks_animate = false
+				end,
+			})
+
+			vim.api.nvim_create_autocmd("User", {
+				group = group,
+				pattern = "BlinkCmpMenuClose",
+				callback = function()
+					vim.g.snacks_animate = true
+				end,
+			})
+		end,
+
 		opts = {
 			keymap = { preset = "enter" },
 
