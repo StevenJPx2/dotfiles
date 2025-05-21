@@ -85,7 +85,6 @@ return {
 		},
 		git = { enabled = true },
 		gitbrowse = { enabled = true },
-		image = { enabled = true },
 		indent = { enabled = true },
 		lazygit = { enabled = true },
 		picker = { enabled = true },
