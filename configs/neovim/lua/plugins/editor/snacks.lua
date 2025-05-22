@@ -120,17 +120,6 @@ return {
 			desc = "Open file in [G]it [R]epository",
 		},
 
-		--- IMAGE
-		{
-			"iK",
-			function()
-				if Snacks.image.supports_terminal() then
-					Snacks.image.hover()
-				end
-			end,
-			desc = "Open [I]mage",
-		},
-
 		--- LAZYGIT
 		{
 			"<leader>gg",
@@ -205,7 +194,7 @@ return {
 		{
 			"<leader>sf",
 			function()
-				Snacks.picker.git_files({ untracked = true })
+				Snacks.picker.files()
 			end,
 			desc = "Find Git Files",
 		},

@@ -186,6 +186,8 @@ brew "ollama", restart_service: :changed
 brew "openssl@1.1"
 # Shell command parallelization utility
 brew "parallel"
+# Paste PNG into files
+brew "pngpaste"
 # Fast, disk space efficient package manager
 brew "pnpm"
 # Python package management tool

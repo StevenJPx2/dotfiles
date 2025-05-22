@@ -2,8 +2,10 @@ return {
 	"yetone/avante.nvim",
 	event = "VeryLazy",
 	version = false,
+	---@module "avante"
+	---@class avante.Config
 	opts = {
-		provider = "openrouter",
+		provider = "gemini",
 		vendors = {
 			openrouter = {
 				__inherited_from = "openai",
