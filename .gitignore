@@ -1,4 +1,5 @@
 __pycache__
 Brewfile.lock.json
 configs/fish/secrets.fish
+configs/alacritty/themes
 .aider*
