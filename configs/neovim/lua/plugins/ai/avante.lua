@@ -6,6 +6,9 @@ return {
 	---@class avante.Config
 	opts = {
 		provider = "gemini",
+		selector = {
+			provider = "snacks",
+		},
 		vendors = {
 			openrouter = {
 				__inherited_from = "openai",

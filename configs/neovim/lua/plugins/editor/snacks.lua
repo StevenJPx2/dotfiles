@@ -115,7 +115,7 @@ return {
 		{
 			"<leader>gR",
 			function()
-				Snacks.git_browse.open()
+				Snacks.gitbrowse.open()
 			end,
 			desc = "Open file in [G]it [R]epository",
 		},
@@ -151,19 +151,9 @@ return {
 		{
 			"<leader>sg",
 			function()
-				Snacks.picker.git_grep({
-					untracked = true,
-					submodules = true,
-				})
+				Snacks.picker.git_grep()
 			end,
-			desc = "Git Grep",
-		},
-		{
-			"<leader>ss",
-			function()
-				Snacks.picker.grep()
-			end,
-			desc = "Full Grep",
+			desc = "[G]it Grep",
 		},
 
 		{
@@ -194,7 +184,7 @@ return {
 		{
 			"<leader>sf",
 			function()
-				Snacks.picker.files()
+				Snacks.picker.git_files()
 			end,
 			desc = "Find Git Files",
 		},
