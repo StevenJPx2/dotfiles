@@ -184,7 +184,10 @@ return {
 		{
 			"<leader>sf",
 			function()
-				Snacks.picker.git_files()
+				Snacks.picker.git_files({
+					untracked = true,
+					submodules = true,
+				})
 			end,
 			desc = "Find Git Files",
 		},
