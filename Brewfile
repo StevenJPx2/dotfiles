@@ -214,6 +214,8 @@ brew "rabbitmq"
 brew "ripgrep"
 # Install Ruby, JRuby, Rubinius, TruffleRuby, or mruby
 brew "ruby-install"
+# Intuitive find & replace CLI
+brew "sd"
 # Automate your tmux workflow
 brew "smug"
 # Cross-shell prompt for astronauts
