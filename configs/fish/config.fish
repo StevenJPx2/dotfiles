@@ -2,6 +2,7 @@
 set -gx EDITOR "/opt/homebrew/bin/nvim"
 set -gx NVM_DIR "$HOME/.nvm"
 set -gx GIT_EDITOR $EDITOR
+set -gx DOCKER_HOST "unix:///$HOME/.colima/docker.sock"
 
 source "$HOME/.cargo/env.fish"
 set -q XDG_CONFIG_HOME || set XDG_CONFIG_HOME "$HOME/.config"
