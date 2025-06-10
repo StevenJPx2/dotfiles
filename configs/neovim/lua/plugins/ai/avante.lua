@@ -9,7 +9,7 @@ return {
 		selector = {
 			provider = "snacks",
 		},
-		vendors = {
+		providers = {
 			openrouter = {
 				__inherited_from = "openai",
 				endpoint = "https://openrouter.ai/api/v1",
@@ -17,20 +17,21 @@ return {
 				model = "thudm/glm-z1-32b:free",
 				disable_tools = true,
 			},
-		},
-		openai = {
-			endpoint = "https://api.openai.com/v1",
-			model = "gpt-4o",
-			timeout = 30000,
-			temperature = 0,
-			max_completion_tokens = 8192,
-			--reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
+			openai = {
+				endpoint = "https://api.openai.com/v1",
+				model = "gpt-4o",
+				extra_request_body = {
+					timeout = 30000,
+					temperature = 0,
+					max_completion_tokens = 8192,
+				},
+				--reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
+			},
 		},
 	},
 	build = "make",
 	dependencies = {
 		"nvim-treesitter/nvim-treesitter",
-		"stevearc/dressing.nvim",
 		"nvim-lua/plenary.nvim",
 		"MunifTanjim/nui.nvim",
 		"folke/snacks.nvim",

@@ -226,6 +226,8 @@ brew "stow"
 brew "tldr"
 # Terminal multiplexer
 brew "tmux"
+# Extremely fast Python package installer and resolver, written in Rust
+brew "uv"
 # Secures, stores, and tightly controls access to secrets
 brew "vault"
 # Tool for creating isolated virtual python environments
@@ -308,6 +310,8 @@ cask "lens"
 cask "linearmouse"
 # Reverse proxy, secure introspectable tunnels to localhost
 cask "ngrok"
+# Replacement for Docker Desktop
+cask "orbstack"
 # Browser for ambitious developers
 cask "polypane"
 # HTTP debugging proxy
