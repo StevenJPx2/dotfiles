@@ -7,7 +7,9 @@ vim.o.mouse = "a" -- enable full mouse support (i'm a noob yes make fun of me)
 vim.o.inccommand = "split" -- show search results while typing
 vim.o.so = 900 -- number of lines between cursor and window
 
-vim.o.timeoutlen = 0 -- setting this for which-key
+vim.o.timeout = false
+vim.o.ttimeout = true
+vim.o.ttimeoutlen = 100
 
 -- split to the bottom and right
 vim.o.sb = true
@@ -92,7 +94,3 @@ vim.api.nvim_create_autocmd("VimEnter", {
 	end,
 	pattern = "*",
 })
-
--- Dirty fix for 0.11 bug for html and vue files
--- https://github.com/neovim/neovim/issues/32660
-vim.g._ts_force_sync_parsing = true

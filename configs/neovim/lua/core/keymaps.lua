@@ -6,7 +6,8 @@ vim.keymap.set({ "n", "v" }, "<Space>", "<Nop>", { silent = true })
 vim.keymap.set("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 vim.keymap.set("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
-local opts = { noremap = true, silent = true }
+---@type vim.keymap.set.Opts
+local opts = { silent = true }
 
 -- open file(s) in vertical split
 vim.keymap.set("n", "<leader>vgd", "<cmd>vs | norm gd<cr>", opts)
