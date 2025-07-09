@@ -92,6 +92,7 @@ return {
 		scroll = { enabled = true },
 		statuscolumn = { enabled = true },
 		words = { enabled = true },
+		zen = { enabled = true },
 	},
 
 	keys = {
@@ -274,6 +275,15 @@ return {
 			end,
 			desc = "Prev Reference",
 			mode = { "n", "t" },
+		},
+
+		-- Zen
+		{
+			"<leader>zz",
+			function()
+				Snacks.zen()
+			end,
+			desc = "Toggle Zen Mode",
 		},
 	},
 
