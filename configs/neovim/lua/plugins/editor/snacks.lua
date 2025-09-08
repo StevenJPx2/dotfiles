@@ -133,13 +133,13 @@ return {
 		--- PICKER
 
 		--- Global
-		{
-			"<leader><space>",
-			function()
-				Snacks.picker.smart()
-			end,
-			desc = "Smart Find Files",
-		},
+		-- {
+		-- 	"<leader><space>",
+		-- 	function()
+		-- 		Snacks.picker.smart()
+		-- 	end,
+		-- 	desc = "Smart Find Files",
+		-- },
 		{
 			"<leader>,",
 			function()
@@ -182,16 +182,16 @@ return {
 		},
 
 		-- files
-		{
-			"<leader>sf",
-			function()
-				Snacks.picker.git_files({
-					untracked = true,
-					submodules = true,
-				})
-			end,
-			desc = "Find Git Files",
-		},
+		-- {
+		-- 	"<leader>sf",
+		-- 	function()
+		-- 		Snacks.picker.git_files({
+		-- 			untracked = true,
+		-- 			submodules = true,
+		-- 		})
+		-- 	end,
+		-- 	desc = "Find Git Files",
+		-- },
 		{
 			"<leader>sp",
 			function()
