@@ -4,7 +4,6 @@ return {
 		event = "InsertEnter",
 		dependencies = {
 			"rafamadriz/friendly-snippets",
-			"Kaiser-Yang/blink-cmp-avante",
 		},
 
 		version = "1.*",
