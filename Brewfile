@@ -13,25 +13,12 @@ tap "nikitabobko/tap"
 tap "oven-sh/bun"
 tap "pkgxdev/made"
 tap "pulumi/tap"
+tap "sachaos/todoist"
+tap "sst/tap"
+tap "tw93/tap"
 tap "universal-ctags/universal-ctags"
 # Run your GitHub Actions locally
 brew "act"
-# Software library to render fonts
-brew "freetype"
-# Core application library for C
-brew "glib"
-# Vector graphics library with cross-device output support
-brew "cairo"
-# C parser in Python
-brew "pycparser"
-# C Foreign Function Interface for Python
-brew "cffi"
-# GNU compiler collection
-brew "gcc"
-# YAML Parser
-brew "libyaml"
-# AI pair programming in your terminal
-brew "aider"
 # Companion library to apr, the Apache Portable Runtime library
 brew "apr-util"
 # Tool for generating GNU Standards-compliant Makefiles
@@ -48,8 +35,18 @@ brew "bison"
 brew "boost"
 # Yet another cross-platform graphical process/system monitor
 brew "bottom"
+# Software library to render fonts
+brew "freetype"
+# Core application library for C
+brew "glib"
+# Vector graphics library with cross-device output support
+brew "cairo"
 # Insanely fast image printing in your terminal
 brew "catimg"
+# C parser in Python
+brew "pycparser"
+# C Foreign Function Interface for Python
+brew "cffi"
 # Ruby environment tool
 brew "chruby"
 # Linux virtual machines
@@ -60,12 +57,16 @@ brew "colima", restart_service: :changed
 brew "rtmpdump"
 # Libraries to talk to Microsoft SQL Server and Sybase databases
 brew "freetds"
+# GNU compiler collection
+brew "gcc"
 # C library for reading, creating, and modifying zip archives
 brew "libzip"
 # General-purpose scripting language
 brew "php"
 # Dependency Manager for PHP
 brew "composer"
+# YAML Parser
+brew "libyaml"
 # Utility for rendering projects templates
 brew "copier"
 # Command-line csv viewer
@@ -108,6 +109,8 @@ brew "fd"
 brew "findutils"
 # User-friendly command-line shell for UNIX-like operating systems
 brew "fish"
+# Apt for fonts, the missing font manager for macOS/linux
+brew "fnt"
 # Command-line fuzzy finder written in Go
 brew "fzf"
 # GNU database manager
@@ -128,6 +131,8 @@ brew "gnutls"
 brew "gnupg"
 # Open source programming language to build simple/reliable/efficient software
 brew "go"
+# AI assistant in your terminal
+brew "gptme"
 # Package compiler and linker metadata toolkit
 brew "pkgconf"
 # GNU Ubiquitous Intelligent Language for Extensions
@@ -148,8 +153,6 @@ brew "libheif"
 brew "imagemagick"
 # Lightweight and flexible command-line JSON processor
 brew "jq"
-# Fast, Dynamic Programming Language
-brew "julia"
 # Handy way to save and run project-specific commands
 brew "just"
 # Easy way to access the system keyring service from python
@@ -163,14 +166,14 @@ brew "lazygit"
 # Portable Foreign Function Interface library
 brew "libffi"
 # Just-In-Time Compiler (JIT) for the Lua programming language
-brew "luajit", args: ["HEAD"]
+brew "luajit"
 # Package manager for the Lua programming language
 brew "luarocks"
 # Mac App Store command-line interface
 brew "mas"
 # QUIC transport protocol implementation
 brew "mvfst"
-# Parser generator tool and incremental parsing library
+# Incremental parsing library
 brew "tree-sitter"
 # Ambitious Vim-fork focused on extensibility and agility
 brew "neovim"
@@ -186,6 +189,8 @@ brew "ollama", restart_service: :changed
 brew "openssl@1.1"
 # Shell command parallelization utility
 brew "parallel"
+# Simplistic interactive filtering tool
+brew "peco"
 # Paste PNG into files
 brew "pngpaste"
 # Fast, disk space efficient package manager
@@ -214,6 +219,8 @@ brew "rabbitmq"
 brew "ripgrep"
 # Install Ruby, JRuby, Rubinius, TruffleRuby, or mruby
 brew "ruby-install"
+# Login and retrieve AWS temporary credentials using a SAML IDP
+brew "saml2aws"
 # Intuitive find & replace CLI
 brew "sd"
 # Automate your tmux workflow
@@ -228,8 +235,6 @@ brew "tldr"
 brew "tmux"
 # Extremely fast Python package installer and resolver, written in Rust
 brew "uv"
-# Secures, stores, and tightly controls access to secrets
-brew "vault"
 # Tool for creating isolated virtual python environments
 brew "virtualenv"
 # Watch files and take action when they change
@@ -254,6 +259,8 @@ brew "dart-lang/dart/dart"
 brew "dopplerhq/cli/doppler"
 # Terraform
 brew "hashicorp/tap/terraform"
+# Vault
+brew "hashicorp/tap/vault"
 # macOS command line utility to configure multi-display resolutions and arrangements. Essentially XRandR for macOS.
 brew "jakehilborn/jakehilborn/displayplacer"
 # Drop in replacement for ueberzug written in C++
@@ -270,6 +277,12 @@ brew "pkgxdev/made/pkgx"
 brew "pulumi/tap/esc"
 # Pulumi - Modern Infrastructure as Code. Any cloud, any language 
 brew "pulumi/tap/pulumi"
+# Todoist CLI client
+brew "sachaos/todoist/todoist", link: false
+# The AI coding agent built for the terminal.
+brew "sst/tap/opencode"
+# Comprehensive macOS cleanup and application uninstall tool
+brew "tw93/tap/mole"
 # GPU-accelerated terminal emulator
 cask "alacritty"
 # Chromium based browser
@@ -288,22 +301,24 @@ cask "diffusionbee"
 cask "dteoh-devdocs"
 cask "font-0xproto-nerd-font"
 cask "font-hack-nerd-font"
+# Set of tools to manage resources and applications hosted on Google Cloud
+cask "gcloud-cli"
 # Cross-platform Git credential storage for multiple hosting providers
 cask "git-credential-manager"
 # Desktop client for GitHub repositories
 cask "github"
 # Web browser
 cask "google-chrome"
-# Set of tools to manage resources and applications hosted on Google Cloud
-cask "google-cloud-sdk"
 # Testing client for REST, GraphQL, and HTTP APIs
-cask "httpie"
+cask "httpie-desktop"
 # Free and open-source media player
 cask "iina"
 # HTTP and GraphQL Client
 cask "insomnia"
 # Offline AI chat tool
 cask "jan"
+# Free and open-source media player
+cask "kodi"
 # Kubernetes IDE
 cask "lens"
 # Customise mouse behavior
@@ -327,7 +342,9 @@ cask "stats"
 # Native GUI tool for relational databases
 cask "tableplus"
 # Mesh VPN based on WireGuard
-cask "tailscale"
+cask "tailscale-app"
+# To-do list
+cask "todoist-app"
 # Open-source BitTorrent client
 cask "transmission"
 # Native desktop client for WhatsApp
