@@ -11,6 +11,9 @@
 [pager]
   difftool = true
 
+[pull]
+  rebase = true
+
 [alias]
   dft = difftool
   dlog = -c diff.external=difft log -p --ext-diff
