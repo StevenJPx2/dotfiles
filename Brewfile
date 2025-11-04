@@ -47,6 +47,8 @@ brew "catimg"
 brew "pycparser"
 # C Foreign Function Interface for Python
 brew "cffi"
+# Versatile and fast Unicode/ASCII/ANSI graphics renderer
+brew "chafa"
 # Ruby environment tool
 brew "chruby"
 # Linux virtual machines
@@ -95,7 +97,7 @@ brew "fbthrift"
 brew "fb303"
 # Shared library for Watchman and Eden projects
 brew "edencommon"
-# Platform built on V8 to build network applications
+# Open-source, cross-platform JavaScript runtime environment
 brew "node"
 # AST-based pattern checker for JavaScript
 brew "eslint"
@@ -105,6 +107,14 @@ brew "eza"
 brew "fastfetch"
 # Simple, fast and user-friendly alternative to find
 brew "fd"
+# International domain name library (IDNA2008, Punycode and TR46)
+brew "libidn2"
+# Validating, recursive, caching DNS resolver
+brew "unbound"
+# GNU Transport Layer Security (TLS) Library
+brew "gnutls"
+# Play, record, convert, and stream audio and video
+brew "ffmpeg"
 # Collection of GNU find, xargs, and locate
 brew "findutils"
 # User-friendly command-line shell for UNIX-like operating systems
@@ -121,16 +131,12 @@ brew "gh"
 brew "git"
 # Highly customizable changelog generator
 brew "git-cliff"
-# International domain name library (IDNA2008, Punycode and TR46)
-brew "libidn2"
-# Validating, recursive, caching DNS resolver
-brew "unbound"
-# GNU Transport Layer Security (TLS) Library
-brew "gnutls"
 # GNU Pretty Good Privacy (PGP) package
 brew "gnupg"
 # Open source programming language to build simple/reliable/efficient software
 brew "go"
+# Tool to convert a Wallpaper's color scheme / palette
+brew "gowall"
 # AI assistant in your terminal
 brew "gptme"
 # Package compiler and linker metadata toolkit
@@ -323,6 +329,8 @@ cask "kodi"
 cask "lens"
 # Customise mouse behavior
 cask "linearmouse"
+# Game launcher with the ability to run Windows games
+cask "mythic"
 # Reverse proxy, secure introspectable tunnels to localhost
 cask "ngrok"
 # Replacement for Docker Desktop
