@@ -86,7 +86,6 @@ return {
     },
     git = { enabled = true },
     gitbrowse = { enabled = true },
-    indent = { enabled = true },
     lazygit = { enabled = true },
     picker = { enabled = true },
     quickfile = { enabled = true },
