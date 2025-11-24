@@ -10,7 +10,6 @@ return {
 	{
 		"mason-org/mason-lspconfig.nvim",
 		lazy = true,
-		---@module "mason-lspconfig"
 		---@type MasonLspconfigSettings
 		opts = {
 			ensure_installed = {

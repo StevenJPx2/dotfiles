@@ -37,7 +37,6 @@ return {
 			formatters_by_ft[ft] = { "prettier" }
 		end
 
-		---@module "conform"
 		---@type conform.setupOpts
 		return {
 			-- Define your formatters
