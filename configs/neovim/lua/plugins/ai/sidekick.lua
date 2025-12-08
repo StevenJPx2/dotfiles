@@ -1,16 +1,24 @@
-toggle_opencode = function()
+local toggle_opencode = function()
 	require("sidekick.cli").toggle({ name = "opencode", focus = true })
 end
 
 return {
 	{
 		"folke/sidekick.nvim",
+		---@type sidekick.config
 		opts = {
 			-- add any options here
+			nes = {
+				enabled = false,
+			},
 			cli = {
 				mux = {
 					backend = "tmux",
 					enabled = true,
+					create = "split",
+					split = {
+						size = 0.2,
+					},
 				},
 			},
 		},
@@ -104,24 +112,6 @@ return {
 							},
 						},
 					},
-				},
-			},
-		},
-	},
-	{
-		"saghen/blink.cmp",
-		---@type blink.cmp.Config
-		opts = {
-			keymap = {
-				["<Tab>"] = {
-					"snippet_forward",
-					function() -- sidekick next edit suggestion
-						return require("sidekick").nes_jump_or_apply()
-					end,
-					function() -- if you are using Neovim's native inline completions
-						return vim.lsp.inline_completion.get()
-					end,
-					"fallback",
 				},
 			},
 		},
