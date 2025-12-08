@@ -59,8 +59,6 @@ brew "colima", restart_service: :changed
 brew "rtmpdump"
 # Libraries to talk to Microsoft SQL Server and Sybase databases
 brew "freetds"
-# GNU compiler collection
-brew "gcc"
 # C library for reading, creating, and modifying zip archives
 brew "libzip"
 # General-purpose scripting language
@@ -115,6 +113,8 @@ brew "unbound"
 brew "gnutls"
 # Play, record, convert, and stream audio and video
 brew "ffmpeg"
+# GNU compiler collection
+brew "gcc"
 # Collection of GNU find, xargs, and locate
 brew "findutils"
 # User-friendly command-line shell for UNIX-like operating systems
@@ -137,8 +137,6 @@ brew "gnupg"
 brew "go"
 # Tool to convert a Wallpaper's color scheme / palette
 brew "gowall"
-# AI assistant in your terminal
-brew "gptme"
 # Package compiler and linker metadata toolkit
 brew "pkgconf"
 # GNU Ubiquitous Intelligent Language for Extensions
@@ -213,8 +211,6 @@ brew "pyenv-virtualenv"
 brew "python@3.10"
 # Interpreted, interactive, object-oriented programming language
 brew "python@3.11"
-# Interpreted, interactive, object-oriented programming language
-brew "python@3.9"
 # Generic machine emulator and virtualizer
 brew "qemu"
 # Ultra-fast CSV data-wrangling toolkit

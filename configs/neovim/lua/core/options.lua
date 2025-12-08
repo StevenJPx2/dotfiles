@@ -94,3 +94,21 @@ vim.api.nvim_create_autocmd("VimEnter", {
 	end,
 	pattern = "*",
 })
+
+-- Auto-update if there are any package updates
+vim.api.nvim_create_autocmd("UIEnter", {
+	group = vim.api.nvim_create_augroup("LazyAutoUpdate", { clear = true }),
+	callback = function()
+		vim.defer_fn(function()
+			if require("lazy.status").has_updates() then
+				vim.notify("Starting lazy update...")
+				local ok, err = pcall(require("lazy").update, { show = false })
+				if not ok then
+					vim.notify("Lazy update failed: " .. err, vim.log.levels.ERROR)
+				else
+					vim.notify("Lazy update completed")
+				end
+			end
+		end, 40)
+	end,
+})

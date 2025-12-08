@@ -21,19 +21,17 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 -- Setup lazy.nvim
-require("lazy").setup(
-	---@type LazyConfig
-	{
-		spec = {
-			{ import = "plugins" },
-		},
+require("lazy").setup({
 
-		ui = {
-			border = vim.o.winborder,
-		},
+	spec = {
+		{ import = "plugins" },
+	},
 
-		install = { colorscheme = { _G.colorscheme } },
+	ui = {
+		border = vim.o.winborder,
+	},
 
-		checker = { enabled = true },
-	}
-)
+	install = { colorscheme = { _G.colorscheme } },
+
+	checker = { enabled = true },
+})

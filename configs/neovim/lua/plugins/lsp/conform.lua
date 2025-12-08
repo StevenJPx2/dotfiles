@@ -29,7 +29,7 @@ return {
 
 		-- eslint filetypes
 		for _, ft in ipairs(eslint_fts) do
-			formatters_by_ft[ft] = { "eslint", "prettier" }
+			formatters_by_ft[ft] = { "eslint", "biome-check", "prettier" }
 		end
 
 		-- prettier filetypes
