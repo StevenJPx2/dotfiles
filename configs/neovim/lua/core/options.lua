@@ -101,7 +101,7 @@ vim.api.nvim_create_autocmd("UIEnter", {
 	callback = function()
 		vim.defer_fn(function()
 			if require("lazy.status").has_updates() then
-				vim.notify("Starting lazy update...")
+				vim.notify("Starting lazy update..." .. require("lazy.status").updates())
 				local ok, err = pcall(require("lazy").update, { show = false })
 				if not ok then
 					vim.notify("Lazy update failed: " .. err, vim.log.levels.ERROR)
@@ -109,6 +109,6 @@ vim.api.nvim_create_autocmd("UIEnter", {
 					vim.notify("Lazy update completed")
 				end
 			end
-		end, 40)
+		end, 500)
 	end,
 })

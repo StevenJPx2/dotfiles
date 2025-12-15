@@ -131,7 +131,7 @@ brew "gh"
 brew "git"
 # Highly customizable changelog generator
 brew "git-cliff"
-# GNU Pretty Good Privacy (PGP) package
+# GNU Privacy Guard (OpenPGP)
 brew "gnupg"
 # Open source programming language to build simple/reliable/efficient software
 brew "go"
@@ -177,10 +177,10 @@ brew "luarocks"
 brew "mas"
 # QUIC transport protocol implementation
 brew "mvfst"
-# Incremental parsing library
-brew "tree-sitter"
 # Ambitious Vim-fork focused on extensibility and agility
 brew "neovim"
+# Incremental parsing library
+brew "tree-sitter"
 # No Nonsense Neovim Client in Rust
 brew "neovide"
 # Tiny, lightning fast, feature-packed file manager
@@ -225,6 +225,8 @@ brew "ruby-install"
 brew "saml2aws"
 # Intuitive find & replace CLI
 brew "sd"
+# Fuzzy Finder in rust!
+brew "sk"
 # Automate your tmux workflow
 brew "smug"
 # Cross-shell prompt for astronauts
@@ -325,6 +327,8 @@ cask "kodi"
 cask "lens"
 # Customise mouse behavior
 cask "linearmouse"
+# VPN client
+cask "mullvad-vpn"
 # Game launcher with the ability to run Windows games
 cask "mythic"
 # Reverse proxy, secure introspectable tunnels to localhost
