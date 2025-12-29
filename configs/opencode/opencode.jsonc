@@ -4,12 +4,17 @@
   "mcp": {
     "context7": {
       "type": "local",
-      "command": ["npx", "-y", "@upstash/context7-mcp"],
+      "command": ["npx", "-y", "@upstash/context7-mcp@latest"],
       "enabled": true,
     },
     "playwright": {
       "type": "local",
       "command": ["npx", "@playwright/mcp@latest"],
+      "enabled": true,
+    },
+    "chrome-devtools": {
+      "type": "local",
+      "command": ["npx", "-y", "chrome-devtools-mcp@latest"],
       "enabled": true,
     },
   },
