@@ -51,10 +51,6 @@ brew "cffi"
 brew "chafa"
 # Ruby environment tool
 brew "chruby"
-# Linux virtual machines
-brew "lima"
-# Container runtimes on MacOS (and Linux) with minimal setup
-brew "colima", restart_service: :changed
 # Tool for downloading RTMP streaming media
 brew "rtmpdump"
 # Libraries to talk to Microsoft SQL Server and Sybase databases
@@ -211,8 +207,6 @@ brew "pyenv-virtualenv"
 brew "python@3.10"
 # Interpreted, interactive, object-oriented programming language
 brew "python@3.11"
-# Generic machine emulator and virtualizer
-brew "qemu"
 # Ultra-fast CSV data-wrangling toolkit
 brew "qsv"
 # Messaging and streaming broker
