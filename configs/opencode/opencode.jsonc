@@ -18,5 +18,15 @@
       "command": ["npx", "-y", "chrome-devtools-mcp@latest"],
       "enabled": true,
     },
+    "nuxt-ui": {
+      "type": "remote",
+      "url": "https://ui.nuxt.com/mcp",
+      "enabled": true
+    },
+    "nuxt": {
+      "type": "remote",
+      "url": "https://nuxt.com/mcp",
+      "enabled": true
+    }
   },
 }
