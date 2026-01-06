@@ -18,11 +18,6 @@
       "command": ["npx", "-y", "chrome-devtools-mcp@latest"],
       "enabled": true,
     },
-    "cloudflare": {
-      "type": "local",
-      "command": ["npx", "-y", "@cloudflare/mcp-server-cloudflare@latest"],
-      "enabled": true
-    },
     "nuxt-ui": {
       "type": "remote",
       "url": "https://ui.nuxt.com/mcp",
