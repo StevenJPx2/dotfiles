@@ -1,6 +1,6 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "plugin": ["oh-my-opencode"],
+  "plugin": ["oh-my-opencode@v3.0.0-beta.10"],
   "theme": "gruvbox",
   "mcp": {
     "context7": {

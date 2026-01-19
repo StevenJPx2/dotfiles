@@ -101,12 +101,6 @@ brew "eza"
 brew "fastfetch"
 # Simple, fast and user-friendly alternative to find
 brew "fd"
-# International domain name library (IDNA2008, Punycode and TR46)
-brew "libidn2"
-# Validating, recursive, caching DNS resolver
-brew "unbound"
-# GNU Transport Layer Security (TLS) Library
-brew "gnutls"
 # Play, record, convert, and stream audio and video
 brew "ffmpeg"
 # GNU compiler collection
@@ -127,6 +121,12 @@ brew "gh"
 brew "git"
 # Highly customizable changelog generator
 brew "git-cliff"
+# International domain name library (IDNA2008, Punycode and TR46)
+brew "libidn2"
+# Validating, recursive, caching DNS resolver
+brew "unbound"
+# GNU Transport Layer Security (TLS) Library
+brew "gnutls"
 # GNU Privacy Guard (OpenPGP)
 brew "gnupg"
 # Open source programming language to build simple/reliable/efficient software
@@ -323,6 +323,8 @@ cask "kodi"
 cask "lens"
 # Customise mouse behavior
 cask "linearmouse"
+# Software for Logitech devices
+cask "logi-options+"
 # VPN client
 cask "mullvad-vpn"
 # Game launcher with the ability to run Windows games
@@ -353,3 +355,5 @@ cask "todoist-app"
 cask "transmission"
 # Native desktop client for WhatsApp
 cask "whatsapp"
+# Voice-to-text dictation with AI-powered auto-editing
+cask "wispr-flow"
