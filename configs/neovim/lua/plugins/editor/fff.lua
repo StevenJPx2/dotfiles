@@ -5,9 +5,9 @@ return {
 		lazy = false,
 	},
 	{
-		"dmtrKovalenko/fff-snacks.nvim",
+		"madmaxieee/fff-snacks.nvim",
 		dependencies = {
-			"Irdis/fff.nvim",
+			"dmtrKovalenko/fff.nvim",
 			"folke/snacks.nvim",
 		},
 		cmd = "FFFSnacks",
