@@ -101,7 +101,7 @@ brew "eza"
 brew "fastfetch"
 # Simple, fast and user-friendly alternative to find
 brew "fd"
-# Play, record, convert, and stream audio and video
+# Play, record, convert, and stream select audio and video codecs
 brew "ffmpeg"
 # GNU compiler collection
 brew "gcc"
@@ -143,13 +143,15 @@ brew "gum"
 brew "httpie", link: false
 # Website copier/offline browser
 brew "httrack"
+# Client library for huggingface.co hub
+brew "huggingface-cli"
 # C/C++ and Java libraries for Unicode and globalization
 brew "icu4c@76"
 # Database of common MIME types
 brew "shared-mime-info"
 # ISO/IEC 23008-12:2017 HEIF file format decoder and encoder
 brew "libheif"
-# Tools and libraries to manipulate images in many formats
+# Tools and libraries to manipulate images in select formats
 brew "imagemagick"
 # Lightweight and flexible command-line JSON processor
 brew "jq"
@@ -165,6 +167,8 @@ brew "lazydocker"
 brew "lazygit"
 # Portable Foreign Function Interface library
 brew "libffi"
+# LLM inference in C/C++
+brew "llama.cpp"
 # Just-In-Time Compiler (JIT) for the Lua programming language
 brew "luajit"
 # Package manager for the Lua programming language
@@ -278,7 +282,7 @@ brew "pulumi/tap/esc"
 # Pulumi - Modern Infrastructure as Code. Any cloud, any language 
 brew "pulumi/tap/pulumi"
 # Todoist CLI client
-brew "sachaos/todoist/todoist", link: false
+brew "sachaos/todoist/todoist"
 # The AI coding agent built for the terminal.
 brew "sst/tap/opencode"
 # Comprehensive macOS cleanup and application uninstall tool
@@ -291,6 +295,8 @@ cask "arc"
 cask "audacity"
 # Display management tool
 cask "betterdisplay"
+# Web debugging Proxy application
+cask "charles"
 # Universal database tool and SQL client
 cask "dbeaver-community"
 # All-in-one toolbox for developers
@@ -331,6 +337,8 @@ cask "mullvad-vpn"
 cask "mythic"
 # Reverse proxy, secure introspectable tunnels to localhost
 cask "ngrok"
+# AI coding agent desktop client
+cask "opencode-desktop"
 # Replacement for Docker Desktop
 cask "orbstack"
 # Browser for ambitious developers
@@ -345,6 +353,8 @@ cask "slack"
 cask "spaceman"
 # System monitor for the menu bar
 cask "stats"
+# Companion app for Stremio Web
+cask "stremioservice"
 # Native GUI tool for relational databases
 cask "tableplus"
 # Mesh VPN based on WireGuard
