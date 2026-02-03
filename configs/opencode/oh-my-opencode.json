@@ -4,11 +4,14 @@
     "sisyphus": {
       "model": "opencode/claude-opus-4-5"
     },
+    "hephaestus": {
+      "model": "opencode/gpt-5.2-codex"
+    },
     "librarian": {
       "model": "opencode/claude-sonnet-4-5"
     },
     "explore": {
-      "model": "opencode/grok-code"
+      "model": "opencode/kimi-k2.5-free"
     },
     "oracle": {
       "model": "opencode/gpt-5.2"
