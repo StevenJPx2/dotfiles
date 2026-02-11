@@ -51,12 +51,12 @@ brew "cffi"
 brew "chafa"
 # Ruby environment tool
 brew "chruby"
-# Tool for downloading RTMP streaming media
-brew "rtmpdump"
 # Libraries to talk to Microsoft SQL Server and Sybase databases
 brew "freetds"
 # C library for reading, creating, and modifying zip archives
 brew "libzip"
+# Tool for downloading RTMP streaming media
+brew "rtmpdump"
 # General-purpose scripting language
 brew "php"
 # Dependency Manager for PHP
@@ -201,6 +201,8 @@ brew "pngpaste"
 brew "pnpm"
 # Python package management tool
 brew "poetry"
+# PDF rendering library (based on the xpdf-3.0 code base)
+brew "poppler"
 # Code formatter for JavaScript, CSS, JSON, GraphQL, Markdown, YAML
 brew "prettier"
 # Python version management
@@ -215,6 +217,8 @@ brew "python@3.11"
 brew "qsv"
 # Messaging and streaming broker
 brew "rabbitmq"
+# SVG rendering tool and library
+brew "resvg"
 # Search tool like grep and The Silver Searcher
 brew "ripgrep"
 # Install Ruby, JRuby, Rubinius, TruffleRuby, or mruby
@@ -223,6 +227,8 @@ brew "ruby-install"
 brew "saml2aws"
 # Intuitive find & replace CLI
 brew "sd"
+# 7-Zip is a file archiver with a high compression ratio
+brew "sevenzip"
 # Fuzzy Finder in rust!
 brew "sk"
 # Automate your tmux workflow
@@ -249,6 +255,8 @@ brew "witr"
 brew "woff2"
 # JavaScript package manager
 brew "yarn"
+# Blazing fast terminal file manager written in Rust, based on async I/O
+brew "yazi"
 # Feature-rich command-line audio/video downloader
 brew "yt-dlp"
 # Programming language designed for robustness, optimality, and clarity
@@ -307,6 +315,7 @@ cask "diffusionbee"
 cask "dteoh-devdocs"
 cask "font-0xproto-nerd-font"
 cask "font-hack-nerd-font"
+cask "font-symbols-only-nerd-font"
 # Set of tools to manage resources and applications hosted on Google Cloud
 cask "gcloud-cli"
 # Cross-platform Git credential storage for multiple hosting providers

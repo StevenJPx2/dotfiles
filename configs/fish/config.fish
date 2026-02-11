@@ -17,6 +17,10 @@ for file in $XDG_CONFIG_HOME/fish/aliases/*.fish
   source $file
 end
 
+for file in $XDG_CONFIG_HOME/fish/functions/*.fish
+  source $file
+end
+
 ## Load secrets
 if test -r $XDG_CONFIG_HOME/fish/secrets.fish
   source $XDG_CONFIG_HOME/fish/secrets.fish
