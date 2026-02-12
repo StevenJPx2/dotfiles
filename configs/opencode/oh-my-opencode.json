@@ -4,6 +4,21 @@
     "sisyphus": {
       "model": "opencode/claude-opus-4-5"
     },
+    "metis": {
+      "model": "opencode/claude-opus-4-5"
+    },
+    "momus": {
+      "model": "opencode/claude-opus-4-5"
+    },
+    "sisyphus-junior": {
+      "model": "opencode/claude-sonnet-4-5"
+    },
+    "prometheus": {
+      "model": "opencode/gpt-5.2-codex"
+    },
+    "atlas": {
+      "model": "opencode/gpt-5.2-codex"
+    },
     "hephaestus": {
       "model": "opencode/gpt-5.2-codex"
     },
