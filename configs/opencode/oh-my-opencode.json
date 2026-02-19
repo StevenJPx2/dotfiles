@@ -2,16 +2,16 @@
   "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-opencode/master/assets/oh-my-opencode.schema.json",
   "agents": {
     "sisyphus": {
-      "model": "opencode/claude-opus-4-5"
+      "model": "anthropic/claude-opus-4-5"
     },
     "metis": {
-      "model": "opencode/claude-opus-4-5"
+      "model": "anthropic/claude-opus-4-5"
     },
     "momus": {
-      "model": "opencode/claude-opus-4-5"
+      "model": "anthropic/claude-opus-4-5"
     },
     "sisyphus-junior": {
-      "model": "opencode/claude-sonnet-4-5"
+      "model": "anthropic/claude-sonnet-4-5"
     },
     "prometheus": {
       "model": "opencode/gpt-5.2-codex"
@@ -23,7 +23,7 @@
       "model": "opencode/gpt-5.2-codex"
     },
     "librarian": {
-      "model": "opencode/claude-sonnet-4-5"
+      "model": "anthropic/claude-sonnet-4-5"
     },
     "explore": {
       "model": "opencode/kimi-k2.5-free"
