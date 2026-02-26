@@ -1,7 +1,9 @@
 return {
 	{
 		"dmtrKovalenko/fff.nvim",
-		build = "cargo build --release",
+		build = function()
+			require("fff.download").download_or_build_binary()
+		end,
 		lazy = false,
 	},
 	{
@@ -10,14 +12,22 @@ return {
 			"dmtrKovalenko/fff.nvim",
 			"folke/snacks.nvim",
 		},
-		cmd = "FFFSnacks",
+		lazy = false,
 		keys = {
 			{
 				"<leader><space>",
-				"<cmd> FFFSnacks <cr>",
-				desc = "FFF",
+				function()
+					require("fff-snacks").find_files()
+				end,
+				desc = "Find Files",
+			},
+			{
+				"<leader>sg",
+				function()
+					require("fff-snacks").live_grep({ grep_mode = { "fuzzy", "plain", "regex" } })
+				end,
+				desc = "Grep [G]lobal",
 			},
 		},
-		config = true,
 	},
 }

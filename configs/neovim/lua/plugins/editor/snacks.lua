@@ -149,13 +149,13 @@ return {
 		},
 
 		--- Grep / Search
-		{
-			"<leader>sg",
-			function()
-				Snacks.picker.git_grep()
-			end,
-			desc = "[G]it Grep",
-		},
+		-- {
+		-- 	"<leader>sg",
+		-- 	function()
+		-- 		Snacks.picker.git_grep()
+		-- 	end,
+		-- 	desc = "[G]it Grep",
+		-- },
 
 		{
 			"<leader>s/",
