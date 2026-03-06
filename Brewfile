@@ -339,8 +339,6 @@ cask "kodi"
 cask "lens"
 # Customise mouse behavior
 cask "linearmouse"
-# Software for Logitech devices
-cask "logi-options+"
 # VPN client
 cask "mullvad-vpn"
 # Game launcher with the ability to run Windows games
