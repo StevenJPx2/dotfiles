@@ -9,6 +9,7 @@ tap "homebrew/services"
 tap "jakehilborn/jakehilborn"
 tap "jstkdng/programs"
 tap "koekeishiya/formulae"
+tap "local/yabai"
 tap "nikitabobko/tap"
 tap "oven-sh/bun"
 tap "pkgxdev/made"
@@ -55,10 +56,10 @@ brew "chruby"
 brew "freetds"
 # C library for reading, creating, and modifying zip archives
 brew "libzip"
-# Tool for downloading RTMP streaming media
-brew "rtmpdump"
 # General-purpose scripting language
 brew "php"
+# Tool for downloading RTMP streaming media
+brew "rtmpdump"
 # Dependency Manager for PHP
 brew "composer"
 # YAML Parser
@@ -280,7 +281,7 @@ brew "jstkdng/programs/ueberzugpp"
 # Simple hotkey-daemon for macOS.
 brew "koekeishiya/formulae/skhd"
 # A tiling window manager for macOS based on binary space partitioning.
-brew "koekeishiya/formulae/yabai"
+brew "local/yabai/yabai"
 # Incredibly fast JavaScript runtime, bundler, transpiler and package manager - all in one.
 brew "oven-sh/bun/bun"
 # Run Anything
