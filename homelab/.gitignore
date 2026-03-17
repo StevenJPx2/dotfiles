@@ -1,0 +1,14 @@
+# Homelab secrets (do not commit!)
+.env
+secrets/
+
+# Build artifacts
+result/
+result-*
+
+# Nix
+*.lock
+.direnv/
+
+# Installer outputs (kept in result/)
+installer/result/

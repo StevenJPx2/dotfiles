@@ -3,3 +3,7 @@ Brewfile.lock.json
 configs/fish/secrets.fish
 configs/alacritty/themes
 .aider*
+
+# Homelab secrets
+homelab/.env
+/.opencode/plans

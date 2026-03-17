@@ -1,0 +1,16 @@
+# Cloudflare API Token for Caddy ACME DNS Challenge
+#
+# Caddy needs this to automatically obtain Let's Encrypt certificates
+# using the DNS-01 challenge (required since we're using private IPs).
+#
+# Create a token at: https://dash.cloudflare.com/profile/api-tokens
+# Use the "Edit zone DNS" template, scope to zone: stevenjohn.co
+#
+# Copy this file to /etc/caddy-env on the NUC:
+#   sudo cp caddy-env.example /etc/caddy-env
+#   sudo chmod 600 /etc/caddy-env
+#   sudo vim /etc/caddy-env  # Add your token
+#
+# The token only needs: Zone:Read, DNS:Edit permissions for stevenjohn.co
+
+CLOUDFLARE_API_TOKEN=your_cloudflare_api_token_here
