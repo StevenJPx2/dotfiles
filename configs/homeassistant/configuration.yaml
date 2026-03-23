@@ -1,0 +1,26 @@
+# Home Assistant Configuration
+# This file is managed by dotfiles - changes here will be synced
+
+# Loads default set of integrations. Do not remove.
+default_config:
+
+# Allow access via reverse proxy (Caddy)
+http:
+  use_x_forwarded_for: true
+  trusted_proxies:
+    - 172.20.0.1
+    - 172.20.0.2
+    - 172.20.0.3
+    - 172.20.0.4
+    - 172.20.0.5
+    - 172.20.0.53
+    - 127.0.0.1
+    - ::1
+
+# Load frontend themes from the themes folder
+frontend:
+  themes: !include_dir_merge_named themes
+
+automation: !include automations.yaml
+script: !include scripts.yaml
+scene: !include scenes.yaml

@@ -1,0 +1,41 @@
+# Homelab Reverse Proxy Configuration
+# All services accessible via *.home.local
+
+{
+	# HTTP only for local development (no certificate warnings)
+	auto_https off
+}
+
+# Home Assistant
+http://ha.home.local {
+	reverse_proxy host.docker.internal:8123
+}
+
+# Pi-hole Admin
+http://pihole.home.local {
+	reverse_proxy pihole:80
+}
+
+# Portainer (HTTPS backend)
+http://portainer.home.local {
+	reverse_proxy portainer:9443 {
+		transport http {
+			tls_insecure_skip_verify
+		}
+	}
+}
+
+# Uptime Kuma
+http://uptime.home.local {
+	reverse_proxy uptime-kuma:3001
+}
+
+# Homepage Dashboard
+http://home.home.local {
+	reverse_proxy homepage:3000
+}
+
+# Fallback for direct IP access - serve Homepage
+:80 {
+	reverse_proxy homepage:3000
+}

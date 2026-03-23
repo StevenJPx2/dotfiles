@@ -1,0 +1,25 @@
+- Infrastructure:
+    - Home Assistant:
+        href: http://ha.home.local
+        description: Smart home automation
+        icon: home-assistant
+        siteMonitor: http://host.docker.internal:8123
+
+    - Pi-hole:
+        href: http://pihole.home.local/admin
+        description: Network-wide ad blocking
+        icon: pi-hole
+        siteMonitor: http://pihole:80
+
+    - Portainer:
+        href: https://portainer.home.local
+        description: Docker management
+        icon: portainer
+        siteMonitor: https://portainer:9443
+
+- Monitoring:
+    - Uptime Kuma:
+        href: http://uptime.home.local
+        description: Service monitoring
+        icon: uptime-kuma
+        siteMonitor: http://uptime-kuma:3001
