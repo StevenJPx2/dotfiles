@@ -12,3 +12,4 @@ homelab/portainer/
 homelab/caddy/data/
 homelab/caddy/config/
 homelab/cloudflared/
+/homelab/homepage/config/logs

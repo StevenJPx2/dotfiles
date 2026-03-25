@@ -1,23 +1,23 @@
 # Homelab Reverse Proxy Configuration
-# All services accessible via *.home.local
+# Local: *.home.local | External: *.stevenjohn.co
 
 {
-	# HTTP only for local development (no certificate warnings)
+	# HTTP only - Cloudflare handles HTTPS termination for external access
 	auto_https off
 }
 
 # Home Assistant
-http://ha.home.local {
+http://ha.home.local, http://ha.stevenjohn.co {
 	reverse_proxy host.docker.internal:8123
 }
 
 # Pi-hole Admin
-http://pihole.home.local {
+http://pihole.home.local, http://pihole.stevenjohn.co {
 	reverse_proxy pihole:80
 }
 
 # Portainer (HTTPS backend)
-http://portainer.home.local {
+http://portainer.home.local, http://portainer.stevenjohn.co {
 	reverse_proxy portainer:9443 {
 		transport http {
 			tls_insecure_skip_verify
@@ -26,12 +26,12 @@ http://portainer.home.local {
 }
 
 # Uptime Kuma
-http://uptime.home.local {
+http://uptime.home.local, http://uptime.stevenjohn.co {
 	reverse_proxy uptime-kuma:3001
 }
 
 # Homepage Dashboard
-http://home.home.local {
+http://home.home.local, http://home.stevenjohn.co {
 	reverse_proxy homepage:3000
 }
 

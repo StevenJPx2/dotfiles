@@ -103,60 +103,94 @@ def cmd_dns(args: argparse.Namespace) -> int:
 def cmd_tunnel(args: argparse.Namespace) -> int:
     """Start Cloudflare tunnel and show URL."""
     homelab_dir = get_homelab_dir()
+    env_file = homelab_dir / ".env"
+
+    # Check for tunnel token
+    tunnel_domain = None
+    has_token = False
+
+    if env_file.exists():
+        with open(env_file) as f:
+            for line in f:
+                line = line.strip()
+                if (
+                    line.startswith("CLOUDFLARE_TUNNEL_TOKEN=")
+                    and line.split("=", 1)[1]
+                ):
+                    has_token = True
+                if line.startswith("TUNNEL_DOMAIN="):
+                    tunnel_domain = line.split("=", 1)[1]
+
+    if not has_token:
+        print("=" * 66)
+        print("               Cloudflare Tunnel Setup Required")
+        print("=" * 66)
+        print()
+        print("  To use the tunnel, you need to:")
+        print()
+        print("  1. Go to: https://one.dash.cloudflare.com/")
+        print("  2. Navigate to: Networks -> Tunnels -> Create a tunnel")
+        print("  3. Choose 'Cloudflared' and give it a name (e.g., 'homelab')")
+        print("  4. Copy the tunnel token (starts with 'eyJ...')")
+        print("  5. Add to .env: CLOUDFLARE_TUNNEL_TOKEN=<your-token>")
+        print()
+        print("  6. In the Cloudflare dashboard, add a Public Hostname:")
+        print(f"     - Domain: {tunnel_domain or 'home.yourdomain.com'}")
+        print("     - Service: HTTP://caddy:80")
+        print()
+        print("=" * 66)
+        return 1
 
     print("Starting Cloudflare tunnel...")
     print()
 
     # Start tunnel with profile
-    subprocess.run(
+    result = subprocess.run(
         ["docker", "compose", "--profile", "tunnel", "up", "-d", "cloudflared"],
         cwd=homelab_dir,
     )
 
-    print()
-    print("Waiting for tunnel URL...")
+    if result.returncode != 0:
+        return result.returncode
 
-    # Poll for tunnel URL (max 30 seconds)
-    tunnel_url = None
+    # Wait for tunnel to connect
+    print()
+    print("Waiting for tunnel to connect...")
+
+    connected = False
     for _ in range(15):
         time.sleep(2)
         result = subprocess.run(
-            ["docker", "logs", "cloudflared"],
+            ["docker", "logs", "--tail", "20", "cloudflared"],
             capture_output=True,
             text=True,
             cwd=homelab_dir,
         )
         logs = result.stdout + result.stderr
 
-        # Look for trycloudflare URL
-        for line in logs.split("\n"):
-            if "trycloudflare.com" in line:
-                match = re.search(r"https://[^\s]+\.trycloudflare\.com", line)
-                if match:
-                    tunnel_url = match.group(0)
-                    break
-        if tunnel_url:
+        if "Registered tunnel connection" in logs or "Connection registered" in logs:
+            connected = True
             break
+        if "failed" in logs.lower() and "error" in logs.lower():
+            print("Tunnel failed to connect. Check logs:")
+            print("  docker logs cloudflared")
+            return 1
 
     print()
-    if tunnel_url:
-        print("=" * 66)
-        print("                  Cloudflare Tunnel Ready")
-        print("=" * 66)
-        print()
-        print(f"  Tunnel URL: {tunnel_url}")
-        print()
-        print("  Access your services from anywhere!")
-        print()
-        print("  Note: URL changes each restart. For permanent URL,")
-        print("  create a Cloudflare account and set up a named tunnel.")
-        print()
-        print("  Stop tunnel: docker compose --profile tunnel down")
-        print()
-        print("=" * 66)
+    print("=" * 66)
+    print("                  Cloudflare Tunnel Ready")
+    print("=" * 66)
+    print()
+    if tunnel_domain:
+        print(f"  Tunnel URL: https://{tunnel_domain}")
     else:
-        print("Tunnel started but URL not yet available.")
-        print("Check logs: docker logs cloudflared")
+        print("  Tunnel connected! Check your Cloudflare dashboard for the URL.")
+    print()
+    print("  Access your homelab from anywhere!")
+    print()
+    print("  Stop tunnel: docker compose --profile tunnel down")
+    print()
+    print("=" * 66)
     return 0
 
 

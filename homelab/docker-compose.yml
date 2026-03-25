@@ -107,6 +107,8 @@ services:
     restart: unless-stopped
     ports:
       - "3000:3000"
+    environment:
+      - HOMEPAGE_ALLOWED_HOSTS=home.${TUNNEL_DOMAIN:-stevenjohn.co},localhost,homepage,home.home.local
     volumes:
       - ./homepage/config:/app/config
     networks:
@@ -116,14 +118,16 @@ services:
   # CLOUDFLARED (Optional)
   # Cloudflare Tunnel for external access
   # Start with: docker compose --profile tunnel up -d
+  # Setup: https://one.dash.cloudflare.com/ -> Networks -> Tunnels
   # ============================================
   cloudflared:
     container_name: cloudflared
     image: cloudflare/cloudflared:latest
     restart: unless-stopped
-    command: tunnel --no-autoupdate --protocol auto --edge-ip-version auto --url http://caddy:80
+    command: tunnel --no-autoupdate run
     environment:
-      - TUNNEL_METRICS=0.0.0.0:9126
+      - TUNNEL_TOKEN=${CLOUDFLARE_TUNNEL_TOKEN}
+      - TUNNEL_TRANSPORT_PROTOCOL=http2
     networks:
       - homelab
     depends_on:
