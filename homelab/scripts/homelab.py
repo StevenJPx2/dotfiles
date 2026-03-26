@@ -141,6 +141,14 @@ def cmd_tunnel(args: argparse.Namespace) -> int:
         print("=" * 66)
         return 1
 
+    # Stop any existing tunnel container first
+    print("Stopping existing tunnel (if any)...")
+    subprocess.run(
+        ["docker", "compose", "--profile", "tunnel", "down", "cloudflared"],
+        cwd=homelab_dir,
+        capture_output=True,
+    )
+
     print("Starting Cloudflare tunnel...")
     print()
 

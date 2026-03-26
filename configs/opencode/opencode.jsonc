@@ -33,6 +33,12 @@
       "type": "local",
       "command": ["bun", "infixable", "mcp"],
       "enabled": true
-    }
+    },
+    "atlassian": {
+      "type": "remote",
+      "url": "https://mcp.atlassian.com/v1/mcp",
+      "oauth": {},
+      "enabled": true
+    },
   },
 }
