@@ -3,13 +3,3 @@ Brewfile.lock.json
 configs/fish/secrets.fish
 configs/alacritty/themes
 .aider*
-
-# Homelab - data directories and secrets
-homelab/.env
-homelab/pihole/
-homelab/uptime-kuma/
-homelab/portainer/
-homelab/caddy/data/
-homelab/caddy/config/
-homelab/cloudflared/
-/homelab/homepage/config/logs

@@ -24,7 +24,3 @@ bundle:
   brew update
   brew upgrade
   brew bundle dump --formula --cask --tap --describe -f
-
-# Homelab commands
-homelab *args:
-  python3 homelab/scripts/homelab.py {{args}}
