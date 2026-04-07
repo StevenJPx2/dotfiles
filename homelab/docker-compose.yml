@@ -106,7 +106,7 @@ services:
     image: ghcr.io/gethomepage/homepage:latest
     restart: unless-stopped
     ports:
-      - "3000:3000"
+      - "3002:3000"
     environment:
       - HOMEPAGE_ALLOWED_HOSTS=home.${TUNNEL_DOMAIN:-stevenjohn.co},localhost,homepage,home.home.local
     volumes:
