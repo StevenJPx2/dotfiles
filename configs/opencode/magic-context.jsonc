@@ -1,0 +1,11 @@
+{
+  "$schema": "https://raw.githubusercontent.com/cortexkit/opencode-magic-context/master/assets/magic-context.schema.json",
+  "enabled": true,
+
+  // Which model the historian uses for background compression,
+  // Prefer providers that charge by request instead of tokens
+  "historian": {
+    "model": "opencode/gpt-5.4",
+    "fallback_models": ["opencode-go/glm-5"]
+  }
+}

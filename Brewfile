@@ -22,12 +22,16 @@ tap "universal-ctags/universal-ctags"
 brew "act"
 # Companion library to apr, the Apache Portable Runtime library
 brew "apr-util"
+# Code searching, linting, rewriting
+brew "ast-grep"
 # Tool for generating GNU Standards-compliant Makefiles
 brew "automake"
 # C library implementing the SSH2 protocol
 brew "libssh2"
 # Clone of cat(1) with syntax highlighting and Git integration
 brew "bat"
+# Memory upgrade for your coding agent
+brew "beads"
 # Full-featured MP4 format and MPEG DASH library and tools
 brew "bento4"
 # Parser generator
@@ -114,6 +118,8 @@ brew "fish"
 brew "fnt"
 # Command-line fuzzy finder written in Go
 brew "fzf"
+# Multi-agent workspace manager
+brew "gastown"
 # GNU database manager
 brew "gdbm"
 # GitHub command-line tool
@@ -140,12 +146,12 @@ brew "pkgconf"
 brew "guile"
 # Tool for glamorous shell scripts
 brew "gum"
+# Client library for huggingface.co hub
+brew "hf"
 # User-friendly cURL replacement (command-line HTTP client)
 brew "httpie", link: false
 # Website copier/offline browser
 brew "httrack"
-# Client library for huggingface.co hub
-brew "huggingface-cli"
 # C/C++ and Java libraries for Unicode and globalization
 brew "icu4c@76"
 # Database of common MIME types
@@ -178,10 +184,10 @@ brew "luarocks"
 brew "mas"
 # QUIC transport protocol implementation
 brew "mvfst"
-# Ambitious Vim-fork focused on extensibility and agility
-brew "neovim"
 # Incremental parsing library
 brew "tree-sitter"
+# Ambitious Vim-fork focused on extensibility and agility
+brew "neovim"
 # No Nonsense Neovim Client in Rust
 brew "neovide"
 # Tiny, lightning fast, feature-packed file manager
@@ -222,6 +228,8 @@ brew "rabbitmq"
 brew "resvg"
 # Search tool like grep and The Silver Searcher
 brew "ripgrep"
+# CLI proxy to minimize LLM token consumption
+brew "rtk"
 # Install Ruby, JRuby, Rubinius, TruffleRuby, or mruby
 brew "ruby-install"
 # Login and retrieve AWS temporary credentials using a SAML IDP
@@ -298,6 +306,8 @@ brew "sst/tap/opencode"
 brew "tw93/tap/mole"
 # GPU-accelerated terminal emulator
 cask "alacritty"
+# Menu bar tool to limit maximum charging percentage
+cask "aldente"
 # Chromium based browser
 cask "arc"
 # Multi-track audio editor and recorder
@@ -306,14 +316,10 @@ cask "audacity"
 cask "betterdisplay"
 # Web debugging Proxy application
 cask "charles"
-# Universal database tool and SQL client
-cask "dbeaver-community"
-# All-in-one toolbox for developers
-cask "devutils"
+# Terminal-based AI coding assistant
+cask "claude-code"
 # Run Stable Diffusion locally
 cask "diffusionbee"
-# API documentation viewer
-cask "dteoh-devdocs"
 cask "font-0xproto-nerd-font"
 cask "font-hack-nerd-font"
 cask "font-symbols-only-nerd-font"
@@ -343,14 +349,10 @@ cask "linearmouse"
 cask "mullvad-vpn"
 # Game launcher with the ability to run Windows games
 cask "mythic"
-# Reverse proxy, secure introspectable tunnels to localhost
-cask "ngrok"
 # AI coding agent desktop client
 cask "opencode-desktop"
 # Replacement for Docker Desktop
 cask "orbstack"
-# Browser for ambitious developers
-cask "polypane"
 # HTTP debugging proxy
 cask "proxyman"
 # Control your tools with a few keystrokes
