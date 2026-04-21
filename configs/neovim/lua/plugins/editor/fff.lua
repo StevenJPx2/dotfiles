@@ -14,20 +14,20 @@ return {
 		},
 		lazy = false,
 		keys = {
-			{
-				"<leader><space>",
-				function()
-					require("fff-snacks").find_files()
-				end,
-				desc = "Find Files",
-			},
-			{
-				"<leader>sg",
-				function()
-					require("fff-snacks").live_grep({ grep_mode = { "fuzzy", "plain", "regex" } })
-				end,
-				desc = "Grep [G]lobal",
-			},
+			-- {
+			-- 	"<leader><space>",
+			-- 	function()
+			-- 		require("fff-snacks").find_files()
+			-- 	end,
+			-- 	desc = "Find Files",
+			-- },
+			-- {
+			-- 	"<leader>sg",
+			-- 	function()
+			-- 		require("fff-snacks").live_grep({ grep_mode = { "fuzzy", "plain", "regex" } })
+			-- 	end,
+			-- 	desc = "Grep [G]lobal",
+			-- },
 		},
 	},
 }

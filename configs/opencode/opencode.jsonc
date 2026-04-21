@@ -1,12 +1,8 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "plugin": ["opencode-claude-auth", "@cortexkit/opencode-magic-context", "@cortexkit/aft-opencode@latest"],
-  "model": "anthropic/claude-opus-4-5",
+  "plugin": ["@ex-machina/opencode-anthropic-auth@latest", "@cortexkit/aft-opencode@latest", "@whisperopencode/push"],
+  "model": "anthropic/claude-sonnet-4-6",
   "small_model": "opencode/minimax-m2.5-free",
-  "compaction": {
-    "auto": false,
-    "prune": false,
-  },
   "mcp": {
     "context7": {
       "type": "local",

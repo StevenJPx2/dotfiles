@@ -154,8 +154,6 @@ brew "httpie", link: false
 brew "httrack"
 # C/C++ and Java libraries for Unicode and globalization
 brew "icu4c@76"
-# Database of common MIME types
-brew "shared-mime-info"
 # ISO/IEC 23008-12:2017 HEIF file format decoder and encoder
 brew "libheif"
 # Tools and libraries to manipulate images in select formats
@@ -238,6 +236,8 @@ brew "saml2aws"
 brew "sd"
 # 7-Zip is a file archiver with a high compression ratio
 brew "sevenzip"
+# Database of common MIME types
+brew "shared-mime-info"
 # Fuzzy Finder in rust!
 brew "sk"
 # Automate your tmux workflow
@@ -353,6 +353,8 @@ cask "mythic"
 cask "opencode-desktop"
 # Replacement for Docker Desktop
 cask "orbstack"
+# VPN client focusing on security
+cask "protonvpn"
 # HTTP debugging proxy
 cask "proxyman"
 # Control your tools with a few keystrokes

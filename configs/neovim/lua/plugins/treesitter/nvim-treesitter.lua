@@ -1,17 +1,32 @@
 return {
 	"nvim-treesitter/nvim-treesitter",
+	branch = "main",
 	version = false,
-	event = "VeryLazy",
+	lazy = false,
 	build = ":TSUpdate",
-	cmd = { "TSUpdateSync", "TSUpdate", "TSInstall" },
-	config = function(_, opts)
-		require("nvim-treesitter.configs").setup(opts)
+
+	init = function()
+		vim.api.nvim_create_autocmd("FileType", {
+			desc = "Enable Treesitter features",
+			callback = function(args)
+				local lang = vim.treesitter.language.get_lang(args.match) or args.match
+
+				if vim.treesitter.query.get(lang, "highlights") then
+					vim.treesitter.start()
+				end
+				if vim.treesitter.query.get(lang, "indents") then
+					vim.bo.indentexpr = "v:lua.require('nvim-treesitter').indentexpr()"
+				end
+				if vim.treesitter.query.get(lang, "folds") then
+					vim.wo.foldmethod = "expr"
+					vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+				end
+			end,
+		})
 	end,
+
 	opts = {
 		auto_install = true,
-		highlight = {
-			enable = true,
-		},
 		matchup = {
 			enable = true,
 			enable_quotes = true,
@@ -27,9 +42,6 @@ return {
 				scope_incremental = "grc",
 				node_decremental = "grm",
 			},
-		},
-		indent = {
-			enable = true,
 		},
 		textobjects = {
 			select = {

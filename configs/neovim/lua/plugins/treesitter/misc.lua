@@ -1,11 +1,10 @@
 return {
 	{
 		"nvim-treesitter/nvim-treesitter-textobjects",
-		event = "VeryLazy",
-	},
-	{
-		"nvim-treesitter/nvim-treesitter-refactor",
-		event = "VeryLazy",
+		branch = "main",
+		init = function()
+			vim.g.no_plugin_maps = true
+		end,
 	},
 	{
 		"https://gitlab.com/HiPhish/rainbow-delimiters.nvim.git",

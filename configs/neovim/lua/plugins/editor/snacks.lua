@@ -133,13 +133,13 @@ return {
 		--- PICKER
 
 		--- Global
-		-- {
-		-- 	"<leader><space>",
-		-- 	function()
-		-- 		Snacks.picker.smart()
-		-- 	end,
-		-- 	desc = "Smart Find Files",
-		-- },
+		{
+			"<leader><space>",
+			function()
+				Snacks.picker.smart()
+			end,
+			desc = "Smart Find Files",
+		},
 		{
 			"<leader>,",
 			function()
@@ -149,13 +149,13 @@ return {
 		},
 
 		--- Grep / Search
-		-- {
-		-- 	"<leader>sg",
-		-- 	function()
-		-- 		Snacks.picker.git_grep()
-		-- 	end,
-		-- 	desc = "[G]it Grep",
-		-- },
+		{
+			"<leader>sg",
+			function()
+				Snacks.picker.git_grep()
+			end,
+			desc = "[G]it Grep",
+		},
 
 		{
 			"<leader>s/",
