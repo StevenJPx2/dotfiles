@@ -11,6 +11,7 @@ set -q XDG_CONFIG_HOME || set XDG_CONFIG_HOME "$HOME/.config"
 
 fish_add_path /opt/homebrew/bin
 fish_add_path ~/go/bin
+fish_add_path ~/.local/bin
 
 
 for file in $XDG_CONFIG_HOME/fish/aliases/*.fish
