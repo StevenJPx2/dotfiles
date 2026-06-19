@@ -4,3 +4,15 @@ os:
   editPreset: "nvim"
   edit: "nvim {{filename}}"
   editAtLine: "nvim +{{line}} {{filename}}"
+
+customCommands:
+  - key: "X"
+    context: "files"
+    description: "Commit staged changes with Lumen AI"
+    loadingText: "Lumen AI is analyzing changes and drafting commit..."
+    prompts:
+      - type: "input"
+        title: "Review Lumen AI Draft"
+        key: "CommitMessage"
+        initialValue: '{{ runCommand "lumen draft" }}'
+    command: 'git commit -m "{{.Form.CommitMessage}}"'
