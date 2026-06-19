@@ -1,5 +1,6 @@
 ## Env vars
 set -gx EDITOR "/opt/homebrew/bin/nvim"
+set -gx VISUAL "/opt/homebrew/bin/nvim"
 set -gx NVM_DIR "$HOME/.nvm"
 set -gx GIT_EDITOR $EDITOR
 set -gx SKIM_DEFAULT_COMMAND "fd --type f || git ls-tree -r --name-only HEAD || rg --files || find ."

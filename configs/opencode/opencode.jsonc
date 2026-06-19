@@ -1,9 +1,18 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "plugin": ["@ex-machina/opencode-anthropic-auth@latest", "@cortexkit/aft-opencode@latest", "@whisperopencode/push"],
-  "model": "anthropic/claude-sonnet-4-6",
+  "plugin": [
+    "@ex-machina/opencode-anthropic-auth@latest",
+    "@cortexkit/aft-opencode@latest",
+    "@whisperopencode/push",
+  ],
+  "model": "opencode-go/mimo-v2.5-pro",
   "small_model": "opencode/minimax-m2.5-free",
   "mcp": {
+    "lightpanda": {
+      "type": "local",
+      "command": ["lightpanda", "mcp"],
+      "enabled": true
+    },
     "context7": {
       "type": "local",
       "command": ["npx", "-y", "@upstash/context7-mcp@latest"],
@@ -12,28 +21,28 @@
     "playwright": {
       "type": "local",
       "command": ["npx", "@playwright/mcp@latest"],
-      "enabled": true,
+      "enabled": false,
     },
     "chrome-devtools": {
       "type": "local",
       "command": ["npx", "-y", "chrome-devtools-mcp@latest"],
-      "enabled": true,
+      "enabled": false,
     },
     "nuxt-ui": {
       "type": "remote",
       "url": "https://ui.nuxt.com/mcp",
-      "enabled": true
+      "enabled": false,
     },
     "nuxt": {
       "type": "remote",
       "url": "https://nuxt.com/mcp",
-      "enabled": true
+      "enabled": false,
     },
     "atlassian": {
       "type": "remote",
       "url": "https://mcp.atlassian.com/v1/mcp",
       "oauth": {},
-      "enabled": true
+      "enabled": true,
     },
     "grep-app": {
       "type": "remote",
@@ -41,14 +50,35 @@
       "enabled": true,
       "oauth": false,
     },
-    "semble": {
-      "type": "local",
-      "command": ["uvx", "--from", "semble[mcp]", "semble"]
-    },
     "figma": {
       "type": "remote",
       "url": "https://mcp.figma.com/mcp",
-      "enabled": true
+      "oauth": {
+        "clientId": "{env:FIGMA_CLIENT_ID}",
+        "clientSecret": "{env:FIGMA_CLIENT_SECRET}",
+      },
+      "enabled": true,
+    },
+  },
+  "permission": {
+    "external_directory": {
+      "/tmp/*": "allow",
+      "/private/tmp/*": "allow",
+      "/var/tmp/*": "allow",
+      "/private/var/tmp/*": "allow",
+      "/private/var/folders/*": "allow",
+      "/dev/*": "allow",
+    },
+  },
+  "agent": {
+    "build": {
+      "mode": "primary",
+      "model": "anthropic/claude-sonnet-4-6",
+    },
+    "plan": {
+      "mode": "primary",
+      "model": "anthropic/claude-opus-4-8",
+      "variant": "max",
     },
   },
 }

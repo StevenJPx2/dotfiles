@@ -1,23 +1,30 @@
-tap "adoptopenjdk/openjdk"
+tap "adoptopenjdk/openjdk", trusted: true
+tap "anomalyco/tap", trusted: true
+tap "asmvik/formulae", trusted: true
 tap "aws/tap"
 tap "dart-lang/dart"
-tap "dopplerhq/cli"
-tap "felixkratz/formulae"
+tap "dopplerhq/doppler", trusted: true
+tap "felixkratz/formulae", trusted: true
 tap "hashicorp/tap"
 tap "homebrew/bundle"
 tap "homebrew/services"
 tap "jakehilborn/jakehilborn"
+tap "jdx/tap"
+tap "jnsahaj/lumen"
 tap "jstkdng/programs"
-tap "koekeishiya/formulae"
-tap "local/yabai"
-tap "nikitabobko/tap"
+tap "lightpanda-io/browser"
+tap "local/yabai", trusted: true
+tap "modem-dev/tap", trusted: true
+tap "montanaflynn/tap"
+tap "nikitabobko/tap", trusted: true
 tap "oven-sh/bun"
+tap "performave/tap"
 tap "pkgxdev/made"
 tap "pulumi/tap"
 tap "sachaos/todoist"
-tap "sst/tap"
+tap "terrastruct/tap"
 tap "tw93/tap"
-tap "universal-ctags/universal-ctags"
+tap "universal-ctags/universal-ctags", trusted: true
 # Run your GitHub Actions locally
 brew "act"
 # Companion library to apr, the Apache Portable Runtime library
@@ -62,8 +69,6 @@ brew "freetds"
 brew "libzip"
 # General-purpose scripting language
 brew "php"
-# Tool for downloading RTMP streaming media
-brew "rtmpdump"
 # Dependency Manager for PHP
 brew "composer"
 # YAML Parser
@@ -72,18 +77,22 @@ brew "libyaml"
 brew "copier"
 # Command-line csv viewer
 brew "csvlens"
+# Modern diagram scripting language that turns text to diagrams
+brew "d2"
 # Diff that understands syntax
 brew "difftastic"
 # Load/unload environment variables based on $PWD
 brew "direnv"
 # Pack, ship and run any application as a lightweight container
-brew "docker"
+brew "docker", link: false
 # Docker CLI plugin for extended build capabilities with BuildKit
 brew "docker-buildx"
 # Isolated development environments using Docker
 brew "docker-compose"
 # Platform keystore credential helper for Docker
 brew "docker-credential-helper"
+# CLI for interacting with Doppler secrets and configuration
+brew "doppler"
 # Collection of reusable C++ library artifacts developed at Facebook
 brew "folly"
 # C++14 implementation of the TLS-1.3 standard
@@ -96,6 +105,8 @@ brew "fbthrift"
 brew "fb303"
 # Shared library for Watchman and Eden projects
 brew "edencommon"
+# Portable Foreign Function Interface library
+brew "libffi"
 # Open-source, cross-platform JavaScript runtime environment
 brew "node"
 # AST-based pattern checker for JavaScript
@@ -108,8 +119,6 @@ brew "fastfetch"
 brew "fd"
 # Play, record, convert, and stream select audio and video codecs
 brew "ffmpeg"
-# GNU compiler collection
-brew "gcc"
 # Collection of GNU find, xargs, and locate
 brew "findutils"
 # User-friendly command-line shell for UNIX-like operating systems
@@ -120,6 +129,8 @@ brew "fnt"
 brew "fzf"
 # Multi-agent workspace manager
 brew "gastown"
+# GNU compiler collection
+brew "gcc"
 # GNU database manager
 brew "gdbm"
 # GitHub command-line tool
@@ -130,10 +141,10 @@ brew "git"
 brew "git-cliff"
 # International domain name library (IDNA2008, Punycode and TR46)
 brew "libidn2"
-# Validating, recursive, caching DNS resolver
-brew "unbound"
 # GNU Transport Layer Security (TLS) Library
 brew "gnutls"
+# Validating, recursive, caching DNS resolver
+brew "unbound"
 # GNU Privacy Guard (OpenPGP)
 brew "gnupg"
 # Open source programming language to build simple/reliable/efficient software
@@ -170,8 +181,6 @@ brew "kubernetes-cli"
 brew "lazydocker"
 # Simple terminal UI for git commands
 brew "lazygit"
-# Portable Foreign Function Interface library
-brew "libffi"
 # LLM inference in C/C++
 brew "llama.cpp"
 # Just-In-Time Compiler (JIT) for the Lua programming language
@@ -194,12 +203,20 @@ brew "nnn"
 brew "nvm"
 # Create, run, and share large language models (LLMs)
 brew "ollama", restart_service: :changed
+# Search tool like grep and The Silver Searcher
+brew "ripgrep"
+# AI coding agent, built for the terminal
+brew "opencode"
 # Cryptography and SSL/TLS Toolkit
 brew "openssl@1.1"
 # Shell command parallelization utility
 brew "parallel"
 # Simplistic interactive filtering tool
 brew "peco"
+# AI agent toolkit
+brew "pi-coding-agent"
+# Execute binaries from Python packages in isolated environments
+brew "pipx"
 # Paste PNG into files
 brew "pngpaste"
 # Fast, disk space efficient package manager
@@ -224,10 +241,10 @@ brew "qsv"
 brew "rabbitmq"
 # SVG rendering tool and library
 brew "resvg"
-# Search tool like grep and The Silver Searcher
-brew "ripgrep"
 # CLI proxy to minimize LLM token consumption
 brew "rtk"
+# Tool for downloading RTMP streaming media
+brew "rtmpdump"
 # Install Ruby, JRuby, Rubinius, TruffleRuby, or mruby
 brew "ruby-install"
 # Login and retrieve AWS temporary credentials using a SAML IDP
@@ -272,38 +289,42 @@ brew "yt-dlp"
 brew "zig"
 # Shell extension to navigate your filesystem faster
 brew "zoxide"
-# Copilot CLI - build, release and operate your container apps on AWS
-brew "aws/tap/copilot-cli"
-# SDK
-brew "dart-lang/dart/dart"
-# The official Doppler CLI for managing your secrets
-brew "dopplerhq/cli/doppler"
-# Terraform
-brew "hashicorp/tap/terraform"
-# Vault
-brew "hashicorp/tap/vault"
-# macOS command line utility to configure multi-display resolutions and arrangements. Essentially XRandR for macOS.
-brew "jakehilborn/jakehilborn/displayplacer"
-# Drop in replacement for ueberzug written in C++
-brew "jstkdng/programs/ueberzugpp"
 # Simple hotkey-daemon for macOS.
-brew "koekeishiya/formulae/skhd"
-# A tiling window manager for macOS based on binary space partitioning.
-brew "local/yabai/yabai"
+brew "asmvik/formulae/skhd"
+# Copilot CLI - build, release and operate your container apps on AWS
+brew "aws/tap/copilot-cli", trusted: true
+# SDK
+brew "dart-lang/dart/dart", trusted: true
+# Terraform
+brew "hashicorp/tap/terraform", trusted: true
+# Vault
+brew "hashicorp/tap/vault", trusted: true
+# macOS command line utility to configure multi-display resolutions and arrangements. Essentially XRandR for macOS.
+brew "jakehilborn/jakehilborn/displayplacer", trusted: true
+# Fast Node.js package manager
+brew "jdx/tap/aube", trusted: true
+# lumen is a command-line tool that can show pretty diff, generate commit messages with AI, summarise diffs / commits, and more without requiring an API key.
+brew "jnsahaj/lumen/lumen", trusted: true
+# Drop in replacement for ueberzug written in C++
+brew "jstkdng/programs/ueberzugpp", trusted: true
+# Puppeteer for terminal UIs — drive vim, htop, nethack from a CLI or agent
+brew "montanaflynn/tap/ht", trusted: true
 # Incredibly fast JavaScript runtime, bundler, transpiler and package manager - all in one.
-brew "oven-sh/bun/bun"
+brew "oven-sh/bun/bun", trusted: true
+# Tiling window manager for macOS (yabai fork with extra patches)
+brew "performave/tap/yabai-plus", trusted: true
 # Run Anything
-brew "pkgxdev/made/pkgx"
+brew "pkgxdev/made/pkgx", trusted: true
 # Pulumi ESC - Manage Environments, Secrets, and Configuration
-brew "pulumi/tap/esc"
+brew "pulumi/tap/esc", trusted: true
 # Pulumi - Modern Infrastructure as Code. Any cloud, any language 
-brew "pulumi/tap/pulumi"
+brew "pulumi/tap/pulumi", trusted: true
 # Todoist CLI client
-brew "sachaos/todoist/todoist"
-# The AI coding agent built for the terminal.
-brew "sst/tap/opencode"
+brew "sachaos/todoist/todoist", trusted: true
+# Advanced diagram layout engine for D2
+brew "terrastruct/tap/tala", trusted: true
 # Comprehensive macOS cleanup and application uninstall tool
-brew "tw93/tap/mole"
+brew "tw93/tap/mole", trusted: true
 # GPU-accelerated terminal emulator
 cask "alacritty"
 # Menu bar tool to limit maximum charging percentage
@@ -312,6 +333,8 @@ cask "aldente"
 cask "arc"
 # Multi-track audio editor and recorder
 cask "audacity"
+# Tool to flash OS images to SD cards & USB drives
+cask "balenaetcher"
 # Display management tool
 cask "betterdisplay"
 # Web debugging Proxy application
@@ -320,6 +343,8 @@ cask "charles"
 cask "claude-code"
 # Run Stable Diffusion locally
 cask "diffusionbee"
+# Offline voice-to-text dictation app with AI enhancement
+cask "fluidvoice"
 cask "font-0xproto-nerd-font"
 cask "font-hack-nerd-font"
 cask "font-symbols-only-nerd-font"
@@ -379,3 +404,5 @@ cask "transmission"
 cask "whatsapp"
 # Voice-to-text dictation with AI-powered auto-editing
 cask "wispr-flow"
+# Multiplayer code editor
+cask "zed"

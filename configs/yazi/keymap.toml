@@ -1,0 +1,4 @@
+[[manager.prepend_keymap]]
+on = ["A"]
+run = "shell --interactive 'touch $@'"
+desc = "Create multiple files"
