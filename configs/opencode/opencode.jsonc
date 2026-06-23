@@ -3,15 +3,17 @@
   "plugin": [
     "@ex-machina/opencode-anthropic-auth@latest",
     "@cortexkit/aft-opencode@latest",
+    "@cortexkit/magic-context-opencode@latest",
     "@whisperopencode/push",
   ],
+  "compaction": { "auto": false, "prune": false },
   "model": "opencode-go/mimo-v2.5-pro",
   "small_model": "opencode/minimax-m2.5-free",
   "mcp": {
     "lightpanda": {
       "type": "local",
       "command": ["lightpanda", "mcp"],
-      "enabled": true
+      "enabled": true,
     },
     "context7": {
       "type": "local",
@@ -62,6 +64,9 @@
   },
   "permission": {
     "external_directory": {
+      "./*": "allow",
+      "~/.claude/skills/*": "allow",
+      "~/.agents/skills/*": "allow",
       "/tmp/*": "allow",
       "/private/tmp/*": "allow",
       "/var/tmp/*": "allow",

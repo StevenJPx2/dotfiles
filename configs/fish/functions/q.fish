@@ -1,5 +1,5 @@
 function q
-   command ollama run gemma4:e2b \
+   command ollama run gemma4:e2b-mlx \
       --hidethinking \
       --experimental \
       --experimental-websearch \
