@@ -13,7 +13,7 @@
     "lightpanda": {
       "type": "local",
       "command": ["lightpanda", "mcp"],
-      "enabled": false,
+      "enabled": true,
     },
     "context7": {
       "type": "local",
@@ -49,7 +49,7 @@
     "grep-app": {
       "type": "remote",
       "url": "https://mcp.grep.app",
-      "enabled": true,
+      "enabled": false,
       "oauth": false,
     },
     "figma": {
@@ -66,11 +66,35 @@
       "command": ["npx", "-y", "tampermonkey-mcp@latest"],
       "enabled": false,
     },
-    "cloudflare": { "type": "remote", "url": "https://mcp.cloudflare.com/mcp", "enabled": true, "oauth": {} },
-    "cloudflare-docs": { "type": "remote", "url": "https://docs.mcp.cloudflare.com/mcp", "enabled": true },
-    "cloudflare-bindings": { "type": "remote", "url": "https://bindings.mcp.cloudflare.com/mcp", "enabled": true, "oauth": {} },
-    "cloudflare-builds": { "type": "remote", "url": "https://builds.mcp.cloudflare.com/mcp", "enabled": true, "oauth": {} },
-    "cloudflare-observability": { "type": "remote", "url": "https://observability.mcp.cloudflare.com/mcp", "enabled": true, "oauth": {} }
+    "cloudflare": {
+      "type": "remote",
+      "url": "https://mcp.cloudflare.com/mcp",
+      "enabled": false,
+      "oauth": {},
+    },
+    "cloudflare-docs": {
+      "type": "remote",
+      "url": "https://docs.mcp.cloudflare.com/mcp",
+      "enabled": false,
+    },
+    "cloudflare-bindings": {
+      "type": "remote",
+      "url": "https://bindings.mcp.cloudflare.com/mcp",
+      "enabled": false,
+      "oauth": {},
+    },
+    "cloudflare-builds": {
+      "type": "remote",
+      "url": "https://builds.mcp.cloudflare.com/mcp",
+      "enabled": false,
+      "oauth": {},
+    },
+    "cloudflare-observability": {
+      "type": "remote",
+      "url": "https://observability.mcp.cloudflare.com/mcp",
+      "enabled": false,
+      "oauth": {},
+    },
   },
   "permission": {
     "external_directory": {
