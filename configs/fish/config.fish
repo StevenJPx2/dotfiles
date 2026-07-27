@@ -1,3 +1,6 @@
+## Homebrew (must come first for Apple Silicon)
+fish_add_path /opt/homebrew/bin
+
 ## Env vars
 set -gx EDITOR "/opt/homebrew/bin/nvim"
 set -gx VISUAL "/opt/homebrew/bin/nvim"
@@ -10,7 +13,6 @@ set -q XDG_CONFIG_HOME || set XDG_CONFIG_HOME "$HOME/.config"
 
 ## Path appends
 
-fish_add_path /opt/homebrew/bin
 fish_add_path ~/go/bin
 fish_add_path ~/.local/bin
 
