@@ -1,3 +1,4 @@
 {
-  "install_path": "~/.config/fish"
+  "install_path": "~/.config/fish",
+  "post_install": "exec fish"
 }
