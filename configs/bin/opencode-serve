@@ -1,0 +1,166 @@
+#!/usr/bin/env fish
+# Manage the always-on OpenCode web server exposed at https://oc.stevenjohn.co
+#
+#   opencode-serve start | stop | restart | status | logs [lines]
+#
+# Single-instance: an atomic lock directory plus a listening-port check make a
+# repeated `start` a no-op instead of spawning a second server.
+
+set -q OPENCODE_SERVE_PORT; or set OPENCODE_SERVE_PORT 4096
+set -q OPENCODE_SERVE_HOST; or set OPENCODE_SERVE_HOST 0.0.0.0
+set -q OPENCODE_SERVE_DIR; or set OPENCODE_SERVE_DIR $HOME
+set -q OPENCODE_SERVE_URL; or set OPENCODE_SERVE_URL https://oc.stevenjohn.co
+set -q XDG_STATE_HOME; or set XDG_STATE_HOME $HOME/.local/state
+
+set -g state_dir $XDG_STATE_HOME/opencode-serve
+set -g pid_file $state_dir/server.pid
+set -g log_file $state_dir/server.log
+set -g lock_dir $state_dir/start.lock
+
+# --- helpers ----------------------------------------------------------------
+
+function __ocs_die
+    printf 'opencode-serve: %s\n' $argv[1] >&2
+    exit 1
+end
+
+# The process holding the port is the source of truth — a stale pid file must
+# never convince us the server is up.
+function __ocs_listening_pid
+    lsof -ti tcp:$OPENCODE_SERVE_PORT -sTCP:LISTEN 2>/dev/null | head -1
+end
+
+# Password comes from fish secrets (set -gx OPENCODE_SERVER_PASSWORD ...),
+# which this script inherits because fish sources config.fish on every start.
+function __ocs_require_password
+    test -n "$OPENCODE_SERVER_PASSWORD"
+    or __ocs_die "OPENCODE_SERVER_PASSWORD is not set (add it to ~/.config/fish/secrets.fish)"
+end
+
+function __ocs_healthy
+    curl -sf -m 2 -u "opencode:$OPENCODE_SERVER_PASSWORD" \
+        "http://127.0.0.1:$OPENCODE_SERVE_PORT/global/health" >/dev/null 2>&1
+end
+
+function __ocs_acquire_lock
+    mkdir -p $state_dir
+
+    if not mkdir $lock_dir 2>/dev/null
+        # A lock with no server behind it is stale — reclaim it.
+        set -l holder (__ocs_listening_pid)
+        test -n "$holder"; and return 1
+
+        rm -rf $lock_dir
+        mkdir $lock_dir 2>/dev/null; or return 1
+    end
+end
+
+# --- commands ---------------------------------------------------------------
+
+function __ocs_start
+    set -l pid (__ocs_listening_pid)
+
+    if test -n "$pid"
+        printf 'already running (pid %s) → %s\n' $pid $OPENCODE_SERVE_URL
+        return 0
+    end
+
+    __ocs_acquire_lock; or __ocs_die "another start is already in progress"
+    __ocs_require_password
+
+    # `opencode serve` is the headless twin of `opencode web` — it serves the
+    # same UI but never opens a local browser tab.
+    cd $OPENCODE_SERVE_DIR
+    nohup opencode serve --port $OPENCODE_SERVE_PORT --hostname $OPENCODE_SERVE_HOST \
+        >>$log_file 2>&1 </dev/null &
+    disown
+    echo $last_pid >$pid_file
+
+    for i in (seq 30)
+        if __ocs_healthy
+            rm -rf $lock_dir
+            printf 'started (pid %s) → %s\n' (__ocs_listening_pid) $OPENCODE_SERVE_URL
+            return 0
+        end
+        sleep 0.5
+    end
+
+    rm -rf $lock_dir
+    __ocs_die "server did not become healthy in 15s — see $log_file"
+end
+
+function __ocs_stop
+    set -l pid (__ocs_listening_pid)
+
+    if test -z "$pid"
+        rm -f $pid_file
+        echo "not running"
+        return 0
+    end
+
+    kill $pid 2>/dev/null
+
+    for i in (seq 20)
+        set -l alive (__ocs_listening_pid)
+        test -z "$alive"; and break
+        sleep 0.5
+    end
+
+    set -l stubborn (__ocs_listening_pid)
+    if test -n "$stubborn"
+        kill -9 $stubborn 2>/dev/null
+        sleep 1
+    end
+
+    rm -f $pid_file
+    printf 'stopped (pid %s)\n' $pid
+end
+
+function __ocs_status
+    set -l pid (__ocs_listening_pid)
+
+    if test -z "$pid"
+        echo stopped
+        return 1
+    end
+
+    set -l health unreachable
+    __ocs_healthy; and set health ok
+
+    printf 'running   pid %s\n' $pid
+    printf 'started   %s\n' (ps -o lstart= -p $pid | string trim)
+    printf 'local     http://127.0.0.1:%s\n' $OPENCODE_SERVE_PORT
+    printf 'remote    %s\n' $OPENCODE_SERVE_URL
+    printf 'health    %s\n' $health
+    printf 'log       %s\n' $log_file
+end
+
+function __ocs_logs
+    test -f $log_file; or __ocs_die "no log at $log_file"
+
+    set -l lines 50
+    test -n "$argv[1]"; and set lines $argv[1]
+
+    tail -n $lines -f $log_file
+end
+
+# --- dispatch ---------------------------------------------------------------
+
+set -l action status
+test (count $argv) -gt 0; and set action $argv[1]
+
+switch $action
+    case start
+        __ocs_start
+    case stop
+        __ocs_stop
+    case restart
+        __ocs_stop
+        __ocs_start
+    case status
+        __ocs_status
+    case logs
+        __ocs_logs $argv[2]
+    case '*'
+        __ocs_die "usage: opencode-serve {start|stop|restart|status|logs}"
+end
