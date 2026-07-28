@@ -135,6 +135,17 @@ function __ocs_status
     printf 'log       %s\n' $log_file
 end
 
+function __ocs_help
+    printf 'opencode-serve — the OpenCode web server behind %s\n\n' $OPENCODE_SERVE_URL
+    printf '  start      spawn the server (no-op if already up)\n'
+    printf '  stop       shut it down\n'
+    printf '  restart    stop, then start\n'
+    printf '  status     pid, uptime, health (default)\n'
+    printf '  logs [n]   follow the last n lines (default 50)\n'
+    printf '  help       this text\n\n'
+    printf 'Env: OPENCODE_SERVE_{PORT,HOST,DIR,URL}, OPENCODE_SERVER_PASSWORD\n'
+end
+
 function __ocs_logs
     test -f $log_file; or __ocs_die "no log at $log_file"
 
@@ -161,6 +172,8 @@ switch $action
         __ocs_status
     case logs
         __ocs_logs $argv[2]
+    case help --help -h
+        __ocs_help
     case '*'
-        __ocs_die "usage: opencode-serve {start|stop|restart|status|logs}"
+        __ocs_die "unknown command '$action' — try `opencode-serve help`"
 end
