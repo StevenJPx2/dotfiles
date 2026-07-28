@@ -97,6 +97,7 @@
     },
   },
   "permission": {
+    "websearch": "allow",
     "external_directory": {
       "./*": "allow",
       "~/.claude/skills/*": "allow",
