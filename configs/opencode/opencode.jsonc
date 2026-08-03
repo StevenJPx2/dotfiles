@@ -1,5 +1,8 @@
 {
   "$schema": "https://opencode.ai/config.json",
+  "instructions": [
+    "~/.config/opencode/plugins/jiratown/GUIDANCE.md",
+  ],
   "plugin": [
     "@ex-machina/opencode-anthropic-auth@latest",
     "@cortexkit/aft-opencode@latest",
@@ -113,11 +116,11 @@
   "agent": {
     "build": {
       "mode": "primary",
-      "model": "anthropic/claude-sonnet-4-6",
+      "model": "openai/gpt-5.6-luna",
     },
     "plan": {
       "mode": "primary",
-      "model": "anthropic/claude-opus-4-8",
+      "model": "openai/gpt-5.6-luna",
       "variant": "max",
     },
   },

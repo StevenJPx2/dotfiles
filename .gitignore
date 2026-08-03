@@ -3,3 +3,4 @@ Brewfile.lock.json
 configs/fish/secrets.fish
 configs/alacritty/themes
 .aider*
+node_modules/
