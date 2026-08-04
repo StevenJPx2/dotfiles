@@ -1,7 +1,7 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "instructions": [
-    "~/.config/opencode/plugins/jiratown/GUIDANCE.md",
+    "~/.config/opencode/plugins/sourcefed/GUIDANCE.md",
   ],
   "plugin": [
     "@ex-machina/opencode-anthropic-auth@latest",
@@ -16,6 +16,11 @@
     "lightpanda": {
       "type": "local",
       "command": ["lightpanda", "mcp"],
+      "enabled": true,
+    },
+    "safari": {
+      "type": "local",
+      "command": ["npx", "-y", "safari-mcp@2.15.11"],
       "enabled": true,
     },
     "context7": {

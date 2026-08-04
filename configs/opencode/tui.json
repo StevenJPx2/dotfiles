@@ -3,6 +3,7 @@
   "theme": "gruvbox",
   "plugin": [
     "@cortexkit/aft-opencode@latest",
-    "@cortexkit/opencode-magic-context@latest"
+    "@cortexkit/opencode-magic-context@latest",
+    "./plugins/sourcefed/tui.ts"
   ]
 }

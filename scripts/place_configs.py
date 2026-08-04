@@ -61,10 +61,11 @@ def main():
 
         install_path.mkdir(parents=True, exist_ok=True)
 
-        for file_root, _, filenames in os.walk(config_json.parent):
+        for file_root, dirnames, filenames in os.walk(config_json.parent):
+            dirnames[:] = [name for name in dirnames if name not in {".git", ".state", "node_modules"}]
             for file_name in filenames:
                 file = Path(file_root) / file_name
-                if file.name == "config.json":
+                if file.name in {".git", "config.json"}:
                     continue
 
                 dst_dir = install_path / "/".join(file_root.split("/")[2:])

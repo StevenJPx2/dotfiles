@@ -4,3 +4,4 @@ configs/fish/secrets.fish
 configs/alacritty/themes
 .aider*
 node_modules/
+configs/opencode/plugins/sourcefed/.state/

@@ -37,6 +37,24 @@ function __ocs_require_password
     or __ocs_die "OPENCODE_SERVER_PASSWORD is not set (add it to ~/.config/fish/secrets.fish)"
 end
 
+function __ocs_load_sourcefed_webhook_secret
+    if test -z "$SOURCEFED_GITHUB_WEBHOOK_SECRET"
+        set -l secret (security find-generic-password -a "$USER" -s sourcefed-github-webhook -w 2>/dev/null)
+        if test -z "$secret"; and test -r "$HOME/.config/sourcefed/github-webhook-secret"
+            set secret (string trim < "$HOME/.config/sourcefed/github-webhook-secret")
+        end
+        test -n "$secret"; and set -gx SOURCEFED_GITHUB_WEBHOOK_SECRET $secret
+    end
+
+    if test -z "$SOURCEFED_SLACK_SIGNING_SECRET"
+        set -l secret (security find-generic-password -a "$USER" -s sourcefed-slack-signing-secret -w 2>/dev/null)
+        if test -z "$secret"; and test -r "$HOME/.config/sourcefed/slack-signing-secret"
+            set secret (string trim < "$HOME/.config/sourcefed/slack-signing-secret")
+        end
+        test -n "$secret"; and set -gx SOURCEFED_SLACK_SIGNING_SECRET $secret
+    end
+end
+
 function __ocs_healthy
     curl -sf -m 2 -u "opencode:$OPENCODE_SERVER_PASSWORD" \
         "http://127.0.0.1:$OPENCODE_SERVE_PORT/global/health" >/dev/null 2>&1
@@ -67,6 +85,7 @@ function __ocs_start
 
     __ocs_acquire_lock; or __ocs_die "another start is already in progress"
     __ocs_require_password
+    __ocs_load_sourcefed_webhook_secret
 
     # `opencode serve` is the headless twin of `opencode web` — it serves the
     # same UI but never opens a local browser tab.
