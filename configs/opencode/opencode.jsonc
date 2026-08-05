@@ -21,7 +21,7 @@
     "safari": {
       "type": "local",
       "command": ["npx", "-y", "safari-mcp@2.15.11"],
-      "enabled": true,
+      "enabled": false,
     },
     "context7": {
       "type": "local",
@@ -46,12 +46,6 @@
     "nuxt": {
       "type": "remote",
       "url": "https://nuxt.com/mcp",
-      "enabled": false,
-    },
-    "atlassian": {
-      "type": "remote",
-      "url": "https://mcp.atlassian.com/v1/mcp",
-      "oauth": {},
       "enabled": false,
     },
     "grep-app": {
