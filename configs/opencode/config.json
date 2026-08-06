@@ -1,1 +1,3 @@
-{"install_path": "~/.config/opencode", "post_install": "cd ~/.config/opencode/plugins/sourcefed && bun install --frozen-lockfile"}
+{
+  "install_path": "~/.config/opencode"
+}
