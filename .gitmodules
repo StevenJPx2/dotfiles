@@ -1,3 +1,0 @@
-[submodule "configs/opencode/plugins/sourcefed"]
-	path = configs/opencode/plugins/sourcefed
-	url = https://github.com/StevenJPx2/sourcefed.git

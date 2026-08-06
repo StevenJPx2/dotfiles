@@ -1,13 +1,14 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "instructions": [
-    "~/.config/opencode/plugins/sourcefed/GUIDANCE.md",
   ],
   "plugin": [
-    "@ex-machina/opencode-anthropic-auth@latest",
-    "@cortexkit/aft-opencode@latest",
-    "@cortexkit/opencode-magic-context@latest",
-    "@whisperopencode/push",
+    "@ex-machina/opencode-anthropic-auth@1.8.1",
+    "@cortexkit/aft-opencode@0.49.0",
+    "@cortexkit/opencode-magic-context@0.33.1",
+    "@whisperopencode/push@0.3.0",
+    "@dietrichgebert/ponytail",
+    "@fdcn/sourcefed@0.2.0",
   ],
   "compaction": { "auto": false, "prune": false },
   "model": "opencode-go/mimo-v2.5-pro",
