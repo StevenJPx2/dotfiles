@@ -1,0 +1,199 @@
+#!/usr/bin/env fish
+# Manage the always-on Pi agent served in the browser at https://pi.stjhn.xyz
+#
+#   pi-serve start | stop | restart | status | logs [lines] | attach
+#
+# Architecture: `pi` runs inside a persistent tmux session; ttyd exposes that
+# session as a web terminal. Single-instance guard mirrors opencode-serve.
+
+set -q PI_SERVE_PORT; or set PI_SERVE_PORT 7681
+set -q PI_SERVE_HOST; or set PI_SERVE_HOST 0.0.0.0
+set -q PI_SERVE_URL; or set PI_SERVE_URL https://pi.stjhn.xyz
+set -q PI_SERVE_TMUX; or set PI_SERVE_TMUX pi
+set -q PI_SERVE_DIR; or set PI_SERVE_DIR $HOME
+set -q XDG_STATE_HOME; or set XDG_STATE_HOME $HOME/.local/state
+
+set -g state_dir $XDG_STATE_HOME/pi-serve
+set -g pid_file $state_dir/ttyd.pid
+set -g log_file $state_dir/ttyd.log
+set -g lock_dir $state_dir/start.lock
+
+# --- helpers ----------------------------------------------------------------
+
+function __pis_die
+    printf 'pi-serve: %s\n' $argv[1] >&2
+    exit 1
+end
+
+function __pis_listening_pid
+    lsof -ti tcp:$PI_SERVE_PORT -sTCP:LISTEN 2>/dev/null | head -1
+end
+
+function __pis_require_password
+    test -n "$PI_SERVE_PASSWORD"
+    or __pis_die "PI_SERVE_PASSWORD is not set (add it to ~/.config/fish/secrets.fish)"
+end
+
+function __pis_tmux_running
+    tmux has-session -t $PI_SERVE_TMUX 2>/dev/null
+end
+
+function __pis_healthy
+    curl -sf -m 2 "http://127.0.0.1:$PI_SERVE_PORT/token" >/dev/null 2>&1
+    or curl -sf -m 2 -o /dev/null "http://127.0.0.1:$PI_SERVE_PORT/" >/dev/null 2>&1
+end
+
+function __pis_acquire_lock
+    mkdir -p $state_dir
+
+    if not mkdir $lock_dir 2>/dev/null
+        set -l holder (__pis_listening_pid)
+        test -n "$holder"; and return 1
+
+        rm -rf $lock_dir
+        mkdir $lock_dir 2>/dev/null; or return 1
+    end
+end
+
+# --- commands ---------------------------------------------------------------
+
+function __pis_start
+    set -l pid (__pis_listening_pid)
+
+    if test -n "$pid"
+        printf 'already running (pid %s) → %s\n' $pid $PI_SERVE_URL
+        return 0
+    end
+
+    __pis_acquire_lock; or __pis_die "another start is already in progress"
+    __pis_require_password
+
+    # 1. Ensure the pi tmux session exists
+    if not __pis_tmux_running
+        cd $PI_SERVE_DIR
+        tmux new-session -d -s $PI_SERVE_TMUX
+        tmux send-keys -t $PI_SERVE_TMUX "clear" Enter
+    end
+
+    # 2. Serve the tmux session via ttyd
+    set -l cred "opencode:$PI_SERVE_PASSWORD"
+    nohup ttyd --port $PI_SERVE_PORT --host $PI_SERVE_HOST \
+        --credential $cred \
+        tmux attach -t $PI_SERVE_TMUX \
+        >>$log_file 2>&1 </dev/null &
+    disown
+    echo $last_pid >$pid_file
+
+    for i in (seq 30)
+        if __pis_healthy
+            rm -rf $lock_dir
+            printf 'started (pid %s) → %s\n' (__pis_listening_pid) $PI_SERVE_URL
+            return 0
+        end
+        sleep 0.5
+    end
+
+    rm -rf $lock_dir
+    __pis_die "ttyd did not become healthy in 15s — see $log_file"
+end
+
+function __pis_stop
+    set -l pid (__pis_listening_pid)
+
+    if test -z "$pid"
+        rm -f $pid_file
+        echo "not running"
+        return 0
+    end
+
+    kill $pid 2>/dev/null
+
+    for i in (seq 20)
+        set -l alive (__pis_listening_pid)
+        test -z "$alive"; and break
+        sleep 0.5
+    end
+
+    set -l stubborn (__pis_listening_pid)
+    if test -n "$stubborn"
+        kill -9 $stubborn 2>/dev/null
+        sleep 1
+    end
+
+    rm -f $pid_file
+    printf 'stopped (pid %s)\n' $pid
+end
+
+function __pis_status
+    set -l pid (__pis_listening_pid)
+
+    if test -z "$pid"
+        echo stopped
+        return 1
+    end
+
+    set -l health unreachable
+    __pis_healthy; and set health ok
+
+    set -l tmux_state down
+    __pis_tmux_running; and set tmux_state up
+
+    printf 'running   pid %s\n' $pid
+    printf 'started   %s\n' (ps -o lstart= -p $pid | string trim)
+    printf 'local     http://127.0.0.1:%s\n' $PI_SERVE_PORT
+    printf 'remote    %s\n' $PI_SERVE_URL
+    printf 'tmux      %s (session %s)\n' $tmux_state $PI_SERVE_TMUX
+    printf 'health    %s\n' $health
+    printf 'log       %s\n' $log_file
+end
+
+function __pis_logs
+    test -f $log_file; or __pis_die "no log at $log_file"
+
+    set -l lines 50
+    test -n "$argv[1]"; and set lines $argv[1]
+
+    tail -n $lines -f $log_file
+end
+
+function __pis_attach
+    __pis_tmux_running; or __pis_die "tmux session '$PI_SERVE_TMUX' is not running — start it first"
+    tmux attach -t $PI_SERVE_TMUX
+end
+
+function __pis_help
+    printf 'pi-serve — the Pi agent web terminal behind %s\n\n' $PI_SERVE_URL
+    printf '  start      spawn ttyd + tmux session (no-op if already up)\n'
+    printf '  stop       shut down ttyd (tmux session survives)\n'
+    printf '  restart    stop, then start\n'
+    printf '  status     pid, tmux state, health (default)\n'
+    printf '  logs [n]   follow the last n lines (default 50)\n'
+    printf '  attach     attach to the pi tmux session locally\n'
+    printf '  help       this text\n\n'
+    printf 'Env: PI_SERVE_{PORT,HOST,URL,TMUX,DIR}, PI_SERVE_PASSWORD\n'
+end
+
+# --- dispatch ---------------------------------------------------------------
+
+set -l action status
+test (count $argv) -gt 0; and set action $argv[1]
+
+switch $action
+    case start
+        __pis_start
+    case stop
+        __pis_stop
+    case restart
+        __pis_stop
+        __pis_start
+    case status
+        __pis_status
+    case logs
+        __pis_logs $argv[2]
+    case attach
+        __pis_attach
+    case help --help -h
+        __pis_help
+    case '*'
+        __pis_die "unknown command '$action' — try `pi-serve help`"
+end

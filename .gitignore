@@ -5,3 +5,4 @@ configs/alacritty/themes
 .aider*
 node_modules/
 configs/opencode/plugins/sourcefed/.state/
+/.cortexkit

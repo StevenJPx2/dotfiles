@@ -1,0 +1,25 @@
+entry = [
+  "configs/opencode/plugins/sourcefed.ts",
+  "configs/opencode/plugins/sourcefed/tui.ts",
+  "configs/opencode/plugins/sourcefed/src/**/*.test.ts",
+]
+
+ignorePatterns = [
+  "configs/opencode/plugins/sourcefed/node_modules/**",
+]
+
+usedClassMembers = ["build"]
+
+[health]
+maxCrap = 30
+
+[[health.thresholdOverrides]]
+files = [
+  "configs/opencode/plugins/sourcefed/src/**/*.ts",
+  "configs/opencode/plugins/sourcefed/src/**/*.tsx",
+]
+maxCrap = 300
+reason = "Bun test reports lcov, but Fallow 3.13 only accepts Istanbul JSON; keep cyclomatic and cognitive thresholds active."
+
+[audit]
+gate = "new-only"
