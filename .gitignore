@@ -6,3 +6,4 @@ configs/alacritty/themes
 node_modules/
 configs/opencode/plugins/sourcefed/.state/
 /.cortexkit
+/.playwright-mcp

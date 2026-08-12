@@ -5,9 +5,14 @@ import {
   DEFAULT_PORT,
   DEFAULT_TTL_MINUTES,
   HEALTH_SERVICE,
+  composeContent,
   createId,
+  deleteRecord,
+  isValidId,
   localArtifactUrl,
-  selectPublicUrl,
+  publicArtifactUrl,
+  readRecord,
+  renderBody,
   validateInput,
   writeRecord,
 } from "./artifacts/host.ts"
@@ -73,45 +78,104 @@ async function publicUrlRespondsWith(url: string, html: string): Promise<boolean
   return false
 }
 
+async function artifactResult(id: string, html: string, expiresAt: number): Promise<string> {
+  await ensureHost()
+
+  const publicUrl = (await publicUrlRespondsWith(publicArtifactUrl(id), html))
+    ? publicArtifactUrl(id)
+    : null
+  const result: {
+    url?: string
+    localUrl: string
+    expiresAt: number
+    tunnelConfigured: boolean
+    warning?: string
+  } = {
+    localUrl: localArtifactUrl(id, Number(process.env.OPENCODE_ARTIFACT_PORT ?? DEFAULT_PORT)),
+    expiresAt,
+    tunnelConfigured: Boolean(publicUrl),
+  }
+
+  if (publicUrl) {
+    result.url = publicUrl
+  } else {
+    result.warning =
+      "Public tunnel not reachable (token file missing or tunnel down); artifact is available via localUrl only."
+  }
+
+  return JSON.stringify(result)
+}
+
+const contentArgs = {
+  html: z.string().optional(),
+  body: z.string().optional(),
+  styles: z.string().optional(),
+}
+
 export const ArtifactsPlugin = async () => ({
   tool: {
     artifact_publish: tool({
       description:
-        "Publish complete static HTML when the user requests a hosted artifact or when a visual plan materially helps. Returns a short-lived public URL when the tunnel is reachable, otherwise a local fallback; hosting details stay hidden from the caller.",
+        "Publish an artifact from body content or complete static HTML. Omit styles to use the built-in stylesheet.",
       args: {
         title: z.string(),
-        html: z.string(),
+        ...contentArgs,
         ttlMinutes: z.number().int().min(1).max(240).optional().default(DEFAULT_TTL_MINUTES),
       },
-      async execute({ title, html, ttlMinutes = DEFAULT_TTL_MINUTES }) {
-        validateInput(title, html, ttlMinutes)
+      async execute({ title, ttlMinutes = DEFAULT_TTL_MINUTES, ...content }) {
+        const composed = composeContent(content, {}, title)
+        validateInput(title, composed.html, ttlMinutes)
 
         const id = createId()
         const expiresAt = Date.now() + ttlMinutes * 60_000
-        writeRecord(id, { title, html, expiresAt })
-        await ensureHost()
+        writeRecord(id, { title, html: composed.html, body: composed.body, styles: composed.styles, expiresAt })
+        return artifactResult(id, composed.html, expiresAt)
+      },
+    }),
+    artifact_edit: tool({
+      description: "Edit an existing artifact while keeping its URL and ID.",
+      args: {
+        id: z.string(),
+        title: z.string().optional(),
+        ...contentArgs,
+        ttlMinutes: z.number().int().min(1).max(240).optional(),
+      },
+      async execute({ id, title, ttlMinutes, ...content }) {
+        if (!isValidId(id)) throw new Error("invalid artifact id")
 
-        const publicUrl = await selectPublicUrl(id, (url) => publicUrlRespondsWith(url, html))
-        const result: {
-          url?: string
-          localUrl: string
-          expiresAt: number
-          tunnelConfigured: boolean
-          warning?: string
-        } = {
-          localUrl: localArtifactUrl(id, Number(process.env.OPENCODE_ARTIFACT_PORT ?? DEFAULT_PORT)),
-          expiresAt,
-          tunnelConfigured: Boolean(publicUrl),
+        const current = readRecord(id)
+        if (!current) throw new Error("artifact not found or expired")
+        if (title === undefined && ttlMinutes === undefined && Object.keys(content).every((key) => content[key as keyof typeof content] === undefined)) {
+          throw new Error("provide a title, body, styles, html, or ttlMinutes change")
         }
 
-        if (publicUrl) {
-          result.url = publicUrl
-        } else {
-          result.warning =
-            "Public tunnel not reachable (token file missing or tunnel down); artifact is available via localUrl only."
+        const nextTitle = title ?? current.title
+
+        let html = current.html
+        let body = current.body
+        let styles = current.styles
+        if (Object.values(content).some((value) => value !== undefined)) {
+          const composed = composeContent(content, { body: current.body, styles: current.styles }, nextTitle)
+          html = composed.html
+          body = composed.body
+          styles = composed.styles
+        } else if (title !== undefined && current.body !== undefined) {
+          html = renderBody(current.body, current.styles, nextTitle)
         }
 
-        return JSON.stringify(result)
+        validateInput(nextTitle, html, ttlMinutes ?? DEFAULT_TTL_MINUTES)
+
+        const expiresAt = ttlMinutes === undefined ? current.expiresAt : Date.now() + ttlMinutes * 60_000
+        writeRecord(id, { title: nextTitle, html, body, styles, expiresAt })
+        return artifactResult(id, html, expiresAt)
+      },
+    }),
+    artifact_delete: tool({
+      description: "Delete an existing artifact immediately.",
+      args: { id: z.string() },
+      async execute({ id }) {
+        if (!isValidId(id)) throw new Error("invalid artifact id")
+        return JSON.stringify({ id, deleted: deleteRecord(id) })
       },
     }),
   },

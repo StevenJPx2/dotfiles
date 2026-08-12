@@ -4,19 +4,22 @@ import { tmpdir } from "node:os"
 import { join } from "node:path"
 import {
   ARTIFACT_HOST,
+  DEFAULT_STYLES,
   HEALTH_SERVICE,
   artifactPath,
-  baseArtifactUrl,
+  composeContent,
   createId,
+  deleteRecord,
   handleRequest,
   isExpired,
   isValidId,
   isValidRecord,
   publicArtifactUrl,
   readRecord,
+  renderBody,
+  resolveContent,
   routeRequest,
   securityHeaders,
-  selectPublicUrl,
   startServer,
   sweepRecords,
   validateInput,
@@ -44,20 +47,20 @@ describe("artifact host helpers", () => {
     expect(isValidId("a".repeat(5))).toBe(false)
     expect(isValidId("g".repeat(6))).toBe(false)
 
-    expect(routeRequest(`${id}.at.stjhn.xyz`, "/")).toEqual({ kind: "artifact", id })
-    expect(routeRequest(`${id}.at.stjhn.xyz`, "/not-root")).toEqual({ kind: "not-found" })
-    expect(routeRequest(`${id}.at.stjhn.xyz`, `/__artifact/${id}`)).toEqual({ kind: "not-found" })
-    expect(routeRequest(ARTIFACT_HOST, `/__artifact/${id}`)).toEqual({ kind: "artifact", id })
+    expect(routeRequest(ARTIFACT_HOST, `/${id}`)).toEqual({ kind: "artifact", id })
     expect(routeRequest(ARTIFACT_HOST, "/")).toEqual({ kind: "not-found" })
-    expect(routeRequest(ARTIFACT_HOST, `/__artifact/nope`)).toEqual({ kind: "not-found" })
-    expect(routeRequest(ARTIFACT_HOST, `/__artifact/${id}/extra`)).toEqual({ kind: "not-found" })
+    expect(routeRequest(ARTIFACT_HOST, `/nope`)).toEqual({ kind: "not-found" })
+    expect(routeRequest(ARTIFACT_HOST, `/${id}/extra`)).toEqual({ kind: "not-found" })
+    expect(routeRequest(`${id}.at.stjhn.xyz`, "/")).toEqual({ kind: "not-found" })
+
     expect(routeRequest("127.0.0.1:41783", "/health")).toEqual({ kind: "health" })
     expect(routeRequest("localhost", "/health")).toEqual({ kind: "health" })
-    expect(routeRequest("example.com", "/health")).toEqual({ kind: "not-found" })
-    expect(routeRequest("example.com", "/")).toEqual({ kind: "not-found" })
+    expect(routeRequest("127.0.0.1", `/${id}`)).toEqual({ kind: "not-found" })
     expect(routeRequest("127.0.0.1", `/__artifact/${id}`)).toEqual({ kind: "artifact", id })
     expect(routeRequest("localhost", `/__artifact/${id}`)).toEqual({ kind: "artifact", id })
     expect(routeRequest("127.0.0.1", "/__artifact/nope")).toEqual({ kind: "not-found" })
+    expect(routeRequest("example.com", "/health")).toEqual({ kind: "not-found" })
+    expect(routeRequest("example.com", "/")).toEqual({ kind: "not-found" })
   })
 
   test("detects expiry and deletes expired records", () => {
@@ -66,7 +69,6 @@ describe("artifact host helpers", () => {
     expect(isExpired(record, 100)).toBe(true)
     writeRecord(id, record)
     expect(readRecord(id, 101)).toBeNull()
-    expect(() => artifactPath(id)).not.toThrow()
   })
 
   test("validates title, html bytes, and ttl bounds", () => {
@@ -85,6 +87,66 @@ describe("artifact host helpers", () => {
     expect(isValidRecord({ title: "x", html: "y", expiresAt: NaN })).toBe(false)
     expect(isValidRecord({ title: "", html: "y", expiresAt: Date.now() + 1000 })).toBe(false)
     expect(isValidRecord({ title: "x", html: "y", expiresAt: Date.now() + 1000 })).toBe(true)
+    expect(isValidRecord({ title: "x", html: "y", expiresAt: Date.now() + 1000, body: "<p>b</p>", styles: "p{}" })).toBe(true)
+    expect(isValidRecord({ title: "x", html: "y", expiresAt: Date.now() + 1000, body: 5 })).toBe(false)
+  })
+
+  test("wraps body with a gruvbox baseline and honors custom styles", () => {
+    expect(DEFAULT_STYLES).toContain("#282828")
+    expect(DEFAULT_STYLES).toContain("#b8bb26")
+
+    const document = renderBody("<h1>hi</h1>")
+    expect(document).toContain("<!doctype html>")
+    expect(document).toContain("<style>")
+    expect(document).toContain("<h1>hi</h1>")
+    expect(document).toContain("#282828")
+    expect(document).not.toContain("<title>")
+
+    const titled = renderBody("<h1>hi</h1>", DEFAULT_STYLES, "My Page")
+    expect(titled).toContain("<title>My Page</title>")
+
+    const escaped = renderBody("<h1>hi</h1>", DEFAULT_STYLES, "<b>& \"x\"</b>")
+    expect(escaped).toContain("<title>&lt;b&gt;&amp; &quot;x&quot;&lt;/b&gt;</title>")
+
+    const custom = renderBody("<h1>hi</h1>", "h1 { color: hotpink; }", "T")
+    expect(custom).toContain("h1 { color: hotpink; }")
+    expect(custom).not.toContain("#282828")
+  })
+
+  test("composes content: body or html, never both, merges prior styles on edit", () => {
+    const styled = composeContent({ body: "<p>a</p>", styles: "p { color: red; }" }, {}, "Doc Title")
+    expect(styled.html).toContain("p { color: red; }")
+    expect(styled.html).toContain("<title>Doc Title</title>")
+    expect(styled.body).toBe("<p>a</p>")
+    expect(styled.styles).toBe("p { color: red; }")
+
+    const plain = composeContent({ body: "<p>a</p>" })
+    expect(plain.html).toContain("<style>")
+    expect(plain.body).toBe("<p>a</p>")
+    expect(plain.styles).toBeUndefined()
+
+    const raw = composeContent({ html: "<p>raw</p>" })
+    expect(raw.html).toBe("<p>raw</p>")
+    expect(raw.body).toBeUndefined()
+
+    const prior = { body: "<p>old</p>", styles: "p { color: hotpink; }" }
+    const editedBody = composeContent({ body: "<p>new</p>" }, prior, "New Title")
+    expect(editedBody.html).toContain("hotpink")
+    expect(editedBody.html).toContain("<p>new</p>")
+    expect(editedBody.html).toContain("<title>New Title</title>")
+
+    const editedStyles = composeContent({ styles: "p { color: lime; }" }, prior)
+    expect(editedStyles.html).toContain("lime")
+    expect(editedStyles.html).toContain("<p>old</p>")
+
+    const cleared = composeContent({ html: "<p>full</p>" }, prior)
+    expect(cleared.body).toBeUndefined()
+    expect(cleared.styles).toBeUndefined()
+
+    expect(() => composeContent({})).toThrow()
+    expect(() => composeContent({ html: "x", body: "y" })).toThrow()
+    expect(() => composeContent({ html: "x", styles: "y" })).toThrow()
+    expect(() => composeContent({ styles: "p{}" })).toThrow()
   })
 
   test("builds required security headers with quoted CSP", () => {
@@ -121,14 +183,23 @@ describe("artifact host helpers", () => {
     expect(readRecord(corruptId)).toBeNull()
   })
 
+  test("deletes an existing record and reports missing or invalid ids", () => {
+    const id = createId()
+    expect(deleteRecord(id)).toBe(false)
+    writeRecord(id, { title: "Gone", html: "<p>gone</p>", expiresAt: Date.now() + 60_000 })
+    expect(deleteRecord(id)).toBe(true)
+    expect(readRecord(id)).toBeNull()
+    expect(deleteRecord("nope")).toBe(false)
+  })
+
   test("serves via the public Host-header route and the localhost fallback, rejects methods and missing ids", async () => {
     const id = createId()
     writeRecord(id, { title: "Live", html: "<h1>live</h1>", expiresAt: Date.now() + 60_000 })
     const server = startServer(0)
 
     try {
-      const publicResponse = await fetch(`http://127.0.0.1:${server.port}/`, {
-        headers: { host: `${id}.at.stjhn.xyz` },
+      const publicResponse = await fetch(`http://127.0.0.1:${server.port}/${id}`, {
+        headers: { host: ARTIFACT_HOST },
       })
       expect(publicResponse.status).toBe(200)
       expect(await publicResponse.text()).toBe("<h1>live</h1>")
@@ -141,10 +212,10 @@ describe("artifact host helpers", () => {
       const methodResponse = await fetch(`http://127.0.0.1:${server.port}/__artifact/${id}`, { method: "POST" })
       expect(methodResponse.status).toBe(405)
 
-      const missingResponse = await fetch(`http://127.0.0.1:${server.port}/__artifact/${"a".repeat(32)}`)
+      const missingResponse = await fetch(`http://127.0.0.1:${server.port}/__artifact/${"a".repeat(6)}`)
       expect(missingResponse.status).toBe(404)
 
-      const wrongHostResponse = await fetch(`http://127.0.0.1:${server.port}/`)
+      const wrongHostResponse = await fetch(`http://127.0.0.1:${server.port}/${id}`)
       expect(wrongHostResponse.status).toBe(404)
 
       const healthResponse = await fetch(`http://127.0.0.1:${server.port}/health`)
@@ -155,51 +226,7 @@ describe("artifact host helpers", () => {
     }
   })
 
-  test("serves via the base public Host-header route and rejects non-artifact base paths", async () => {
-    const id = createId()
-    writeRecord(id, { title: "Live", html: "<h1>base</h1>", expiresAt: Date.now() + 60_000 })
-    const server = startServer(0)
-
-    try {
-      const baseResponse = await fetch(`http://127.0.0.1:${server.port}/__artifact/${id}`, {
-        headers: { host: ARTIFACT_HOST },
-      })
-      expect(baseResponse.status).toBe(200)
-      expect(await baseResponse.text()).toBe("<h1>base</h1>")
-      expect(baseResponse.headers.get("cache-control")).toBe("no-store")
-
-      const baseRootResponse = await fetch(`http://127.0.0.1:${server.port}/`, {
-        headers: { host: ARTIFACT_HOST },
-      })
-      expect(baseRootResponse.status).toBe(404)
-
-      const baseMissingResponse = await fetch(`http://127.0.0.1:${server.port}/__artifact/${"a".repeat(32)}`, {
-        headers: { host: ARTIFACT_HOST },
-      })
-      expect(baseMissingResponse.status).toBe(404)
-    } finally {
-      server.stop()
-    }
-  })
-
-  test("selects the deep public URL first, then the base-path fallback, and null when both fail", async () => {
-    const id = createId()
-    const deep = publicArtifactUrl(id)
-    const base = baseArtifactUrl(id)
-    expect(base).toBe(`https://${ARTIFACT_HOST}/__artifact/${id}`)
-
-    const seen: string[] = []
-    const deepOk = await selectPublicUrl(id, async (url) => {
-      seen.push(url)
-      return url === deep
-    })
-    expect(deepOk).toBe(deep)
-    expect(seen).toEqual([deep])
-
-    const baseOnly = await selectPublicUrl(id, async (url) => url === base)
-    expect(baseOnly).toBe(base)
-
-    const bothFail = await selectPublicUrl(id, async () => false)
-    expect(bothFail).toBeNull()
+  test("builds the direct public URL on the artifact host", () => {
+    expect(publicArtifactUrl("abc123")).toBe(`https://${ARTIFACT_HOST}/abc123`)
   })
 })

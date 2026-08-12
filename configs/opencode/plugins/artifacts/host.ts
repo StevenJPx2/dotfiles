@@ -26,10 +26,66 @@ export const ID_PATTERN = new RegExp(`^${ID_HEX}$`)
 export const HEALTH_SERVICE = "opencode-artifacts"
 export const LOCAL_ARTIFACT_PATH = "/__artifact"
 
+// WebTUI gruvbox-dark palette: https://github.com/webtui/webtui
+const GRUVBOX = {
+  bg0: "#282828",
+  bg1: "#3c3836",
+  bg2: "#504945",
+  bg3: "#665c54",
+  fg0: "#fbf1c7",
+  fg1: "#ebdbb2",
+  fg3: "#bdae93",
+  fg4: "#a89984",
+  gray: "#928374",
+  red: "#fb4934",
+  green: "#b8bb26",
+  yellow: "#fabd2f",
+  blue: "#83a598",
+  purple: "#d3869b",
+  aqua: "#8ec07c",
+  orange: "#fe8019",
+}
+
+// Body-only artifacts get a small readable baseline; callers can override it with CSS.
+export const DEFAULT_STYLES = `
+:root {
+  color-scheme: dark;
+  background: ${GRUVBOX.bg0};
+  color: ${GRUVBOX.fg1};
+  font-family: 'JetBrains Mono', Menlo, Monaco, monospace;
+  font-size: 16px;
+  line-height: 1.5;
+}
+* { box-sizing: border-box; }
+body { max-width: 48rem; margin: 0 auto; padding: 2rem 1.25rem; }
+h1, h2, h3, h4, h5, h6 { color: ${GRUVBOX.green}; }
+a { color: ${GRUVBOX.blue}; text-decoration: underline; }
+a:hover { color: ${GRUVBOX.aqua}; }
+code { color: ${GRUVBOX.orange}; background: ${GRUVBOX.bg1}; padding: 0.1em 0.35em; border-radius: 3px; }
+pre { background: ${GRUVBOX.bg1}; border: 1px solid ${GRUVBOX.bg2}; padding: 1rem; overflow-x: auto; }
+pre code { background: none; padding: 0; }
+blockquote { border-left: 3px solid ${GRUVBOX.bg3}; margin-left: 0; padding-left: 1rem; color: ${GRUVBOX.fg4}; }
+hr { border: none; border-top: 1px solid ${GRUVBOX.bg2}; }
+table { border-collapse: collapse; width: 100%; }
+th, td { border: 1px solid ${GRUVBOX.bg2}; padding: 0.4rem 0.6rem; text-align: left; }
+th { background: ${GRUVBOX.bg1}; color: ${GRUVBOX.fg0}; }
+img, svg, video { max-width: 100%; height: auto; }
+button, input, select, textarea { font: inherit; color: inherit; }
+::selection { background: ${GRUVBOX.bg2}; }
+`
+
 export type ArtifactRecord = {
   title: string
   html: string
   expiresAt: number
+  body?: string
+  styles?: string
+}
+
+export type ArtifactContent = {
+  html?: string
+  body?: string
+  styles?: string
 }
 
 export type Route =
@@ -59,7 +115,9 @@ export function isValidRecord(value: unknown): value is ArtifactRecord {
     htmlBytes >= 1 &&
     htmlBytes <= MAX_HTML_BYTES &&
     typeof record.expiresAt === "number" &&
-    Number.isFinite(record.expiresAt)
+    Number.isFinite(record.expiresAt) &&
+    (record.body === undefined || typeof record.body === "string") &&
+    (record.styles === undefined || typeof record.styles === "string")
   )
 }
 
@@ -76,6 +134,56 @@ export function validateInput(title: string, html: string, ttlMinutes = DEFAULT_
   if (!Number.isInteger(ttlMinutes) || ttlMinutes < MIN_TTL_MINUTES || ttlMinutes > MAX_TTL_MINUTES) {
     throw new Error(`ttlMinutes must be an integer from ${MIN_TTL_MINUTES} to ${MAX_TTL_MINUTES}`)
   }
+}
+
+export function escapeHtml(value: string): string {
+  return value.replace(/[&<>"']/g, (ch) =>
+    ({
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#39;",
+    })[ch] ?? ch,
+  )
+}
+
+export function renderBody(body: string, styles = DEFAULT_STYLES, title?: string): string {
+  const titleTag = title ? `<title>${escapeHtml(title)}</title>\n` : ""
+
+  return `<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+${titleTag}<style>${styles}</style>
+</head>
+<body>${body}</body>
+</html>`
+}
+
+export type ComposedContent = {
+  html: string
+  body?: string
+  styles?: string
+}
+
+export function composeContent(
+  content: ArtifactContent,
+  prior: Pick<ArtifactRecord, "body" | "styles"> = {},
+  title?: string,
+): ComposedContent {
+  if (content.html !== undefined && (content.body !== undefined || content.styles !== undefined)) {
+    throw new Error("provide either html or body, not both")
+  }
+
+  if (content.html !== undefined) return { html: content.html }
+
+  const body = content.body ?? prior.body
+  const styles = content.styles ?? prior.styles
+  if (body === undefined) throw new Error("provide html or body")
+
+  return { html: renderBody(body, styles, title), body, styles }
 }
 
 export function isExpired(record: Pick<ArtifactRecord, "expiresAt">, now = Date.now()): boolean {
@@ -123,6 +231,15 @@ export function readRecord(id: string, now = Date.now()): ArtifactRecord | null 
   }
 }
 
+export function deleteRecord(id: string): boolean {
+  if (!isValidId(id)) return false
+
+  const path = artifactPath(id)
+  if (!existsSync(path)) return false
+  rmSync(path, { force: true })
+  return true
+}
+
 export function sweepRecords(now = Date.now()): number {
   const directory = artifactDirectory()
   if (!existsSync(directory)) return 0
@@ -155,12 +272,9 @@ export function routeRequest(host: string, pathname: string): Route {
   const localMatch = isLocalhost ? pathname.match(new RegExp(`^/__artifact/(${ID_HEX})$`)) : null
   if (localMatch) return { kind: "artifact", id: localMatch[1] }
 
-  const hostMatch = hostname.match(new RegExp(`^(${ID_HEX})\.${ARTIFACT_HOST.replaceAll(".", "\\\.")}$`))
-  if (hostMatch && pathname === "/") return { kind: "artifact", id: hostMatch[1] }
-
   if (hostname === ARTIFACT_HOST) {
-    const baseMatch = pathname.match(new RegExp("^/__artifact/(" + ID_HEX + ")$"))
-    if (baseMatch) return { kind: "artifact", id: baseMatch[1] }
+    const publicMatch = pathname.match(new RegExp(`^/(${ID_HEX})$`))
+    if (publicMatch) return { kind: "artifact", id: publicMatch[1] }
   }
 
   return { kind: "not-found" }
@@ -171,21 +285,7 @@ export function localArtifactUrl(id: string, port = DEFAULT_PORT): string {
 }
 
 export function publicArtifactUrl(id: string): string {
-  return `https://${id}.${ARTIFACT_HOST}/`
-}
-
-export function baseArtifactUrl(id: string): string {
-  return `https://${ARTIFACT_HOST}${LOCAL_ARTIFACT_PATH}/${id}`
-}
-
-export async function selectPublicUrl(
-  id: string,
-  probe: (url: string) => Promise<boolean>,
-): Promise<string | null> {
-  for (const url of [publicArtifactUrl(id), baseArtifactUrl(id)]) {
-    if (await probe(url)) return url
-  }
-  return null
+  return `https://${ARTIFACT_HOST}/${id}`
 }
 
 export function securityHeaders(): Headers {
