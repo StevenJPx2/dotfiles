@@ -1,3 +1,4 @@
 {
-  "install_path": "~/.config/opencode"
+  "install_path": "~/.config/opencode",
+  "post_install": "cd ~/.config/opencode && bun install --frozen-lockfile"
 }

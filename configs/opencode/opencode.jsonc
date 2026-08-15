@@ -4,8 +4,8 @@
   ],
   "plugin": [
     "@ex-machina/opencode-anthropic-auth@1.8.1",
-    "@cortexkit/aft-opencode@0.49.1",
-    "@cortexkit/opencode-magic-context@0.36.0",
+    "@cortexkit/aft-opencode@0.50.0",
+    "@cortexkit/opencode-magic-context@0.36.1",
     "@whisperopencode/push@0.3.0",
     "@dietrichgebert/ponytail",
     "@fdcn/sourcefed@0.2.4",

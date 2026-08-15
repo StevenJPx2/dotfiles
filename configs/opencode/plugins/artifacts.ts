@@ -81,7 +81,8 @@ async function publicUrlRespondsWith(url: string, html: string): Promise<boolean
 async function artifactResult(id: string, html: string, expiresAt: number): Promise<string> {
   await ensureHost()
 
-  const publicUrl = (await publicUrlRespondsWith(publicArtifactUrl(id), html))
+  const localBaseUrl = process.env.OPENCODE_ARTIFACT_LOCAL_BASE_URL?.replace(/\/+$/, "")
+  const publicUrl = localBaseUrl ? null : (await publicUrlRespondsWith(publicArtifactUrl(id), html))
     ? publicArtifactUrl(id)
     : null
   const result: {
@@ -91,7 +92,9 @@ async function artifactResult(id: string, html: string, expiresAt: number): Prom
     tunnelConfigured: boolean
     warning?: string
   } = {
-    localUrl: localArtifactUrl(id, Number(process.env.OPENCODE_ARTIFACT_PORT ?? DEFAULT_PORT)),
+    localUrl: localBaseUrl
+      ? `${localBaseUrl}/__artifact/${id}`
+      : localArtifactUrl(id, Number(process.env.OPENCODE_ARTIFACT_PORT ?? DEFAULT_PORT)),
     expiresAt,
     tunnelConfigured: Boolean(publicUrl),
   }
