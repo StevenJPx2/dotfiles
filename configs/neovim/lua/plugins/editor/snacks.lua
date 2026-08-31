@@ -85,6 +85,7 @@ return {
 		},
 		git = { enabled = true },
 		gitbrowse = { enabled = true },
+		image = { enabled = true },
 		lazygit = { enabled = true },
 		picker = { enabled = true },
 		quickfile = { enabled = true },

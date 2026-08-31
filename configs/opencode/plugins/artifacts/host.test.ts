@@ -17,6 +17,8 @@ import {
   publicArtifactUrl,
   readRecord,
   renderBody,
+  renderMarkdown,
+  replaceFirst,
   resolveContent,
   routeRequest,
   securityHeaders,
@@ -71,13 +73,13 @@ describe("artifact host helpers", () => {
     expect(readRecord(id, 101)).toBeNull()
   })
 
-  test("validates title, html bytes, and ttl bounds", () => {
+  test("validates title, html bytes, and ttl minimum", () => {
     expect(() => validateInput("", "x")).toThrow()
     expect(() => validateInput("a".repeat(201), "x")).toThrow()
     expect(() => validateInput("x", "")).toThrow()
     expect(() => validateInput("x", "é".repeat(250_001))).toThrow()
     expect(() => validateInput("x", "x", 0)).toThrow()
-    expect(() => validateInput("x", "x", 241)).toThrow()
+    expect(() => validateInput("x", "x", 241)).not.toThrow()
     expect(() => validateInput("x", "x", 60)).not.toThrow()
   })
 
@@ -113,7 +115,13 @@ describe("artifact host helpers", () => {
     expect(custom).not.toContain("#282828")
   })
 
-  test("composes content: body or html, never both, merges prior styles on edit", () => {
+  test("renders Markdown and replaces the first matching patch string", () => {
+    expect(renderMarkdown("# Hello")).toContain("<h1>Hello</h1>")
+    expect(replaceFirst("one two two", "two", "three")).toBe("one three two")
+    expect(() => replaceFirst("one", "missing", "x")).toThrow("patch search text not found")
+  })
+
+  test("composes Markdown or HTML body and merges prior styles on edit", () => {
     const styled = composeContent({ body: "<p>a</p>", styles: "p { color: red; }" }, {}, "Doc Title")
     expect(styled.html).toContain("p { color: red; }")
     expect(styled.html).toContain("<title>Doc Title</title>")
@@ -125,9 +133,9 @@ describe("artifact host helpers", () => {
     expect(plain.body).toBe("<p>a</p>")
     expect(plain.styles).toBeUndefined()
 
-    const raw = composeContent({ html: "<p>raw</p>" })
-    expect(raw.html).toBe("<p>raw</p>")
-    expect(raw.body).toBeUndefined()
+    const markdown = composeContent({ markdown: "# Raw" })
+    expect(markdown.html).toContain("<h1>Raw</h1>")
+    expect(markdown.markdown).toBe("# Raw")
 
     const prior = { body: "<p>old</p>", styles: "p { color: hotpink; }" }
     const editedBody = composeContent({ body: "<p>new</p>" }, prior, "New Title")
@@ -139,14 +147,20 @@ describe("artifact host helpers", () => {
     expect(editedStyles.html).toContain("lime")
     expect(editedStyles.html).toContain("<p>old</p>")
 
-    const cleared = composeContent({ html: "<p>full</p>" }, prior)
-    expect(cleared.body).toBeUndefined()
-    expect(cleared.styles).toBeUndefined()
-
     expect(() => composeContent({})).toThrow()
-    expect(() => composeContent({ html: "x", body: "y" })).toThrow()
-    expect(() => composeContent({ html: "x", styles: "y" })).toThrow()
+    expect(() => composeContent({ markdown: "x", body: "y" })).toThrow()
     expect(() => composeContent({ styles: "p{}" })).toThrow()
+  })
+
+  test("loads Markdown and HTML body files", () => {
+    const markdownPath = join(cacheRoot, "artifact.md")
+    const htmlPath = join(cacheRoot, "artifact.html")
+    writeFileSync(markdownPath, "# From file")
+    writeFileSync(htmlPath, "<canvas id=chart></canvas><script>drawChart()</script>")
+
+    expect(composeContent({ file: markdownPath }).markdown).toBe("# From file")
+    expect(composeContent({ file: htmlPath }).body).toContain("<canvas")
+    expect(() => composeContent({ file: markdownPath, body: "x" })).toThrow()
   })
 
   test("builds required security headers with quoted CSP", () => {
@@ -158,6 +172,8 @@ describe("artifact host helpers", () => {
     expect(headers.get("Content-Security-Policy")).toBe(
       "default-src 'none'; style-src 'unsafe-inline'; img-src data:; font-src data:; script-src 'none'; connect-src 'none'; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
     )
+
+    expect(securityHeaders(true).get("Content-Security-Policy")).toContain("script-src 'unsafe-inline' https:")
   })
 
   test("health reports the artifact service identity", async () => {

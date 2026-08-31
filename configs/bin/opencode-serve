@@ -12,6 +12,11 @@ set -q OPENCODE_SERVE_DIR; or set OPENCODE_SERVE_DIR $HOME
 set -q OPENCODE_SERVE_URL; or set OPENCODE_SERVE_URL https://oc.stjhn.xyz
 set -q XDG_STATE_HOME; or set XDG_STATE_HOME $HOME/.local/state
 
+# v1 (this server) and opencode2 (v2 beta) both default to the same
+# ~/.local/share/opencode/opencode.db; v2 migrates it into a schema v1 can't
+# read ("no such column: project_id"). Pin v1 to its own DB.
+set -gx OPENCODE_DB $HOME/.local/share/opencode/opencode-v1.db
+
 set -g state_dir $XDG_STATE_HOME/opencode-serve
 set -g pid_file $state_dir/server.pid
 set -g log_file $state_dir/server.log

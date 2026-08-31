@@ -1,0 +1,26 @@
+{
+  "$schema": "https://raw.githubusercontent.com/cortexkit/aft/main/assets/aft.schema.json",
+  "enabled": true,
+
+
+  "edit_mode": "hashline",
+
+  "tool_surface": "all",
+
+  "search_index": true,
+
+  "semantic_search": true,
+
+  "bash": {
+    "rewrite": true,
+
+    "compress": true,
+
+    "background": true,
+
+    "subagent_background": true,
+
+    "foreground_wait_window_ms": 8000
+  }
+
+}

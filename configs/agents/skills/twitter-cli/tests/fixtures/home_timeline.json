@@ -1,0 +1,215 @@
+{
+  "data": {
+    "home": {
+      "home_timeline_urt": {
+        "instructions": [
+          {
+            "type": "TimelineAddEntries",
+            "entries": [
+              {
+                "entryId": "tweet-1",
+                "content": {
+                  "entryType": "TimelineTimelineItem",
+                  "itemContent": {
+                    "tweet_results": {
+                      "result": {
+                        "__typename": "Tweet",
+                        "rest_id": "1",
+                        "core": {
+                          "user_results": {
+                            "result": {
+                              "rest_id": "u1",
+                              "core": {
+                                "name": "Alice",
+                                "screen_name": "alice"
+                              },
+                              "legacy": {
+                                "name": "Alice",
+                                "screen_name": "alice",
+                                "verified": false,
+                                "profile_image_url_https": "https://img/alice.jpg"
+                              }
+                            }
+                          }
+                        },
+                        "legacy": {
+                          "full_text": "Hello\nworld",
+                          "created_at": "Sat Mar 08 12:00:00 +0000 2026",
+                          "favorite_count": 10,
+                          "retweet_count": 2,
+                          "reply_count": 1,
+                          "quote_count": 0,
+                          "bookmark_count": 3,
+                          "lang": "en",
+                          "entities": {
+                            "urls": [
+                              {
+                                "expanded_url": "https://example.com/post"
+                              }
+                            ]
+                          },
+                          "extended_entities": {
+                            "media": [
+                              {
+                                "type": "photo",
+                                "media_url_https": "https://pbs.twimg.com/1.jpg",
+                                "original_info": {
+                                  "width": 1200,
+                                  "height": 800
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        "note_tweet": {
+                          "note_tweet_results": {
+                            "result": {
+                              "text": "Hello\nworld\n\nThis is the full text of a long tweet that goes beyond the 280 character limit and contains additional content that would be hidden behind Show More in the Twitter UI."
+                            }
+                          }
+                        },
+                        "views": {
+                          "count": "1234"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "entryId": "tweet-2",
+                "content": {
+                  "entryType": "TimelineTimelineItem",
+                  "itemContent": {
+                    "tweet_results": {
+                      "result": {
+                        "__typename": "Tweet",
+                        "rest_id": "2",
+                        "core": {
+                          "user_results": {
+                            "result": {
+                              "rest_id": "u2",
+                              "core": {
+                                "name": "Bob",
+                                "screen_name": "bob"
+                              },
+                              "legacy": {
+                                "name": "Bob",
+                                "screen_name": "bob",
+                                "verified": true,
+                                "profile_image_url_https": "https://img/bob.jpg"
+                              }
+                            }
+                          }
+                        },
+                        "legacy": {
+                          "full_text": "RT wrapper",
+                          "created_at": "Sat Mar 08 12:01:00 +0000 2026",
+                          "favorite_count": 5,
+                          "retweet_count": 1,
+                          "reply_count": 0,
+                          "quote_count": 0,
+                          "bookmark_count": 0,
+                          "lang": "zh",
+                          "entities": {
+                            "urls": []
+                          },
+                          "retweeted_status_result": {
+                            "result": {
+                              "__typename": "Tweet",
+                              "rest_id": "20",
+                              "core": {
+                                "user_results": {
+                                  "result": {
+                                    "rest_id": "u20",
+                                    "core": {
+                                      "name": "Carol",
+                                      "screen_name": "carol"
+                                    },
+                                    "legacy": {
+                                      "name": "Carol",
+                                      "screen_name": "carol",
+                                      "verified": false,
+                                      "profile_image_url_https": "https://img/carol.jpg"
+                                    }
+                                  }
+                                }
+                              },
+                              "quoted_status_result": {
+                                "result": {
+                                  "__typename": "Tweet",
+                                  "rest_id": "30",
+                                  "core": {
+                                    "user_results": {
+                                      "result": {
+                                        "rest_id": "u30",
+                                        "core": {
+                                          "name": "Dan",
+                                          "screen_name": "dan"
+                                        },
+                                        "legacy": {
+                                          "name": "Dan",
+                                          "screen_name": "dan",
+                                          "verified": false,
+                                          "profile_image_url_https": "https://img/dan.jpg"
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "legacy": {
+                                    "full_text": "quoted text",
+                                    "created_at": "Sat Mar 08 11:58:00 +0000 2026",
+                                    "favorite_count": 1,
+                                    "retweet_count": 0,
+                                    "reply_count": 0,
+                                    "quote_count": 0,
+                                    "bookmark_count": 0,
+                                    "lang": "en",
+                                    "entities": {
+                                      "urls": []
+                                    }
+                                  }
+                                }
+                              },
+                              "legacy": {
+                                "full_text": "original retweeted post",
+                                "created_at": "Sat Mar 08 11:59:00 +0000 2026",
+                                "favorite_count": 50,
+                                "retweet_count": 7,
+                                "reply_count": 2,
+                                "quote_count": 1,
+                                "bookmark_count": 4,
+                                "lang": "en",
+                                "entities": {
+                                  "urls": []
+                                }
+                              },
+                              "views": {
+                                "count": "999"
+                              }
+                            }
+                          }
+                        },
+                        "views": {
+                          "count": "10"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "entryId": "cursor-bottom",
+                "content": {
+                  "entryType": "TimelineTimelineCursor",
+                  "cursorType": "Bottom",
+                  "value": "cursor-bottom-1"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

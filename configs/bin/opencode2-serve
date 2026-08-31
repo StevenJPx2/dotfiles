@@ -1,0 +1,163 @@
+#!/usr/bin/env fish
+# Manage the always-on OpenCode v2 web server exposed at https://oc2.stjhn.xyz
+#
+#   opencode2-serve start | stop | restart | status | logs [lines]
+
+set -q OPENCODE2_SERVE_PORT; or set OPENCODE2_SERVE_PORT 4196
+set -q OPENCODE2_SERVE_HOST; or set OPENCODE2_SERVE_HOST 0.0.0.0
+set -q OPENCODE2_SERVE_DIR; or set OPENCODE2_SERVE_DIR $HOME
+set -q OPENCODE2_SERVE_URL; or set OPENCODE2_SERVE_URL https://oc2.stjhn.xyz
+set -q XDG_STATE_HOME; or set XDG_STATE_HOME $HOME/.local/state
+
+set -g state_dir $XDG_STATE_HOME/opencode2-serve
+set -g pid_file $state_dir/server.pid
+set -g log_file $state_dir/server.log
+set -g lock_dir $state_dir/start.lock
+
+function __oc2s_die
+    printf 'opencode2-serve: %s\n' $argv[1] >&2
+    exit 1
+end
+
+function __oc2s_listening_pid
+    lsof -ti tcp:$OPENCODE2_SERVE_PORT -sTCP:LISTEN 2>/dev/null | head -1
+end
+
+function __oc2s_require_password
+    test -n "$OPENCODE_SERVER_PASSWORD"
+    or __oc2s_die "OPENCODE_SERVER_PASSWORD is not set (add it to ~/.config/fish/secrets.fish)"
+end
+
+function __oc2s_healthy
+    curl -sf -m 2 -u "opencode:$OPENCODE_SERVER_PASSWORD" \
+        "http://127.0.0.1:$OPENCODE2_SERVE_PORT/api/health" >/dev/null 2>&1
+end
+
+function __oc2s_acquire_lock
+    mkdir -p $state_dir
+
+    if not mkdir $lock_dir 2>/dev/null
+        set -l holder (__oc2s_listening_pid)
+        test -n "$holder"; and return 1
+
+        rm -rf $lock_dir
+        mkdir $lock_dir 2>/dev/null; or return 1
+    end
+end
+
+function __oc2s_start
+    set -l pid (__oc2s_listening_pid)
+
+    if test -n "$pid"
+        printf 'already running (pid %s) -> %s\n' $pid $OPENCODE2_SERVE_URL
+        return 0
+    end
+
+    __oc2s_acquire_lock; or __oc2s_die "another start is already in progress"
+    __oc2s_require_password
+
+    cd $OPENCODE2_SERVE_DIR
+    nohup opencode2 serve --port $OPENCODE2_SERVE_PORT --hostname $OPENCODE2_SERVE_HOST \
+        >>$log_file 2>&1 </dev/null &
+    disown
+    echo $last_pid >$pid_file
+
+    for i in (seq 30)
+        if __oc2s_healthy
+            rm -rf $lock_dir
+            printf 'started (pid %s) -> %s\n' (__oc2s_listening_pid) $OPENCODE2_SERVE_URL
+            return 0
+        end
+        sleep 0.5
+    end
+
+    rm -rf $lock_dir
+    __oc2s_die "server did not become healthy in 15s — see $log_file"
+end
+
+function __oc2s_stop
+    set -l pid (__oc2s_listening_pid)
+
+    if test -z "$pid"
+        rm -f $pid_file
+        echo "not running"
+        return 0
+    end
+
+    kill $pid 2>/dev/null
+
+    for i in (seq 20)
+        set -l alive (__oc2s_listening_pid)
+        test -z "$alive"; and break
+        sleep 0.5
+    end
+
+    set -l stubborn (__oc2s_listening_pid)
+    if test -n "$stubborn"
+        kill -9 $stubborn 2>/dev/null
+        sleep 1
+    end
+
+    rm -f $pid_file
+    printf 'stopped (pid %s)\n' $pid
+end
+
+function __oc2s_status
+    set -l pid (__oc2s_listening_pid)
+
+    if test -z "$pid"
+        echo stopped
+        return 1
+    end
+
+    set -l health unreachable
+    __oc2s_healthy; and set health ok
+
+    printf 'running   pid %s\n' $pid
+    printf 'started   %s\n' (ps -o lstart= -p $pid | string trim)
+    printf 'local     http://127.0.0.1:%s\n' $OPENCODE2_SERVE_PORT
+    printf 'remote    %s\n' $OPENCODE2_SERVE_URL
+    printf 'health    %s\n' $health
+    printf 'log       %s\n' $log_file
+end
+
+function __oc2s_help
+    printf 'opencode2-serve - the OpenCode v2 web server behind %s\n\n' $OPENCODE2_SERVE_URL
+    printf '  start      spawn the server (no-op if already up)\n'
+    printf '  stop       shut it down\n'
+    printf '  restart    stop, then start\n'
+    printf '  status     pid, uptime, health (default)\n'
+    printf '  logs [n]   follow the last n lines (default 50)\n'
+    printf '  help       this text\n\n'
+    printf 'Env: OPENCODE2_SERVE_{PORT,HOST,DIR,URL}, OPENCODE_SERVER_PASSWORD\n'
+end
+
+function __oc2s_logs
+    test -f $log_file; or __oc2s_die "no log at $log_file"
+
+    set -l lines 50
+    test -n "$argv[1]"; and set lines $argv[1]
+
+    tail -n $lines -f $log_file
+end
+
+set -l action status
+test (count $argv) -gt 0; and set action $argv[1]
+
+switch $action
+    case start
+        __oc2s_start
+    case stop
+        __oc2s_stop
+    case restart
+        __oc2s_stop
+        __oc2s_start
+    case status
+        __oc2s_status
+    case logs
+        __oc2s_logs $argv[2]
+    case help --help -h
+        __oc2s_help
+    case '*'
+        __oc2s_die "unknown command '$action' — try `opencode2-serve help`"
+end

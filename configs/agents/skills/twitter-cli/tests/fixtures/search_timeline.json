@@ -1,0 +1,107 @@
+{
+  "data": {
+    "search_by_raw_query": {
+      "search_timeline": {
+        "timeline": {
+          "instructions": [
+            {
+              "type": "TimelineAddEntries",
+              "entries": [
+                {
+                  "entryId": "search-module-1",
+                  "content": {
+                    "entryType": "TimelineTimelineModule",
+                    "items": [
+                      {
+                        "item": {
+                          "itemContent": {
+                            "tweet_results": {
+                              "result": {
+                                "__typename": "TweetWithVisibilityResults",
+                                "tweet": {
+                                  "__typename": "Tweet",
+                                  "rest_id": "500",
+                                  "core": {
+                                    "user_results": {
+                                      "result": {
+                                        "rest_id": "u500",
+                                        "core": {
+                                          "name": "Searcher",
+                                          "screen_name": "searcher"
+                                        },
+                                        "legacy": {
+                                          "name": "Searcher",
+                                          "screen_name": "searcher",
+                                          "verified": false,
+                                          "profile_image_url_https": "https://img/searcher.jpg"
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "legacy": {
+                                    "full_text": "search result with video",
+                                    "created_at": "Sat Mar 08 13:00:00 +0000 2026",
+                                    "favorite_count": 12,
+                                    "retweet_count": 4,
+                                    "reply_count": 1,
+                                    "quote_count": 0,
+                                    "bookmark_count": 2,
+                                    "lang": "en",
+                                    "entities": {
+                                      "urls": []
+                                    },
+                                    "extended_entities": {
+                                      "media": [
+                                        {
+                                          "type": "video",
+                                          "media_url_https": "https://pbs.twimg.com/thumb.jpg",
+                                          "original_info": {
+                                            "width": 1280,
+                                            "height": 720
+                                          },
+                                          "video_info": {
+                                            "variants": [
+                                              {
+                                                "content_type": "video/mp4",
+                                                "bitrate": 832000,
+                                                "url": "https://video-low.mp4"
+                                              },
+                                              {
+                                                "content_type": "video/mp4",
+                                                "bitrate": 2176000,
+                                                "url": "https://video-high.mp4"
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "views": {
+                                    "count": "4321"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                },
+                {
+                  "entryId": "cursor-bottom",
+                  "content": {
+                    "entryType": "TimelineTimelineCursor",
+                    "cursorType": "Bottom",
+                    "value": "search-cursor"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  }
+}

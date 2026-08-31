@@ -1,0 +1,41 @@
+{
+  "$schema": "https://raw.githubusercontent.com/cortexkit/opencode-magic-context/master/assets/magic-context.schema.json",
+  "enabled": true,
+
+  // Which model the historian uses for background compression,
+  // Prefer providers that charge by request instead of tokens
+  "historian": {
+    "opencode": {
+      "model": "openai/gpt-5.6-luna",
+      "fallback_models": ["opencode-go/glm-5.2", "opencode/big-pickle"]
+    },
+    "pi": {
+      "model": "openai/gpt-5.6-luna",
+      "fallback_models": ["opencode-go/glm-5.2", "opencode/big-pickle"]
+    }
+  },
+
+  "sidekick": {
+    "model": "opencode/longcat-2.0-free",
+    "fallback_models": ["opencode/big-pickle"]
+  },
+
+  "dreamer": {
+    "opencode": {
+      "model": "openai/gpt-5.6-luna",
+      "fallback_models": ["opencode/big-pickle"]
+    },
+    "pi": {
+      "model": "openai/gpt-5.6-luna",
+      "fallback_models": ["opencode/big-pickle"]
+    }
+  },
+  "cache_ttl": {
+    "default": "5m",
+    "anthropic/claude-sonnet-4-6": "59m",
+    "anthropic/claude-opus-4-6": "59m"
+  },
+  "embedding": {
+    "provider": "local"
+  }
+}

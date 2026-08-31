@@ -14,9 +14,8 @@ import { join } from "node:path"
 import { spawn, type ChildProcess } from "node:child_process"
 
 export const DEFAULT_PORT = 41783
-export const DEFAULT_TTL_MINUTES = 60
+export const DEFAULT_TTL_MINUTES = 240
 export const MIN_TTL_MINUTES = 1
-export const MAX_TTL_MINUTES = 240
 export const MAX_TITLE_CHARS = 200
 export const MAX_HTML_BYTES = 500_000
 export const ARTIFACT_HOST = "at.stjhn.xyz"
@@ -78,12 +77,14 @@ export type ArtifactRecord = {
   title: string
   html: string
   expiresAt: number
+  markdown?: string
   body?: string
   styles?: string
 }
 
 export type ArtifactContent = {
-  html?: string
+  file?: string
+  markdown?: string
   body?: string
   styles?: string
 }
@@ -116,6 +117,7 @@ export function isValidRecord(value: unknown): value is ArtifactRecord {
     htmlBytes <= MAX_HTML_BYTES &&
     typeof record.expiresAt === "number" &&
     Number.isFinite(record.expiresAt) &&
+    (record.markdown === undefined || typeof record.markdown === "string") &&
     (record.body === undefined || typeof record.body === "string") &&
     (record.styles === undefined || typeof record.styles === "string")
   )
@@ -131,8 +133,8 @@ export function validateInput(title: string, html: string, ttlMinutes = DEFAULT_
     throw new Error(`html must be 1..${MAX_HTML_BYTES} bytes`)
   }
 
-  if (!Number.isInteger(ttlMinutes) || ttlMinutes < MIN_TTL_MINUTES || ttlMinutes > MAX_TTL_MINUTES) {
-    throw new Error(`ttlMinutes must be an integer from ${MIN_TTL_MINUTES} to ${MAX_TTL_MINUTES}`)
+  if (!Number.isInteger(ttlMinutes) || ttlMinutes < MIN_TTL_MINUTES) {
+    throw new Error(`ttlMinutes must be an integer of at least ${MIN_TTL_MINUTES}`)
   }
 }
 
@@ -162,26 +164,55 @@ ${titleTag}<style>${styles}</style>
 </html>`
 }
 
+export function renderMarkdown(markdown: string, styles = DEFAULT_STYLES, title?: string): string {
+  return renderBody(Bun.markdown.html(markdown), styles, title)
+}
+
+export function replaceFirst(value: string, search: string, replacement: string): string {
+  const index = value.indexOf(search)
+  if (index === -1) throw new Error("patch search text not found")
+
+  return `${value.slice(0, index)}${replacement}${value.slice(index + search.length)}`
+}
+
 export type ComposedContent = {
   html: string
+  markdown?: string
   body?: string
   styles?: string
 }
 
 export function composeContent(
   content: ArtifactContent,
-  prior: Pick<ArtifactRecord, "body" | "styles"> = {},
+  prior: Pick<ArtifactRecord, "body" | "markdown" | "styles"> = {},
   title?: string,
 ): ComposedContent {
-  if (content.html !== undefined && (content.body !== undefined || content.styles !== undefined)) {
-    throw new Error("provide either html or body, not both")
+  if (content.file !== undefined && (content.markdown !== undefined || content.body !== undefined)) {
+    throw new Error("provide either file or markdown/body, not both")
   }
 
-  if (content.html !== undefined) return { html: content.html }
+  if (content.file !== undefined) {
+    const source = readFileSync(content.file, "utf8")
+    if (/\.(md|markdown)$/i.test(content.file)) {
+      return { html: renderMarkdown(source, content.styles, title), markdown: source, styles: content.styles }
+    }
+    return { html: renderBody(source, content.styles, title), body: source, styles: content.styles }
+  }
+
+  if (content.markdown !== undefined && content.body !== undefined) {
+    throw new Error("provide either markdown or body, not both")
+  }
+
+  if (content.markdown !== undefined) {
+    return { html: renderMarkdown(content.markdown, content.styles, title), markdown: content.markdown, styles: content.styles }
+  }
 
   const body = content.body ?? prior.body
   const styles = content.styles ?? prior.styles
-  if (body === undefined) throw new Error("provide html or body")
+  if (body === undefined && prior.markdown !== undefined) {
+    return { html: renderMarkdown(prior.markdown, styles, title), markdown: prior.markdown, styles }
+  }
+  if (body === undefined) throw new Error("provide markdown or body")
 
   return { html: renderBody(body, styles, title), body, styles }
 }
@@ -288,14 +319,13 @@ export function publicArtifactUrl(id: string): string {
   return `https://${ARTIFACT_HOST}/${id}`
 }
 
-export function securityHeaders(): Headers {
+export function securityHeaders(allowScripts = false): Headers {
   return new Headers({
     "Content-Type": "text/html; charset=utf-8",
     "Cache-Control": "no-store",
     "X-Content-Type-Options": "nosniff",
     "Referrer-Policy": "no-referrer",
-    "Content-Security-Policy":
-      "default-src 'none'; style-src 'unsafe-inline'; img-src data:; font-src data:; script-src 'none'; connect-src 'none'; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+    "Content-Security-Policy": `default-src 'none'; style-src 'unsafe-inline'; img-src data:; font-src data:; script-src ${allowScripts ? "'unsafe-inline' https:" : "'none'"}; connect-src ${allowScripts ? "https:" : "'none'"}; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'`,
   })
 }
 
@@ -318,7 +348,7 @@ export function handleRequest(request: Request): Response {
   const record = readRecord(route.id)
   if (!record) return new Response("Not found", { status: 404 })
 
-  const headers = securityHeaders()
+  const headers = securityHeaders(record.body !== undefined)
   if (request.method === "HEAD") return new Response(null, { headers })
   return new Response(record.html, { headers })
 }

@@ -3,21 +3,33 @@
   "instructions": [
   ],
   "plugin": [
-    "@ex-machina/opencode-anthropic-auth@1.8.1",
-    "@cortexkit/aft-opencode@0.50.0",
-    "@cortexkit/opencode-magic-context@0.36.1",
+    "@cortexkit/opencode-anthropic-auth@1.21.0",
+    "@cortexkit/aft-opencode@0.54.0",
+    "@cortexkit/opencode-magic-context@0.41.0",
     "@whisperopencode/push@0.3.0",
-    "@dietrichgebert/ponytail",
+    "@dietrichgebert/ponytail@4.9.0",
     "@fdcn/sourcefed@0.2.4",
   ],
   "compaction": { "auto": false, "prune": false },
   "model": "opencode-go/mimo-v2.5-pro",
   "small_model": "opencode/minimax-m2.5-free",
   "mcp": {
-    "lightpanda": {
-      "type": "local",
-      "command": ["lightpanda", "mcp"],
+    "homeassistant": {
+      "type": "remote",
+      "url": "http://192.168.0.40:8123/api/mcp",
       "enabled": true,
+      "oauth": false,
+      "headers": {
+        "Authorization": "Bearer {env:HOMEASSISTANT_TOKEN}",
+      },
+    },
+    "jina": {
+      "type": "remote",
+      "url": "https://mcp.jina.ai/v1",
+      "enabled": true,
+      "headers": {
+        "Authorization": "Bearer ${env:JINA_API_KEY}"
+      }
     },
     "safari": {
       "type": "local",
@@ -34,10 +46,10 @@
       "command": ["npx", "@playwright/mcp@latest"],
       "enabled": false,
     },
-    "chrome-devtools": {
+    "chrome-use": {
       "type": "local",
-      "command": ["npx", "-y", "chrome-devtools-mcp@latest"],
-      "enabled": false,
+      "command": ["/usr/bin/env", "-u", "AGENT_BROWSER_PROVIDER", "/usr/local/bin/chrome-use", "mcp", "--tools", "all"],
+      "enabled": true,
     },
     "nuxt-ui": {
       "type": "remote",
@@ -75,28 +87,23 @@
       "enabled": true,
       "oauth": {},
     },
-    "cloudflare-docs": {
-      "type": "remote",
-      "url": "https://docs.mcp.cloudflare.com/mcp",
+    "google-workspace-personal": {
+      "type": "local",
+      "command": [
+        "sh",
+        "-c",
+        "cd \"$HOME/.config/google-workspace-personal\" && GEMINI_CLI_WORKSPACE_FORCE_FILE_STORAGE=true exec node workspace-server/dist/index.js --debug --use-dot-names",
+      ],
       "enabled": true,
     },
-    "cloudflare-bindings": {
-      "type": "remote",
-      "url": "https://bindings.mcp.cloudflare.com/mcp",
+    "google-workspace-work": {
+      "type": "local",
+      "command": [
+        "sh",
+        "-c",
+        "cd \"$HOME/.config/google-workspace-work\" && GEMINI_CLI_WORKSPACE_FORCE_FILE_STORAGE=true exec node workspace-server/dist/index.js --debug --use-dot-names",
+      ],
       "enabled": true,
-      "oauth": {},
-    },
-    "cloudflare-builds": {
-      "type": "remote",
-      "url": "https://builds.mcp.cloudflare.com/mcp",
-      "enabled": true,
-      "oauth": {},
-    },
-    "cloudflare-observability": {
-      "type": "remote",
-      "url": "https://observability.mcp.cloudflare.com/mcp",
-      "enabled": true,
-      "oauth": {},
     },
   },
   "permission": {

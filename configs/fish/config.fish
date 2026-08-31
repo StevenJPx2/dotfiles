@@ -8,6 +8,7 @@ set -gx NVM_DIR "$HOME/.nvm"
 set -gx GIT_EDITOR $EDITOR
 set -gx SKIM_DEFAULT_COMMAND "fd --type f || git ls-tree -r --name-only HEAD || rg --files || find ."
 set -gx OPENCODE_EXPERIMENTAL_CODE_MODE 1
+set -gx RUSTC_WRAPPER "sccache"
 
 source "$HOME/.cargo/env.fish"
 set -q XDG_CONFIG_HOME || set XDG_CONFIG_HOME "$HOME/.config"

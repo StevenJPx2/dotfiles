@@ -1,0 +1,79 @@
+{
+  "data": {
+    "list": {
+      "tweets_timeline": {
+        "timeline": {
+          "instructions": [
+            {
+              "type": "TimelineAddEntries",
+              "entries": [
+                {
+                  "entryId": "list-tweet-1",
+                  "content": {
+                    "entryType": "TimelineTimelineItem",
+                    "itemContent": {
+                      "tweet_results": {
+                        "result": {
+                          "__typename": "TweetWithVisibilityResults",
+                          "tweetInterstitial": {
+                            "__typename": "TweetInterstitial",
+                            "text": { "rtl": false, "text": "Subscribe to @lister to see this post" }
+                          },
+                          "tweet": {
+                            "__typename": "Tweet",
+                            "rest_id": "700",
+                            "core": {
+                              "user_results": {
+                                "result": {
+                                  "rest_id": "u700",
+                                  "core": {
+                                    "name": "Lister",
+                                    "screen_name": "lister"
+                                  },
+                                  "legacy": {
+                                    "name": "Lister",
+                                    "screen_name": "lister",
+                                    "verified": true,
+                                    "profile_image_url_https": "https://img/lister.jpg"
+                                  }
+                                }
+                              }
+                            },
+                            "legacy": {
+                              "full_text": "list timeline tweet",
+                              "created_at": "Sat Mar 08 13:10:00 +0000 2026",
+                              "favorite_count": 8,
+                              "retweet_count": 2,
+                              "reply_count": 1,
+                              "quote_count": 0,
+                              "bookmark_count": 1,
+                              "lang": "zh",
+                              "entities": {
+                                "urls": []
+                              }
+                            },
+                            "views": {
+                              "count": "321"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                {
+                  "entryId": "cursor-bottom",
+                  "content": {
+                    "entryType": "TimelineTimelineCursor",
+                    "cursorType": "Bottom",
+                    "value": "list-cursor"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  }
+}

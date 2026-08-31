@@ -1,0 +1,80 @@
+name: Bug Report
+description: Report a bug or unexpected behavior
+labels: ["bug"]
+body:
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: "Run `twitter --version` or `pip show twitter-cli | grep Version`"
+      placeholder: "e.g. 0.6.0"
+    validations:
+      required: true
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating System
+      options:
+        - macOS
+        - Linux
+        - Windows
+        - Other
+    validations:
+      required: true
+  - type: dropdown
+    id: browser
+    attributes:
+      label: Browser (for cookie extraction)
+      options:
+        - Arc
+        - Chrome
+        - Edge
+        - Firefox
+        - Brave
+        - Other / N/A (using env vars)
+    validations:
+      required: true
+  - type: dropdown
+    id: access_method
+    attributes:
+      label: Access Method
+      description: How are you accessing the machine where twitter-cli runs?
+      options:
+        - Local terminal
+        - SSH
+        - Docker / container
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+      description: Describe the bug clearly.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: What did you expect to happen?
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      description: "Commands or steps to reproduce the issue. Use `twitter -v <command>` for debug output."
+      render: bash
+  - type: textarea
+    id: diagnostics
+    attributes:
+      label: Diagnostics
+      description: "Paste the output of `twitter -v <command>` here. This helps us diagnose cookie and auth issues quickly."
+      render: text
+  - type: textarea
+    id: logs
+    attributes:
+      label: Error output / logs
+      description: Paste any error messages or verbose output here.
+      render: text

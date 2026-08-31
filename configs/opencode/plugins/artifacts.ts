@@ -12,7 +12,9 @@ import {
   localArtifactUrl,
   publicArtifactUrl,
   readRecord,
+  renderMarkdown,
   renderBody,
+  replaceFirst,
   validateInput,
   writeRecord,
 } from "./artifacts/host.ts"
@@ -110,7 +112,8 @@ async function artifactResult(id: string, html: string, expiresAt: number): Prom
 }
 
 const contentArgs = {
-  html: z.string().optional(),
+  file: z.string().optional(),
+  markdown: z.string().optional(),
   body: z.string().optional(),
   styles: z.string().optional(),
 }
@@ -119,11 +122,11 @@ export const ArtifactsPlugin = async () => ({
   tool: {
     artifact_publish: tool({
       description:
-        "Publish an artifact from body content or complete static HTML. Omit styles to use the built-in stylesheet.",
+        "Publish an artifact from a Markdown string/file (preferred) or an HTML body string/file. Use an HTML body for charts and embedded content; omit styles to use the built-in stylesheet.",
       args: {
         title: z.string(),
         ...contentArgs,
-        ttlMinutes: z.number().int().min(1).max(240).optional().default(DEFAULT_TTL_MINUTES),
+        ttlMinutes: z.number().int().min(1).optional().default(DEFAULT_TTL_MINUTES),
       },
       async execute({ title, ttlMinutes = DEFAULT_TTL_MINUTES, ...content }) {
         const composed = composeContent(content, {}, title)
@@ -131,7 +134,7 @@ export const ArtifactsPlugin = async () => ({
 
         const id = createId()
         const expiresAt = Date.now() + ttlMinutes * 60_000
-        writeRecord(id, { title, html: composed.html, body: composed.body, styles: composed.styles, expiresAt })
+        writeRecord(id, { title, html: composed.html, markdown: composed.markdown, body: composed.body, styles: composed.styles, expiresAt })
         return artifactResult(id, composed.html, expiresAt)
       },
     }),
@@ -141,27 +144,48 @@ export const ArtifactsPlugin = async () => ({
         id: z.string(),
         title: z.string().optional(),
         ...contentArgs,
-        ttlMinutes: z.number().int().min(1).max(240).optional(),
+        ttlMinutes: z.number().int().min(1).optional(),
+        patch: z.object({ search: z.string().min(1), replace: z.string() }).optional(),
       },
-      async execute({ id, title, ttlMinutes, ...content }) {
+      async execute({ id, title, ttlMinutes, patch, ...content }) {
         if (!isValidId(id)) throw new Error("invalid artifact id")
 
         const current = readRecord(id)
         if (!current) throw new Error("artifact not found or expired")
-        if (title === undefined && ttlMinutes === undefined && Object.keys(content).every((key) => content[key as keyof typeof content] === undefined)) {
-          throw new Error("provide a title, body, styles, html, or ttlMinutes change")
+        const hasContent = Object.values(content).some((value) => value !== undefined)
+        if (patch !== undefined && hasContent) {
+          throw new Error("provide either patch or file/markdown/body/styles, not both")
+        }
+        if (title === undefined && ttlMinutes === undefined && !hasContent && patch === undefined) {
+          throw new Error("provide a title, file, markdown, body, styles, or ttlMinutes change")
         }
 
         const nextTitle = title ?? current.title
 
         let html = current.html
+        let markdown = current.markdown
         let body = current.body
         let styles = current.styles
-        if (Object.values(content).some((value) => value !== undefined)) {
-          const composed = composeContent(content, { body: current.body, styles: current.styles }, nextTitle)
+        if (patch !== undefined) {
+          const source = current.markdown ?? current.body ?? current.html
+          const patched = replaceFirst(source, patch.search, patch.replace)
+          if (current.markdown !== undefined) {
+            markdown = patched
+            html = renderMarkdown(markdown, styles, nextTitle)
+          } else if (current.body !== undefined) {
+            body = patched
+            html = renderBody(body, styles, nextTitle)
+          } else {
+            html = patched
+          }
+        } else if (hasContent) {
+          const composed = composeContent(content, { body: current.body, markdown: current.markdown, styles: current.styles }, nextTitle)
           html = composed.html
+          markdown = composed.markdown
           body = composed.body
           styles = composed.styles
+        } else if (title !== undefined && current.markdown !== undefined) {
+          html = renderMarkdown(current.markdown, current.styles, nextTitle)
         } else if (title !== undefined && current.body !== undefined) {
           html = renderBody(current.body, current.styles, nextTitle)
         }
@@ -169,7 +193,7 @@ export const ArtifactsPlugin = async () => ({
         validateInput(nextTitle, html, ttlMinutes ?? DEFAULT_TTL_MINUTES)
 
         const expiresAt = ttlMinutes === undefined ? current.expiresAt : Date.now() + ttlMinutes * 60_000
-        writeRecord(id, { title: nextTitle, html, body, styles, expiresAt })
+        writeRecord(id, { title: nextTitle, html, markdown, body, styles, expiresAt })
         return artifactResult(id, html, expiresAt)
       },
     }),

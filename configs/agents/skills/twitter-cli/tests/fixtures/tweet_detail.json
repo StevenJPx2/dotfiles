@@ -1,0 +1,118 @@
+{
+  "data": {
+    "threaded_conversation_with_injections_v2": {
+      "instructions": [
+        {
+          "type": "TimelineAddEntries",
+          "entries": [
+            {
+              "entryId": "conversation-thread",
+              "content": {
+                "items": [
+                  {
+                    "item": {
+                      "itemContent": {
+                        "tweet_results": {
+                          "result": {
+                            "__typename": "Tweet",
+                            "rest_id": "100",
+                            "core": {
+                              "user_results": {
+                                "result": {
+                                  "rest_id": "ua",
+                                  "core": {
+                                    "name": "Author A",
+                                    "screen_name": "authora"
+                                  },
+                                  "legacy": {
+                                    "name": "Author A",
+                                    "screen_name": "authora",
+                                    "verified": false,
+                                    "profile_image_url_https": "https://img/a.jpg"
+                                  }
+                                }
+                              }
+                            },
+                            "legacy": {
+                              "full_text": "root tweet",
+                              "created_at": "Sat Mar 08 12:10:00 +0000 2026",
+                              "favorite_count": 100,
+                              "retweet_count": 10,
+                              "reply_count": 2,
+                              "quote_count": 1,
+                              "bookmark_count": 8,
+                              "lang": "en",
+                              "entities": {
+                                "urls": []
+                              }
+                            },
+                            "views": {
+                              "count": "8000"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "item": {
+                      "itemContent": {
+                        "tweet_results": {
+                          "result": {
+                            "__typename": "Tweet",
+                            "rest_id": "101",
+                            "core": {
+                              "user_results": {
+                                "result": {
+                                  "rest_id": "ub",
+                                  "core": {
+                                    "name": "Author B",
+                                    "screen_name": "authorb"
+                                  },
+                                  "legacy": {
+                                    "name": "Author B",
+                                    "screen_name": "authorb",
+                                    "verified": false,
+                                    "profile_image_url_https": "https://img/b.jpg"
+                                  }
+                                }
+                              }
+                            },
+                            "legacy": {
+                              "full_text": "reply tweet",
+                              "created_at": "Sat Mar 08 12:12:00 +0000 2026",
+                              "favorite_count": 5,
+                              "retweet_count": 1,
+                              "reply_count": 0,
+                              "quote_count": 0,
+                              "bookmark_count": 0,
+                              "lang": "en",
+                              "entities": {
+                                "urls": []
+                              }
+                            },
+                            "views": {
+                              "count": "100"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "entryId": "cursor-bottom",
+              "content": {
+                "entryType": "TimelineTimelineCursor",
+                "cursorType": "Bottom",
+                "value": "conversation-cursor"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

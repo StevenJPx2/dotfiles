@@ -1,0 +1,53 @@
+{
+  "data": {
+    "user": {
+      "result": {
+        "timeline": {
+          "timeline": {
+            "instructions": [
+              {
+                "type": "TimelineAddEntries",
+                "entries": [
+                  {
+                    "entryId": "user-1",
+                    "content": {
+                      "entryType": "TimelineTimelineItem",
+                      "itemContent": {
+                        "user_results": {
+                          "result": {
+                            "rest_id": "f1",
+                            "is_blue_verified": true,
+                            "legacy": {
+                              "name": "Follower One",
+                              "screen_name": "follower1",
+                              "description": "first follower",
+                              "location": "Earth",
+                              "followers_count": 123,
+                              "friends_count": 45,
+                              "statuses_count": 67,
+                              "favourites_count": 89,
+                              "profile_image_url_https": "https://img/f1.jpg",
+                              "created_at": "Sat Mar 08 10:00:00 +0000 2026"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "entryId": "cursor-bottom",
+                    "content": {
+                      "entryType": "TimelineTimelineCursor",
+                      "cursorType": "Bottom",
+                      "value": "followers-cursor"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}
