@@ -2,8 +2,8 @@
   "$schema": "https://opencode.ai/tui.json",
   "theme": "gruvbox",
   "plugin": [
-    "@cortexkit/aft-opencode@0.54.0",
-    "@cortexkit/opencode-magic-context@0.41.0",
-    "@fdcn/sourcefed@0.2.4"
+    "@cortexkit/aft-opencode@0.55.0",
+    "@cortexkit/opencode-magic-context@0.41.2",
+    "@fdcn/sourcefed@0.2.6"
   ]
 }

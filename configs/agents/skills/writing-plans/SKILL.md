@@ -1,6 +1,6 @@
 ---
 name: writing-plans
-description: Use whenever you author or rewrite a plan, spec, or design doc — including visual plans and plan blocks (callouts, tables, captions). Enforces clean, from-scratch authoring: a plan states the current design, never its own edit history. Rewrites must strip corrections, references to previous versions/mistakes, and backward-pointing "X not Y / X instead of Y" framing. Also favors concise prose and short code examples that show usage (call sites), not definitions (signatures).
+description: "Use whenever you author or rewrite a plan, spec, or design doc — including visual plans and plan blocks (callouts, tables, captions). Enforces clean, from-scratch authoring: a plan states the current design, never its own edit history. Rewrites must strip corrections, references to previous versions/mistakes, and backward-pointing \"X not Y / X instead of Y\" framing. Also favors concise prose and short code examples that show usage (call sites), not definitions (signatures)."
 ---
 
 # Writing & rewriting plans

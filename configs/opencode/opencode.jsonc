@@ -3,12 +3,12 @@
   "instructions": [
   ],
   "plugin": [
-    "@cortexkit/opencode-anthropic-auth@1.21.0",
-    "@cortexkit/aft-opencode@0.54.0",
-    "@cortexkit/opencode-magic-context@0.41.0",
+    "@cortexkit/opencode-anthropic-auth@1.22.0",
+    "@cortexkit/aft-opencode@0.55.0",
+    "@cortexkit/opencode-magic-context@0.41.2",
     "@whisperopencode/push@0.3.0",
     "@dietrichgebert/ponytail@4.9.0",
-    "@fdcn/sourcefed@0.2.4",
+    "@fdcn/sourcefed@0.2.6",
   ],
   "compaction": { "auto": false, "prune": false },
   "model": "opencode-go/mimo-v2.5-pro",
@@ -49,6 +49,11 @@
     "chrome-use": {
       "type": "local",
       "command": ["/usr/bin/env", "-u", "AGENT_BROWSER_PROVIDER", "/usr/local/bin/chrome-use", "mcp", "--tools", "all"],
+      "enabled": true,
+    },
+    "cap": {
+      "type": "local",
+      "command": ["cap", "mcp", "serve"],
       "enabled": true,
     },
     "nuxt-ui": {
@@ -103,6 +108,21 @@
         "-c",
         "cd \"$HOME/.config/google-workspace-work\" && GEMINI_CLI_WORKSPACE_FORCE_FILE_STORAGE=true exec node workspace-server/dist/index.js --debug --use-dot-names",
       ],
+      "enabled": true,
+    },
+    "swiggy-food": {
+      "type": "remote",
+      "url": "https://mcp.swiggy.com/food",
+      "enabled": true,
+    },
+    "swiggy-instamart": {
+      "type": "remote",
+      "url": "https://mcp.swiggy.com/im",
+      "enabled": true,
+    },
+    "swiggy-dineout": {
+      "type": "remote",
+      "url": "https://mcp.swiggy.com/dineout",
       "enabled": true,
     },
   },

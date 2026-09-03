@@ -1,6 +1,6 @@
 alias md='mkdir'
 alias cat='bat'
-alias ls='eza --grid --icons'
+alias ls='eza --grid --icons always'
 alias top='btm'
 alias n='nnn -e'
 alias lg='lazygit'
