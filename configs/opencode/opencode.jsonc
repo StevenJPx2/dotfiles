@@ -5,10 +5,10 @@
   "plugin": [
     "@cortexkit/opencode-anthropic-auth@1.22.0",
     "@cortexkit/aft-opencode@0.55.0",
-    "@cortexkit/opencode-magic-context@0.41.2",
+    "@cortexkit/opencode-magic-context@0.42.4",
     "@whisperopencode/push@0.3.0",
     "@dietrichgebert/ponytail@4.9.0",
-    "@fdcn/sourcefed@0.2.6",
+    "@fdcn/sourcefed@0.2.9",
   ],
   "compaction": { "auto": false, "prune": false },
   "model": "opencode-go/mimo-v2.5-pro",
@@ -54,6 +54,16 @@
     "cap": {
       "type": "local",
       "command": ["cap", "mcp", "serve"],
+      "enabled": true,
+    },
+    "iMCP": {
+      "type": "local",
+      "command": ["/Applications/iMCP.app/Contents/MacOS/imcp-server"],
+      "enabled": true,
+    },
+    "affinity": {
+      "type": "local",
+      "command": ["node", "/Users/stevenjohn/Documents/Projects/affinity-mcp/dist/index.js"],
       "enabled": true,
     },
     "nuxt-ui": {

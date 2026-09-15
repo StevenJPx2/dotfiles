@@ -3,7 +3,7 @@
   "theme": "gruvbox",
   "plugin": [
     "@cortexkit/aft-opencode@0.55.0",
-    "@cortexkit/opencode-magic-context@0.41.2",
-    "@fdcn/sourcefed@0.2.6"
+    "@cortexkit/opencode-magic-context@0.42.4",
+    "@fdcn/sourcefed@0.2.9"
   ]
 }
