@@ -1,0 +1,86 @@
+#!/usr/bin/env -S uvx --from browser-harness[mcp] python
+"""Put the current browser-harness tab into a named Chrome tab group.
+
+    browser-group <group-title> [color]     e.g. browser-group "OpenCode: dotfiles" blue
+    browser-group --list                    show all tab groups
+
+Honors BU_NAME (default opencode-browser) so each named daemon can label its
+own group. Requires the Browser Harness Tab Groups extension (browser-launch
+ext). Colors: grey blue red yellow green pink purple cyan orange.
+
+Chrome exposes no CDP-target to tab-id mapping, so the tab is matched by a
+nonce title set for a moment and restored afterwards. Setting the title also
+wakes the extension's service worker, which is otherwise idle and absent from
+the CDP target list.
+"""
+import json
+import os
+import secrets
+import sys
+import time
+
+os.environ.setdefault("BU_NAME", "opencode-browser")
+
+from browser_harness.admin import ensure_daemon
+from browser_harness.helpers import cdp, js
+
+SW_SUFFIX = "/bh_tab_groups_sw.js"
+
+
+def find_worker():
+    for _ in range(30):
+        for t in cdp("Target.getTargets")["targetInfos"]:
+            if t["type"] == "service_worker" and t["url"].endswith(SW_SUFFIX):
+                return t["targetId"]
+        time.sleep(0.1)
+
+    sys.exit("tab-groups extension worker not found — is it loaded? run: browser-launch ext")
+
+
+def in_worker(expression):
+    sid = cdp("Target.attachToTarget", targetId=find_worker(), flatten=True)["sessionId"]
+    try:
+        r = cdp("Runtime.evaluate", session_id=sid, expression=expression,
+                awaitPromise=True, returnByValue=True)
+    finally:
+        cdp("Target.detachFromTarget", sessionId=sid)
+
+    if r.get("exceptionDetails"):
+        sys.exit(r["exceptionDetails"].get("exception", {}).get("description") or "worker error")
+
+    return r["result"].get("value")
+
+
+def with_title(temp_title, fn):
+    original = js("document.title")
+    js(f"document.title={json.dumps(temp_title)}")
+    try:
+        return fn()
+    finally:
+        js(f"document.title={json.dumps(original)}")
+
+
+def main(argv):
+    if not argv or argv[0] in {"-h", "--help"}:
+        print(__doc__.strip())
+        return 2
+
+    ensure_daemon()
+
+    if argv[0] == "--list":
+        groups = with_title(js("document.title"), lambda: in_worker("bhListGroups()"))
+        print(json.dumps(groups, indent=2))
+        return 0
+
+    title = argv[0]
+    color = argv[1] if len(argv) > 1 else "purple"
+    nonce = f"bh-{secrets.token_hex(4)}"
+    call = f"bhGroupByTitle({json.dumps(nonce)},{json.dumps(title)},{json.dumps(color)})"
+
+    result = with_title(nonce, lambda: in_worker(call))
+    print(json.dumps(result))
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main(sys.argv[1:]))

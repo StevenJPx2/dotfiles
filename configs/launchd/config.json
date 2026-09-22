@@ -1,0 +1,4 @@
+{
+  "install_path": "~/Library/LaunchAgents",
+  "post_install": "launchctl bootout gui/$(id -u)/xyz.stjhn.opencode2 2>/dev/null; launchctl bootout gui/$(id -u)/xyz.stjhn.opencode 2>/dev/null; launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/xyz.stjhn.opencode.plist && echo loaded xyz.stjhn.opencode"
+}

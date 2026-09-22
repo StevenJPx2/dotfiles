@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Label</key>
+	<string>xyz.stjhn.opencode</string>
+	<!-- Cold-boot reachability for https://oc.stjhn.xyz (service port 4096). Launch
+	     via a login fish shell so the background service inherits the SAME PATH and
+	     secrets (HOMEASSISTANT_TOKEN, JINA_API_KEY, ...) as an interactive session.
+	     launchd's bare env otherwise breaks npx/node-spawned MCPs (NotFound) and
+	     {env:...} MCP auth (401). config.fish sources secrets.fish with no
+	     interactive-only guards, so `fish -l -c` is safe here. `service start` is a
+	     no-op when already healthy, so this stays idempotent. browser-launch
+	     brings up the real Chrome (Profile 5, DevTools port) that the
+	     browser-harness MCP relays into; without it every browser call fails.
+	     It is best-effort so a Chrome hiccup never blocks the service. -->
+	<key>ProgramArguments</key>
+	<array>
+		<string>/opt/homebrew/bin/fish</string>
+		<string>-l</string>
+		<string>-c</string>
+		<string>browser-launch; exec opencode service start</string>
+	</array>
+	<key>RunAtLoad</key>
+	<true/>
+	<key>StandardOutPath</key>
+	<string>/tmp/opencode-service.log</string>
+	<key>StandardErrorPath</key>
+	<string>/tmp/opencode-service.log</string>
+</dict>
+</plist>

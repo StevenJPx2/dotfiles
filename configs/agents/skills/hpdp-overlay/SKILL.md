@@ -118,25 +118,34 @@ branches. Never claim a visual change is verified from tests alone.
   builds and feature-side verification from the task worktree.
 - For CSP-strict merchants, use `bun run live-overlay <merchant> [url]`; do not substitute a
   localhost injection that the merchant CSP will block.
-- Before browser work, run `chrome-use browsers` and select the existing connected Chrome profile.
-  Pass `--browser <id>` to every command. Reuse its current tab, cookies, IP, and human-verification
-  state; do not launch a new browser, create a new profile/session, open `about:blank`, or clear
-  cookies between attempts.
+- Before browser work, run `browser-launch` (shell). It starts the real Chrome on Profile 5 if
+  needed, waits for the CDP port, and prints a four-line status (chrome / cdp / toggle /
+  extension). Every line must be OK before continuing; `browser-launch status` re-checks without
+  launching. If the toggle line is off, the user must tick it in
+  `chrome://inspect/#remote-debugging`; if the extension line is off, run `browser-launch ext`
+  and ask the user to load it unpacked. Chrome may show one "Allow remote debugging?" sheet on
+  the first connection after a Chrome launch — that is expected; ask the user to click Allow.
+- Drive Chrome through the `browser-harness` MCP (`tools["browser-harness"].*` in Code Mode).
+  The named daemon reuses the profile's cookies, IP, and human-verification state; do not launch
+  a new browser, create a new profile/session, or clear cookies between attempts. Keep one working
+  tab per merchant — check `browser_list_tabs()` and `browser_switch_tab({target})` to an existing
+  merchant tab before calling `browser_new_tab()`.
+- Immediately after attaching or opening the working tab, label it so it is distinguishable from
+  other agents' tabs in the shared Chrome: `browser-group "HPDP: <ticket>" green` (shell).
+  Harness tabs auto-land in the purple **Agents** group; this moves the current tab into a
+  per-ticket group. Run it again after `browser_new_tab()` so new tabs join the same group.
+  `browser-group --list` shows all groups.
 - Confirm the selected profile's identity (for example, `steven@adeptmind.ai`) and inspect its tabs
   before testing. If restarting Chrome leaves only a blank tab or no warm merchant session, state
   that caveat explicitly; do not describe the reopened profile as an existing warm session.
 - Verify the HPDP overlay itself, not only the host merchant PDP. Inject or load the applicable
   overlay bundle, confirm `#am-overlay` is mounted, and exercise the changed behavior through the
   overlay before recording a result.
-- For iOS Safari coverage, this fork of agent-browser supports Appium/XCUITest through
-  `chrome-use -p ios`: check devices with `chrome-use -p ios device list`, then use
-  `chrome-use -p ios --device "iPhone 15 Pro" open <url>`, `snapshot`, `tap`, and `screenshot`.
-  This is a separate iOS session, not the existing desktop Chrome session. It requires Xcode,
-  an installed iOS runtime, Appium, and the XCUITest driver. A simulator validates Safari layout
-  and Apple Pay button visibility; do not claim real wallet authorization without an Apple Pay
-  sandbox profile or a configured physical device.
-- The desktop chrome-use provider controls Chrome, not macOS Safari. Desktop Apple Pay sheet
-  verification requires an actual Safari session with Apple Pay configured.
+- For Safari coverage use the `safari` MCP; browser-harness controls Chrome only. Desktop Apple
+  Pay sheet verification requires an actual Safari session with Apple Pay configured. iOS Safari
+  layout and Apple Pay button visibility can be checked in the Xcode iOS Simulator with Safari's
+  Develop menu; do not claim real wallet authorization without an Apple Pay sandbox profile or a
+  configured physical device.
 - Unless the user explicitly asks not to, validate every UI change at mobile, tablet, and
   desktop resolutions. Use the available browser CLI/MCP to check the exact changed state at
   390px, 1024px, and 1440px.
@@ -149,29 +158,46 @@ branches. Never claim a visual change is verified from tests alone.
   interaction changes need a focused recording. Reject blank, clipped, full-page, or unrelated
   captures. For the full capture/upload workflow follow the `pr-screenshots` skill
   (repo `.agent/skills/pr-screenshots`); the bullets below are the short form.
-- Use `chrome-use` for the evidence artifact. For static changes, capture the same focused
-  selector on the base and feature branches:
-  `chrome-use screenshot "<selector>" /tmp/<ticket>-before.png` and
-  `chrome-use screenshot "<selector>" /tmp/<ticket>-after.png`.
+- Use the `browser-harness` MCP for the evidence artifact. For static changes, capture the same
+  focused element on the base and feature branches by clipping to its bounding box:
+
+  ```js
+  const bh = tools["browser-harness"];
+  const b = JSON.parse(await bh.browser_js({
+    expression: 'JSON.stringify(document.querySelector("<selector>").getBoundingClientRect())',
+  }));
+  const scale = await bh.browser_js({ expression: "devicePixelRatio" });
+  const shot = await bh.browser_cdp({ method: "Page.captureScreenshot", params: {
+    format: "png", clip: { x: b.x, y: b.y, width: b.width, height: b.height, scale },
+  }});
+  return shot.data; // base64 PNG — write it to /tmp/<ticket>-before.png with the shell tool
+  ```
+
+  Repeat on the feature branch as `/tmp/<ticket>-after.png`. Keep viewport size and scroll
+  position identical between the two captures.
 - Focused evidence must include the actual trigger/control and the changed result together.
   For a popover or tooltip, the crop must show the icon/button that opens it and the popover's
   relationship to that control; a crop containing only the floating panel is insufficient.
-- If `chrome-use --clip` coordinates do not match CSS coordinates, capture the full viewport first
-  and crop the identical pixel rectangle from both images with `sips`. Inspect both resulting
+- If the clip does not match the element (device-pixel-ratio drift), capture the full viewport
+  with `browser_screenshot({path})` first and crop the identical pixel rectangle from both images
+  with `sips`. Inspect both resulting
   images before uploading; reject crops that hide the trigger, clip the result, or show unrelated
   content.
-- For interaction changes, record only the reproduction flow. Start recording without a URL,
-  drive the already-open page, then stop it:
-  `chrome-use record start /tmp/<ticket>.webm` -> interact ->
-  `chrome-use record stop`.
+- For interaction changes, record only the reproduction flow. Start it, drive the already-open
+  page through the same MCP tools, then stop it:
+  `browser_start_recording({name: "<ticket>"})` -> interact -> `browser_stop_recording()`.
+  Render the saved frames with the shell tool: `browser-harness video init <ticket>`,
+  `video review <ticket>`, then `video export <ticket> --reviewed`; copy the exported MP4 to
+  `/tmp/<ticket>.mp4`. Recording must be enabled once via `browser-harness recordings enable`.
 - Record from a clean, deliberate state so the recorder captures real motion, not a near-static
   frame. Reset first (reload + re-inject, or close any open modal) so the flow starts fresh, keep
-  the viewport fixed for the whole take, and put a visible pause (`chrome-use wait 1000`-`2000`)
+  the viewport fixed for the whole take, and put a visible pause (`browser_wait({seconds: 1})`
+  to `2`)
   between each step (scroll into view -> click -> focus -> type -> submit -> results). The
   DOM-driven UI settles fast, so back-to-back commands with no waits produce only a handful of
   unique frames.
 - Before sharing a recording, confirm it actually has motion:
-  `ffmpeg -i /tmp/<ticket>.webm -vf "mpdecimate,showinfo" -f null - 2>&1 | grep -c "n:"`. A count
+  `ffmpeg -i /tmp/<ticket>.mp4 -vf "mpdecimate,showinfo" -f null - 2>&1 | grep -c "n:"`. A count
   in the low single digits means the take was effectively static — re-record with the deliberate
   pauses above rather than shipping a frozen clip.
 - To share a recording as a link (e.g. a Jira/Slack request), convert the WebM to an animated GIF

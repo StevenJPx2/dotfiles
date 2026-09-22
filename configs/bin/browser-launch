@@ -1,0 +1,130 @@
+#!/usr/bin/env fish
+# Ensure the real Chrome that browser-harness drives is running, on the right
+# profile, with its DevTools port live. Without this the harness relay has
+# nothing to attach to and every call fails.
+#
+#   browser-launch            start Chrome if needed, wait for CDP, print status
+#   browser-launch status     report only; exit 1 if anything is missing
+#   browser-launch ext        open chrome://extensions so the tab-groups
+#                             extension can be loaded unpacked (one-time)
+#
+# Remote debugging is enabled per browser instance from
+# chrome://inspect/#remote-debugging ("Allow remote debugging for this browser
+# instance"); Chrome then opens the port on every launch without flags.
+# Chrome 144+ still shows one "Allow remote debugging?" sheet per new CDP
+# connection — the named harness daemon holds exactly one.
+
+set -q BH_CHROME_APP; or set BH_CHROME_APP "Google Chrome"
+set -q BH_CHROME_PROFILE; or set BH_CHROME_PROFILE "Profile 5"
+set -q BH_CHROME_DATA; or set BH_CHROME_DATA "$HOME/Library/Application Support/Google/Chrome"
+set -q BH_EXT_DIR; or set BH_EXT_DIR "$HOME/.config/browser-harness/ext"
+
+set -g port_file "$BH_CHROME_DATA/DevToolsActivePort"
+
+function chrome_running
+    pgrep -xq "Google Chrome"
+end
+
+function cdp_port
+    test -f $port_file; or return 1
+    set -l port (head -n1 $port_file | string trim)
+    test -n "$port"; or return 1
+    nc -z 127.0.0.1 $port 2>/dev/null; or return 1
+    echo $port
+end
+
+function toggle_enabled
+    python3 -c "
+import json, sys
+d = json.load(open(sys.argv[1]))
+sys.exit(0 if d.get('devtools', {}).get('remote_debugging', {}).get('user-enabled') is True else 1)
+" "$BH_CHROME_DATA/Local State"
+end
+
+function ext_loaded
+    # Unpacked extensions are recorded by path in the profile's preferences.
+    for f in "$BH_CHROME_DATA/$BH_CHROME_PROFILE/Preferences" "$BH_CHROME_DATA/$BH_CHROME_PROFILE/Secure Preferences"
+        test -f "$f"; and grep -q "$BH_EXT_DIR" "$f"; and return 0
+    end
+    return 1
+end
+
+function wait_for_cdp
+    for _ in (seq 1 40)
+        cdp_port >/dev/null; and return 0
+        sleep 0.5
+    end
+    return 1
+end
+
+function open_profile_url
+    open -na "$BH_CHROME_APP" --args --profile-directory="$BH_CHROME_PROFILE" $argv
+end
+
+function report
+    set -l ok 0
+
+    if chrome_running
+        echo "chrome     running ($BH_CHROME_PROFILE)"
+    else
+        echo "chrome     not running"
+        set ok 1
+    end
+
+    if set -l port (cdp_port)
+        echo "cdp        listening on 127.0.0.1:$port"
+    else
+        echo "cdp        port not live"
+        set ok 1
+    end
+
+    if toggle_enabled
+        echo "toggle     chrome://inspect remote debugging enabled"
+    else
+        echo "toggle     DISABLED — open chrome://inspect/#remote-debugging and tick it"
+        set ok 1
+    end
+
+    if ext_loaded
+        echo "extension  tab-groups loaded from $BH_EXT_DIR"
+    else
+        echo "extension  not loaded — run: browser-launch ext"
+        set ok 1
+    end
+
+    return $ok
+end
+
+switch "$argv[1]"
+    case status
+        report
+    case ext
+        if not test -f "$BH_EXT_DIR/manifest.json"
+            echo "extension files missing at $BH_EXT_DIR — deploy configs/browser-harness-ext first" >&2
+            exit 1
+        end
+        open_profile_url "chrome://extensions/"
+        echo "In chrome://extensions ($BH_CHROME_PROFILE): enable Developer mode → Load unpacked → $BH_EXT_DIR"
+    case ''
+        if not chrome_running
+            echo "launching $BH_CHROME_APP with $BH_CHROME_PROFILE"
+            open_profile_url
+        end
+
+        if not wait_for_cdp
+            if toggle_enabled
+                echo "Chrome is up but the DevTools port never came live" >&2
+            else
+                echo "remote debugging is off for this browser; opening chrome://inspect/#remote-debugging" >&2
+                open_profile_url "chrome://inspect/#remote-debugging"
+                echo 'Tick "Allow remote debugging for this browser instance", then rerun browser-launch' >&2
+            end
+            report
+            exit 1
+        end
+
+        report
+    case '*'
+        echo "usage: browser-launch [status|ext]" >&2
+        exit 2
+end

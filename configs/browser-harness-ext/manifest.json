@@ -1,0 +1,10 @@
+{
+  "manifest_version": 3,
+  "name": "Browser Harness Tab Groups",
+  "version": "0.1.0",
+  "description": "Keeps browser-harness agent tabs in Chrome tab groups. Auto-groups 🐴-marked tabs; exposes bhGroupByTitle() for per-agent groups via CDP.",
+  "permissions": ["tabs", "tabGroups"],
+  "background": {
+    "service_worker": "bh_tab_groups_sw.js"
+  }
+}
