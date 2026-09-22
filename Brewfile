@@ -206,7 +206,7 @@ brew "ollama", restart_service: :changed
 # Search tool like grep and The Silver Searcher
 brew "ripgrep"
 # AI coding agent, built for the terminal
-brew "opencode"
+brew "opencode-v2"
 # Cryptography and SSL/TLS Toolkit
 brew "openssl@1.1"
 # Shell command parallelization utility
@@ -374,8 +374,6 @@ cask "linearmouse"
 cask "mullvad-vpn"
 # Game launcher with the ability to run Windows games
 cask "mythic"
-# AI coding agent desktop client
-cask "opencode-desktop"
 # Replacement for Docker Desktop
 cask "orbstack"
 # VPN client focusing on security

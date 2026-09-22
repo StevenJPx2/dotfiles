@@ -2,163 +2,135 @@
   "$schema": "https://opencode.ai/config.json",
   "instructions": [
   ],
-  "plugin": [
-    "@cortexkit/opencode-anthropic-auth@1.22.0",
-    "@cortexkit/aft-opencode@0.55.0",
-    "@cortexkit/opencode-magic-context@0.42.4",
-    "@whisperopencode/push@0.3.0",
-    "@dietrichgebert/ponytail@4.9.0",
-    "@fdcn/sourcefed@0.2.9",
+  "plugins": [
+    "@ex-machina/opencode-anthropic-auth@2.0.0-next.2",
+    "@fdcn/sourcefed@0.3.0",
   ],
-  "compaction": { "auto": false, "prune": false },
   "model": "opencode-go/mimo-v2.5-pro",
-  "small_model": "opencode/minimax-m2.5-free",
   "mcp": {
-    "homeassistant": {
-      "type": "remote",
-      "url": "http://192.168.0.40:8123/api/mcp",
-      "enabled": true,
-      "oauth": false,
-      "headers": {
-        "Authorization": "Bearer {env:HOMEASSISTANT_TOKEN}",
+    "servers": {
+      "supermemory": {
+        "type": "remote",
+        "url": "https://mcp.supermemory.ai/mcp",
+      },
+      "homeassistant": {
+        "type": "remote",
+        "url": "http://192.168.0.40:8123/api/mcp",
+        "oauth": false,
+        "headers": {
+          "Authorization": "Bearer {env:HOMEASSISTANT_TOKEN}",
+        },
+      },
+      "jina": {
+        "type": "remote",
+        "url": "https://mcp.jina.ai/v1",
+        "headers": {
+          "Authorization": "Bearer ${env:JINA_API_KEY}"
+        }
+      },
+      "safari": {
+        "type": "local",
+        "command": ["npx", "-y", "safari-mcp@2.15.11"],
+      },
+      "context7": {
+        "type": "local",
+        "command": ["npx", "-y", "@upstash/context7-mcp@latest"],
+      },
+      "playwright": {
+        "type": "local",
+        "command": ["npx", "@playwright/mcp@latest"],
+        "disabled": true,
+      },
+      "chrome-use": {
+        "type": "local",
+        "command": ["/usr/bin/env", "-u", "AGENT_BROWSER_PROVIDER", "/usr/local/bin/chrome-use", "mcp", "--tools", "all"],
+      },
+      "cap": {
+        "type": "local",
+        "command": ["cap", "mcp", "serve"],
+      },
+      "iMCP": {
+        "type": "local",
+        "command": ["/Applications/iMCP.app/Contents/MacOS/imcp-server"],
+      },
+      "affinity": {
+        "type": "local",
+        "command": ["node", "/Users/stevenjohn/Documents/Projects/affinity-mcp/dist/index.js"],
+      },
+      "nuxt-ui": {
+        "type": "remote",
+        "url": "https://ui.nuxt.com/mcp",
+        "disabled": true,
+      },
+      "nuxt": {
+        "type": "remote",
+        "url": "https://nuxt.com/mcp",
+        "disabled": true,
+      },
+      "grep-app": {
+        "type": "remote",
+        "url": "https://mcp.grep.app",
+        "oauth": false,
+      },
+      "figma": {
+        "type": "remote",
+        "url": "https://mcp.figma.com/mcp",
+        "oauth": {
+          "client_id": "{env:FIGMA_CLIENT_ID}",
+          "client_secret": "{env:FIGMA_CLIENT_SECRET}",
+        },
+        "disabled": true,
+      },
+      "tampermonkey": {
+        "type": "local",
+        "command": ["npx", "-y", "tampermonkey-mcp@latest"],
+      },
+      "cloudflare": {
+        "type": "remote",
+        "url": "https://mcp.cloudflare.com/mcp",
+        "oauth": {},
+      },
+      "google-workspace-personal": {
+        "type": "local",
+        "command": [
+          "sh",
+          "-c",
+          "cd \"$HOME/.config/google-workspace-personal\" && GEMINI_CLI_WORKSPACE_FORCE_FILE_STORAGE=true exec node workspace-server/dist/index.js --debug --use-dot-names",
+        ],
+      },
+      "google-workspace-work": {
+        "type": "local",
+        "command": [
+          "sh",
+          "-c",
+          "cd \"$HOME/.config/google-workspace-work\" && GEMINI_CLI_WORKSPACE_FORCE_FILE_STORAGE=true exec node workspace-server/dist/index.js --debug --use-dot-names",
+        ],
       },
     },
-    "jina": {
-      "type": "remote",
-      "url": "https://mcp.jina.ai/v1",
-      "enabled": true,
-      "headers": {
-        "Authorization": "Bearer ${env:JINA_API_KEY}"
-      }
-    },
-    "safari": {
-      "type": "local",
-      "command": ["npx", "-y", "safari-mcp@2.15.11"],
-      "enabled": true,
-    },
-    "context7": {
-      "type": "local",
-      "command": ["npx", "-y", "@upstash/context7-mcp@latest"],
-      "enabled": true,
-    },
-    "playwright": {
-      "type": "local",
-      "command": ["npx", "@playwright/mcp@latest"],
-      "enabled": false,
-    },
-    "chrome-use": {
-      "type": "local",
-      "command": ["/usr/bin/env", "-u", "AGENT_BROWSER_PROVIDER", "/usr/local/bin/chrome-use", "mcp", "--tools", "all"],
-      "enabled": true,
-    },
-    "cap": {
-      "type": "local",
-      "command": ["cap", "mcp", "serve"],
-      "enabled": true,
-    },
-    "iMCP": {
-      "type": "local",
-      "command": ["/Applications/iMCP.app/Contents/MacOS/imcp-server"],
-      "enabled": true,
-    },
-    "affinity": {
-      "type": "local",
-      "command": ["node", "/Users/stevenjohn/Documents/Projects/affinity-mcp/dist/index.js"],
-      "enabled": true,
-    },
-    "nuxt-ui": {
-      "type": "remote",
-      "url": "https://ui.nuxt.com/mcp",
-      "enabled": false,
-    },
-    "nuxt": {
-      "type": "remote",
-      "url": "https://nuxt.com/mcp",
-      "enabled": false,
-    },
-    "grep-app": {
-      "type": "remote",
-      "url": "https://mcp.grep.app",
-      "enabled": true,
-      "oauth": false,
-    },
-    "figma": {
-      "type": "remote",
-      "url": "https://mcp.figma.com/mcp",
-      "oauth": {
-        "clientId": "{env:FIGMA_CLIENT_ID}",
-        "clientSecret": "{env:FIGMA_CLIENT_SECRET}",
-      },
-      "enabled": false,
-    },
-    "tampermonkey": {
-      "type": "local",
-      "command": ["npx", "-y", "tampermonkey-mcp@latest"],
-      "enabled": true,
-    },
-    "cloudflare": {
-      "type": "remote",
-      "url": "https://mcp.cloudflare.com/mcp",
-      "enabled": true,
-      "oauth": {},
-    },
-    "google-workspace-personal": {
-      "type": "local",
-      "command": [
-        "sh",
-        "-c",
-        "cd \"$HOME/.config/google-workspace-personal\" && GEMINI_CLI_WORKSPACE_FORCE_FILE_STORAGE=true exec node workspace-server/dist/index.js --debug --use-dot-names",
-      ],
-      "enabled": true,
-    },
-    "google-workspace-work": {
-      "type": "local",
-      "command": [
-        "sh",
-        "-c",
-        "cd \"$HOME/.config/google-workspace-work\" && GEMINI_CLI_WORKSPACE_FORCE_FILE_STORAGE=true exec node workspace-server/dist/index.js --debug --use-dot-names",
-      ],
-      "enabled": true,
-    },
-    "swiggy-food": {
-      "type": "remote",
-      "url": "https://mcp.swiggy.com/food",
-      "enabled": true,
-    },
-    "swiggy-instamart": {
-      "type": "remote",
-      "url": "https://mcp.swiggy.com/im",
-      "enabled": true,
-    },
-    "swiggy-dineout": {
-      "type": "remote",
-      "url": "https://mcp.swiggy.com/dineout",
-      "enabled": true,
-    },
   },
-  "permission": {
-    "websearch": "allow",
-    "external_directory": {
-      "./*": "allow",
-      "~/.claude/skills/*": "allow",
-      "~/.agents/skills/*": "allow",
-      "/tmp/*": "allow",
-      "/private/tmp/*": "allow",
-      "/var/tmp/*": "allow",
-      "/private/var/tmp/*": "allow",
-      "/private/var/folders/*": "allow",
-      "/dev/*": "allow",
-    },
-  },
-  "agent": {
+  "permissions": [
+    { "action": "websearch", "resource": "*", "effect": "allow" },
+    { "action": "external_directory", "resource": "./*", "effect": "allow" },
+    { "action": "external_directory", "resource": "~/.claude/skills/*", "effect": "allow" },
+    { "action": "external_directory", "resource": "~/.agents/skills/*", "effect": "allow" },
+    { "action": "external_directory", "resource": "/tmp/*", "effect": "allow" },
+    { "action": "external_directory", "resource": "/private/tmp/*", "effect": "allow" },
+    { "action": "external_directory", "resource": "/var/tmp/*", "effect": "allow" },
+    { "action": "external_directory", "resource": "/private/var/tmp/*", "effect": "allow" },
+    { "action": "external_directory", "resource": "/private/var/folders/*", "effect": "allow" },
+    { "action": "external_directory", "resource": "/dev/*", "effect": "allow" },
+  ],
+  "agents": {
     "build": {
       "mode": "primary",
       "model": "openai/gpt-5.6-luna",
     },
     "plan": {
       "mode": "primary",
-      "model": "openai/gpt-5.6-luna",
-      "variant": "max",
+      "model": "openai/gpt-5.6-luna#max",
+    },
+    "title": {
+      "model": "opencode/minimax-m2.5-free",
     },
   },
 }

@@ -4,7 +4,7 @@
 #   pi-serve start | stop | restart | status | logs [lines] | attach
 #
 # Architecture: `pi` runs inside a persistent tmux session; ttyd exposes that
-# session as a web terminal. Single-instance guard mirrors opencode-serve.
+# session as a web terminal. Single-instance guarded by an atomic lock.
 
 set -q PI_SERVE_PORT; or set PI_SERVE_PORT 7681
 set -q PI_SERVE_HOST; or set PI_SERVE_HOST 0.0.0.0
