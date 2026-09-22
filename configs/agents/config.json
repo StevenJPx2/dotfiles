@@ -1,3 +1,4 @@
 {
-  "install_path": "~/.agents"
+  "install_path": "~/.agents",
+  "post_install": "command -v macos-harness >/dev/null 2>&1 && macos-harness skill > ~/.agents/skills/macos-harness/SKILL.md || true"
 }

@@ -1,7 +1,30 @@
 {
   "$schema": "https://opencode.ai/v2/cli.json",
   "theme": { "name": "gruvbox" },
-  "plugins": [
-    "@fdcn/sourcefed@0.3.2"
-  ]
+  "plugins": ["@fdcn/sourcefed@0.3.2"],
+  "animations": true,
+  "session": {
+    "sidebar": "auto",
+    "scrollbar": false,
+    "thinking": "show",
+    "markdown": "rendered",
+    "grouping": "none",
+    "image_preview": true,
+    "permissions": "autoaccept"
+  },
+  "tabs": {
+    "indicators": "status",
+    "scope": "global",
+    "layout": "horizontal"
+  },
+  "diffs": {
+    "single": false
+  },
+  "prompt": {
+    "image_preview": true
+  },
+  "debug": {
+    "devtools": true,
+    "turn_tokens": true
+  }
 }

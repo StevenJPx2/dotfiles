@@ -1,0 +1,41 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base
+  title="Example moved to the Clarity approach"
+  description="The Clarity worked example now lives on the approach page."
+  markdownPath="/approach/index.md"
+  skipHref="#content"
+  skipLabel="Skip to the new page link"
+  noindex
+>
+  <main class="sheet moved" id="content">
+    <div class="row">
+      <div class="col">
+        <p class="label">Example</p>
+        <h1>The example has moved.</h1>
+        <p>
+          It now sits inside the fuller explanation of how Clarity works and how the skill is
+          evaluated.
+        </p>
+        <p><a href="/approach/#example">Read the approach</a></p>
+      </div>
+    </div>
+  </main>
+</Base>
+
+<style>
+  .moved { padding: clamp(4rem, 12vw, 8rem) 0; }
+  .label {
+    margin: 0 0 0.8rem; font-family: var(--font-sans); font-size: 0.72rem;
+    letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent);
+  }
+  h1 { font-family: var(--font-sans); font-size: clamp(2.1rem, 6vw, 3.2rem); color: var(--fg-bright); }
+  p { max-width: 35rem; }
+</style>
+
+<script>
+  const target = `/approach/${window.location.hash || '#example'}`;
+  window.location.replace(target);
+</script>
