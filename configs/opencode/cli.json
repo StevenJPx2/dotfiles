@@ -2,6 +2,6 @@
   "$schema": "https://opencode.ai/v2/cli.json",
   "theme": { "name": "gruvbox" },
   "plugins": [
-    "@fdcn/sourcefed@0.3.0"
+    "@fdcn/sourcefed@0.3.1"
   ]
 }
