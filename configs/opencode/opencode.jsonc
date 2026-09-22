@@ -4,7 +4,7 @@
   ],
   "plugins": [
     "@ex-machina/opencode-anthropic-auth@2.0.0-next.2",
-    "@fdcn/sourcefed@0.3.1",
+    "@fdcn/sourcefed@0.3.2",
   ],
   "model": "opencode-go/mimo-v2.5-pro",
   "mcp": {
