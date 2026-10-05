@@ -10,7 +10,7 @@
   "steps": [
     {
       "id": "worth-keeping",
-      "question": "Did this turn produce something a permanent memory should keep: a decision, a fact or preference the user stated, something learned about the user or their projects, or a non-trivial task finished?",
+      "question": "Did the user state something new in this turn that a permanent memory should keep: a fact about themselves or their projects, a preference, or a decision?",
       "yes_at_or_above": 0.7,
       "minimum_confidence": 0.4
     }
