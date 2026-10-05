@@ -4,13 +4,16 @@
 <dict>
 	<key>Label</key>
 	<string>xyz.stjhn.opencode</string>
-	<!-- Cold-boot reachability for https://oc.stjhn.xyz (service port 4096). Launch
+	<!-- Cold-boot reachability for https://oc.stjhn.xyz (service port 40960). Launch
 	     via a login fish shell so the background service inherits the SAME PATH and
 	     secrets (HOMEASSISTANT_TOKEN, JINA_API_KEY, ...) as an interactive session.
 	     launchd's bare env otherwise breaks npx/node-spawned MCPs (NotFound) and
 	     {env:...} MCP auth (401). config.fish sources secrets.fish with no
-	     interactive-only guards, so `fish -l -c` is safe here. `service start` is a
-	     no-op when already healthy, so this stays idempotent. browser-launch
+	     interactive-only guards, so `fish -l -c` is safe here. Hostname, port
+	     (40960) and password live in OpenCode's managed service config (set by
+	     the launchd post_install), so ANY client that auto-starts the service
+	     gets the tunnel-reachable listener, not a loopback ephemeral port.
+	     `service start` is a no-op when already healthy. browser-launch
 	     brings up the real Chrome (Profile 5, DevTools port) that the
 	     browser-harness MCP relays into; without it every browser call fails.
 	     It is best-effort so a Chrome hiccup never blocks the service. -->

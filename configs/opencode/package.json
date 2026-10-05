@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "@opencode/plugin": "2.0.12"
+    "@opencode/plugin": "2.0.12",
+    "marked": "17.0.1"
   }
 }

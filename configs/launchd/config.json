@@ -1,4 +1,4 @@
 {
   "install_path": "~/Library/LaunchAgents",
-  "post_install": "launchctl bootout gui/$(id -u)/xyz.stjhn.opencode2 2>/dev/null; launchctl bootout gui/$(id -u)/xyz.stjhn.opencode 2>/dev/null; launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/xyz.stjhn.opencode.plist && echo loaded xyz.stjhn.opencode"
+  "post_install": "/opt/homebrew/bin/fish -l -c 'test -n \"$OPENCODE_SERVER_PASSWORD\"; and opencode service set hostname 0.0.0.0; and opencode service set port 40960; and opencode service set password \"$OPENCODE_SERVER_PASSWORD\"' || echo 'opencode service config NOT set (is OPENCODE_SERVER_PASSWORD in secrets.fish?)'; launchctl bootout gui/$(id -u)/xyz.stjhn.opencode2 2>/dev/null; launchctl bootout gui/$(id -u)/xyz.stjhn.opencode 2>/dev/null; launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/xyz.stjhn.opencode.plist && echo loaded xyz.stjhn.opencode"
 }

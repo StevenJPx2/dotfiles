@@ -4,19 +4,14 @@
     "@ex-machina/opencode-anthropic-auth@2.0.0-next.2",
     "@fdcn/sourcefed@0.3.4",
   ],
-  "model": "openai/gpt-5.6-luna",
+  "model": "anthropic/claude-opus-5-5",
   "mcp": {
     "servers": {
-      "supermemory": {
-        "type": "remote",
-        "url": "https://mcp.supermemory.ai/mcp",
-      },
       "homeassistant": {
-        "type": "remote",
-        "url": "http://192.168.0.40:8123/api/mcp",
-        "oauth": false,
-        "headers": {
-          "Authorization": "Bearer {env:HOMEASSISTANT_TOKEN}",
+        "type": "local",
+        "command": ["python3", "/Users/stevenjohn/.config/opencode/homeassistant-mcp-proxy.py"],
+        "environment": {
+          "HOMEASSISTANT_TOKEN": "{env:HOMEASSISTANT_TOKEN}",
         },
       },
       "jina": {
@@ -43,13 +38,6 @@
         "type": "local",
         "command": ["uvx", "--from", "browser-harness[mcp]", "browser-harness-mcp"],
         "environment": {
-          // One long-lived CDP connection to the user's real Chrome, found via
-          // its DevToolsActivePort file. Do not set BU_CDP_URL: that switches
-          // the harness to "remote CDP" mode, which skips the spawn lock and
-          // parked-daemon detection, so concurrent OpenCode instances each
-          // open their own connection and trigger another "Allow remote
-          // debugging?" sheet. A stable non-default name gives this daemon
-          // its own dedicated 🐴-marked tab instead of another agent's tab.
           "BU_NAME": "opencode-browser",
           "BH_TAB_MARKER": "1",
         },
@@ -126,14 +114,6 @@
     { "action": "external_directory", "resource": "/dev/*", "effect": "allow" },
   ],
   "agents": {
-    "build": {
-      "mode": "primary",
-      "model": "openai/gpt-5.6-luna-fast",
-    },
-    "plan": {
-      "mode": "primary",
-      "model": "openai/gpt-5.6-luna-fast#max",
-    },
     "title": {
       "model": "opencode/minimax-m2.5-free",
     },

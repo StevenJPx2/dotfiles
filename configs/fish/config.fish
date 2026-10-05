@@ -10,6 +10,14 @@ set -gx SKIM_DEFAULT_COMMAND "fd --type f || git ls-tree -r --name-only HEAD || 
 set -gx OPENCODE_EXPERIMENTAL_CODE_MODE 1
 set -gx RUSTC_WRAPPER "sccache"
 
+# Keep the Anthropic auth plugin aligned with the installed Claude Code CLI.
+if command -q claude
+  set -l claude_version (claude --version 2>/dev/null | string match -r '^[0-9]+\.[0-9]+\.[0-9]+')
+  if test (count $claude_version) -gt 0
+    set -gx ANTHROPIC_CLAUDE_CODE_VERSION $claude_version[1]
+  end
+end
+
 source "$HOME/.cargo/env.fish"
 set -q XDG_CONFIG_HOME || set XDG_CONFIG_HOME "$HOME/.config"
 
