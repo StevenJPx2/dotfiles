@@ -1,0 +1,24 @@
+{
+  "schema_version": 2,
+  "id": "optmem-finish-memo",
+  "name": "OptMem: finish what memo asked",
+  "on": "tool_result",
+  "when": {
+    "tools": ["memo_wake", "memo_note", "memo_nap"],
+    "result_includes": ["Compress memories #", "Not awake yet", "Cannot wake"],
+    "session_kind": "top_level"
+  },
+  "steps": [
+    {
+      "id": "own-call",
+      "question": "Is this call the agent using one of its memory tools (memo_wake, memo_note or memo_nap)?",
+      "yes_at_or_above": 0.5,
+      "minimum_confidence": 0.2
+    }
+  ],
+  "then": {
+    "delivery": "steer",
+    "text": "Chauffeur: Finish the instructions in OptMem's result before other work. Answer pending compressions with memo_nap until none remain. If wake is unfinished, continue its named part and snapshot, or retry wake after compressing, until it prints \"You are awake.\""
+  },
+  "cooldown_seconds": 300
+}

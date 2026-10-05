@@ -1,0 +1,23 @@
+{
+  "schema_version": 2,
+  "id": "optmem-note-at-turn-end",
+  "name": "OptMem: note what lasts",
+  "on": "turn_end",
+  "when": {
+    "tools_not_called": ["memo_note"],
+    "session_kind": "top_level"
+  },
+  "steps": [
+    {
+      "id": "worth-keeping",
+      "question": "Did this turn produce something a permanent memory should keep: a decision, a fact or preference the user stated, something learned about the user or their projects, or a non-trivial task finished?",
+      "yes_at_or_above": 0.7,
+      "minimum_confidence": 0.4
+    }
+  ],
+  "then": {
+    "delivery": "resume",
+    "text": "Chauffeur: Before you stop, record what this turn taught you with memo_note: one line each, nothing you have already noted. Then end your turn."
+  },
+  "once": true
+}

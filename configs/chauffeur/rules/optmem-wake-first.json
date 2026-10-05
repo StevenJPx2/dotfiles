@@ -1,0 +1,42 @@
+{
+  "schema_version": 2,
+  "id": "optmem-wake-first",
+  "name": "OptMem: wake first",
+  "on": "tool_result",
+  "when": {
+    "tools": [
+      "read",
+      "edit",
+      "write",
+      "patch",
+      "shell",
+      "grep",
+      "glob",
+      "question",
+      "subagent",
+      "webfetch",
+      "websearch",
+      "execute",
+      "memo_note",
+      "memo_nap",
+      "memo_recall",
+      "memo_zoom"
+    ],
+    "history": "session",
+    "tools_not_called": ["memo_wake"],
+    "session_kind": "top_level"
+  },
+  "steps": [
+    {
+      "id": "before-wake",
+      "question": "Is this call part of the agent's own work, made before it has read its OptMem memory with memo_wake?",
+      "yes_at_or_above": 0.5,
+      "minimum_confidence": 0.2
+    }
+  ],
+  "then": {
+    "delivery": "steer",
+    "text": "Chauffeur: Call memo_wake before anything else. OptMem holds what you already know and decided; read it to the end of its output, then carry on."
+  },
+  "cooldown_seconds": 60
+}

@@ -1,0 +1,4 @@
+{
+  "install_path": "~/.config/chauffeur",
+  "post_install": "ln -sfn ~/Documents/Projects/chauffeur/skills ~/.config/chauffeur/skills"
+}
