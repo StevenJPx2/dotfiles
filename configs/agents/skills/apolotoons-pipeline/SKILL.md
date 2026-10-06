@@ -1,6 +1,7 @@
 ---
 name: apolotoons-pipeline
-description: Manage the Apolotoons comic production pipeline — scaffold new episode folders, remove speech bubbles, upscale generated comic strips with Upscayl, and cut strips into panels. Runs manually on request (no background watcher); the agent runs the pipeline and verifies the panel cuts. Use when the user mentions Apolotoons, comic episodes, comic strips, panel cutting, upscaling slides, bubble removal, or the Generated/Cleaned/Upscaled/Panels folders.
+description: >-
+  Run the Apolotoons comic production pipeline on request: scaffold episode folders, remove speech bubbles, upscale strips with Upscayl, cut strips into panels, and verify the cuts. Use when the user mentions Apolotoons, comic episodes or strips, panel cutting, upscaling slides, bubble removal, or the Generated/Cleaned/Upscaled/Panels folders.
 ---
 
 # Apolotoons Pipeline

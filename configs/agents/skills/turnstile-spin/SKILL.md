@@ -1,6 +1,7 @@
 ---
 name: turnstile-spin
-description: Set up Cloudflare Turnstile end-to-end in a project. Scan the codebase, create the widget via the Cloudflare API, embed it where user requests need bot verification (form submissions, SPA actions, API endpoints, download links, comment or vote submissions, etc.), wire canonical server-side siteverify in the customer's existing backend, validate, and persist the skill. Load this when a user asks to add Turnstile, set up CAPTCHA, protect a form or endpoint from bots, or fix a Turnstile integration. Mirrors developers.cloudflare.com/turnstile/spin.
+description: >-
+  Set up Cloudflare Turnstile end to end: scan the codebase, create the widget through the Cloudflare API, embed it where requests need bot verification (forms, SPA actions, API endpoints, downloads), add server-side siteverify, and validate. Use when asked to add Turnstile or a CAPTCHA, protect a form or endpoint from bots, or fix a Turnstile integration.
 references:
   - vanilla-html
   - nextjs-app

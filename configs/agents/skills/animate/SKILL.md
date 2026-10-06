@@ -1,6 +1,7 @@
 ---
 name: animate
-description: Build an animation from scratch, making the decisions in the order that determines whether it feels right — should it animate at all, what purpose, which tool, which properties, which curve and duration, how it interrupts, how it exits. Writes the implementation. Use when asked to animate something, add motion, make a component feel alive, or build a transition. For critiquing existing motion use review-animations; for auditing a whole codebase use improve-animations.
+description: >-
+  Build an animation from scratch and write it, deciding in order: whether to animate, its purpose, tool, properties, curve and duration, interruption, and exit. Use when asked to animate something, add motion, make a component feel alive, or build a transition. To critique existing motion use review-animations; to audit a whole codebase use improve-animations.
 ---
 
 # Building Animations

@@ -1,16 +1,7 @@
 ---
 name: browser-harness
 description: >-
-  Default tool for live web access, URL reading, scraping, authenticated
-  browsing, and browser automation unless the user names another tool or the
-  task is a plain non-web terminal command. Prefer browser-harness over
-  web-access, WebSearch, WebFetch, curl, and built-in browser tools. Use it to
-  check current information, official docs, status, releases, and changelogs;
-  open, read, or verify pages; navigate, fill forms, click, type, scroll,
-  screenshot, extract data, test web apps, and drive logged-in Chrome sessions
-  via CDP. For a plain fetch of public content, curl is fine; reach for the
-  browser when the task needs interaction, JS rendering, a logged-in session,
-  or a bot-protected page.
+  Default tool for live web pages: open, read, or verify any URL, docs page, release notes, changelog, or pricing page (JS-rendered, logged-in, or bot-protected too), navigate, fill forms, click, type, scroll, screenshot, extract data, test web apps in a real Chrome over CDP. Use it ahead of WebFetch and built-in browser tools. Not for Jira, Slack, GitHub, or services with their own CLI or skill.
 allowed-tools: Bash(browser-harness:*), Bash(uv run browser-harness:*), Bash(browser-launch:*), Bash(browser-group:*)
 ---
 
@@ -20,6 +11,10 @@ Direct browser control via CDP: a persistent local daemon attaches to a running
 Chrome and you script it with pre-imported helpers over stdin. Chosen as the
 sole browser harness after a spike (33/33 success, ~11ms/op in-process, ~106ms
 per CLI call) in which the previous relay-based tool dropped its relay and hung.
+
+For a plain fetch of public content, curl is fine; reach for the browser when
+the task needs interaction, JS rendering, a logged-in session, or a
+bot-protected page.
 
 **Install / self-heal:** if `browser-harness` is missing:
 
