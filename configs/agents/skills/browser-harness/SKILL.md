@@ -1,8 +1,8 @@
 ---
 name: browser-harness
 description: >-
-  Default tool for live web pages: open, read, or verify any URL, docs page, release notes, changelog, or pricing page (JS-rendered, logged-in, or bot-protected too), navigate, fill forms, click, type, scroll, screenshot, extract data, test web apps in a real Chrome over CDP. Use it ahead of WebFetch and built-in browser tools. Not for Jira, Slack, GitHub, or services with their own CLI or skill.
-allowed-tools: Bash(browser-harness:*), Bash(uv run browser-harness:*), Bash(browser-launch:*), Bash(browser-group:*)
+  Default tool for live web pages: open, read, or verify any URL, docs, release notes, changelog, or pricing page (JS-rendered, logged-in, bot-protected), navigate, fill forms, click, type, scroll, screenshot, extract data, test web apps in real Chrome over CDP, any profile. Use it ahead of WebFetch and built-in browser tools. Not for Jira, Slack, GitHub, or services with their own CLI or skill.
+allowed-tools: Bash(browser-harness:*), Bash(uv run browser-harness:*), Bash(browser-launch:*), Bash(browser-group:*), Bash(browser-profile:*)
 ---
 
 # browser-harness
