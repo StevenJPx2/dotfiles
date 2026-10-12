@@ -1,0 +1,121 @@
+#!/usr/bin/env -S uvx --from browser-harness[mcp] python
+"""Attach the browser-harness daemon to a tab in another Chrome profile.
+
+    browser-profile --list                  show profiles (dir, name, account)
+    browser-profile <profile> [url]         open a tab in that profile and attach
+
+<profile> matches a profile directory ("Profile 1"), its name, or its signed-in
+account email, case-insensitively; a unique substring is enough. The default url
+is chrome://newtab/.
+
+Every profile in the running Chrome shares one DevTools connection, so the
+daemon can drive any of them, but Target.createTarget (new_tab) always opens in
+the profile Chrome was launched with. This opens a window through the profile
+itself, waits for its tab to appear over CDP, and switches the daemon to it.
+After that, the MCP browser_* tools drive that tab; browser_new_tab still opens
+in the launch profile, so navigate with browser_goto instead.
+
+Honors BU_NAME (default opencode-browser) and BH_CHROME_APP/BH_CHROME_DATA like
+browser-launch.
+"""
+import json
+import os
+import subprocess
+import sys
+import time
+from pathlib import Path
+
+os.environ.setdefault("BU_NAME", "opencode-browser")
+
+from browser_harness.admin import ensure_daemon
+from browser_harness.helpers import cdp, switch_tab, wait_for_load
+
+CHROME_APP = os.environ.get("BH_CHROME_APP", "Google Chrome")
+CHROME_DATA = Path(os.environ.get(
+    "BH_CHROME_DATA", Path.home() / "Library/Application Support/Google/Chrome"))
+
+
+def profiles():
+    cache = json.loads((CHROME_DATA / "Local State").read_text())["profile"]["info_cache"]
+    return [
+        {"dir": d, "name": v.get("name", ""), "account": v.get("user_name", "")}
+        for d, v in cache.items()
+    ]
+
+
+def resolve(query):
+    q = query.lower()
+    all_profiles = profiles()
+
+    for p in all_profiles:
+        if q in (p["dir"].lower(), p["name"].lower(), p["account"].lower()):
+            return p
+
+    hits = [p for p in all_profiles if any(q in p[k].lower() for k in ("dir", "name", "account"))]
+
+    if len(hits) == 1:
+        return hits[0]
+
+    if not hits:
+        sys.exit(f"no Chrome profile matches {query!r}; see: browser-profile --list")
+
+    names = ", ".join(f"{p['dir']} ({p['account'] or p['name']})" for p in hits)
+    sys.exit(f"{query!r} matches several profiles: {names}")
+
+
+def page_targets():
+    return {t["targetId"]: t for t in cdp("Target.getTargets")["targetInfos"] if t["type"] == "page"}
+
+
+def same_page(a, b):
+    return a.rstrip("/") == b.rstrip("/")
+
+
+def open_in_profile(profile, url):
+    before = set(page_targets())
+    subprocess.run(
+        ["open", "-na", CHROME_APP, "--args", f"--profile-directory={profile['dir']}", url],
+        check=True,
+    )
+
+    for _ in range(100):
+        fresh = [t for tid, t in page_targets().items() if tid not in before]
+        match = next((t for t in fresh if same_page(t["url"], url)), None)
+
+        if match:
+            return match
+
+        if fresh and not url.startswith("chrome://"):
+            # Redirects can change the url before it lands; take the only new tab.
+            if len(fresh) == 1 and fresh[0]["url"] not in ("", "about:blank"):
+                return fresh[0]
+
+        time.sleep(0.1)
+
+    sys.exit(f"no new tab appeared in {profile['dir']} within 10s")
+
+
+def main(argv):
+    if not argv or argv[0] in {"-h", "--help"}:
+        print(__doc__.strip())
+        return 2
+
+    if argv[0] == "--list":
+        for p in profiles():
+            print(f"{p['dir']:<12} {p['name']:<20} {p['account']}")
+        return 0
+
+    profile = resolve(argv[0])
+    url = argv[1] if len(argv) > 1 else "chrome://newtab/"
+
+    ensure_daemon()
+    target = open_in_profile(profile, url)
+    switch_tab(target["targetId"])
+    wait_for_load()
+    print(json.dumps({"profile": profile["dir"], "account": profile["account"],
+                      "targetId": target["targetId"], "url": url}))
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main(sys.argv[1:]))

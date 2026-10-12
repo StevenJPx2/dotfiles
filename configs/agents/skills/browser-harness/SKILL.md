@@ -31,6 +31,7 @@ in Code Mode (`browser_new_tab`, `browser_goto`, `browser_page_info`,
 `browser_switch_tab`, `browser_start_recording`, …). It talks to the same
 named daemon as the CLI, so tabs and recordings are shared. Reserve the CLI
 for the few things the MCP does not expose: `browser-launch`, `browser-group`,
+`browser-profile`,
 `browser-harness video …`, `browser-harness --doctor`.
 
 The CLI reference below is for those cases and for non-OpenCode agents. Load
@@ -82,6 +83,24 @@ Remote debugging is a per-instance toggle in `chrome://inspect/#remote-debugging
 the port on every launch with no flags. Never relaunch Chrome with
 `--remote-debugging-port` or a fake `--user-data-dir` — that either fights the
 running singleton or drives a profile with no logins.
+
+## Other profiles
+
+Every profile in the running Chrome shares the one DevTools connection, but
+`new_tab` / `browser_new_tab` always open in Profile 5. When a task needs
+another profile's logins (for example, a personal Google account), switch the
+daemon to a tab in that profile:
+
+```bash
+browser-profile --list                            # dir, name, account
+browser-profile steven https://www.youtube.com/   # open in that profile + attach
+```
+
+The profile matches a directory, name, or account email (a unique substring is
+enough). After switching, the MCP `browser_*` tools drive that tab. Navigate
+with `browser_goto`, because `browser_new_tab` would go back to Profile 5. CDP
+cannot tell which profile a tab belongs to (every tab reports the same
+`browserContextId`), so check the login state on the page itself.
 
 ## Tab groups
 
