@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Label</key>
+	<string>xyz.stjhn.optmem-embeddings</string>
+	<!-- Local EmbeddingGemma 2 service for opencode-optmem's semantic recall,
+	     loopback only on 127.0.0.1:18791. Launched through a login fish shell
+	     so uv is on PATH. The plugin falls back to exact-text recall whenever
+	     this service is down, so KeepAlive restarts it without blocking work. -->
+	<key>ProgramArguments</key>
+	<array>
+		<string>/opt/homebrew/bin/fish</string>
+		<string>-l</string>
+		<string>-c</string>
+		<string>exec uv run --script ~/Documents/Projects/opencode-optmem/tools/embedding-server.py --port 18791</string>
+	</array>
+	<key>RunAtLoad</key>
+	<true/>
+	<key>KeepAlive</key>
+	<true/>
+	<key>ThrottleInterval</key>
+	<integer>30</integer>
+	<key>StandardOutPath</key>
+	<string>/tmp/optmem-embeddings.log</string>
+	<key>StandardErrorPath</key>
+	<string>/tmp/optmem-embeddings.log</string>
+</dict>
+</plist>

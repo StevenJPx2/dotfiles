@@ -3,7 +3,15 @@
   "plugins": [
     "@ex-machina/opencode-anthropic-auth@2.0.0-next.2",
     "@fdcn/sourcefed@0.3.4",
-    "/Users/stevenjohn/Documents/Projects/opencode-optmem",
+    {
+      "package": "/Users/stevenjohn/Documents/Projects/opencode-optmem",
+      "options": {
+        "mode": "unified",
+        "model": "openai/gpt-6-luna#xhigh",
+        "fallbackModel": "anthropic/claude-haiku-5-5",
+        "embeddingURL": "http://127.0.0.1:18791",
+      },
+    },
   ],
   "model": "anthropic/claude-opus-5-5",
   "mcp": {
