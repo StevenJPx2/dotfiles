@@ -13,7 +13,7 @@
 		<string>/opt/homebrew/bin/fish</string>
 		<string>-l</string>
 		<string>-c</string>
-		<string>exec uv run --frozen --script ~/.local/share/optmem/releases/138c052faac55ed7/tools/embedding-server.py --port 18791</string>
+		<string>exec uv run --frozen --script ~/.local/share/optmem/releases/2ab58ceaa012657d/tools/embedding-server.py --port 18791</string>
 	</array>
 	<key>RunAtLoad</key>
 	<true/>
