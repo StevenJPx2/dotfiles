@@ -12,18 +12,13 @@
       "id": "antfu",
       "type": "git",
       "url": "https://github.com/antfu/skills.git",
-      "paths": ["skills/nuxt", "skills/pinia", "skills/pnpm", "skills/unocss", "skills/vite", "skills/vitepress", "skills/vitest", "skills/vue"]
+      "paths": ["skills"]
     },
     {
       "id": "emil",
       "type": "git",
       "url": "https://github.com/emilkowalski/skills.git",
-      "paths": [
-        "skills/animate", "skills/animate-expo", "skills/animation-vocabulary", "skills/apple-design",
-        "skills/ask-sonner", "skills/break-ui", "skills/emil-design-eng", "skills/find-animation-opportunities",
-        "skills/improve-animations", "skills/mobile-native", "skills/pick-ui-library", "skills/prototype",
-        "skills/review-animations", "skills/write-swift"
-      ]
+      "paths": ["skills"]
     },
     {
       "id": "cloudflare",
@@ -48,6 +43,7 @@
     { "id": "vercel", "type": "git", "url": "https://github.com/vercel-labs/agent-skills.git", "paths": ["skills/web-design-guidelines"] }
   ],
   "descriptions": {
+    "animation-performance": "Use when a web animation is janky, stutters, or drops frames; when choosing which property to animate; when deciding CSS vs WAAPI vs requestAnimationFrame on performance grounds; or when reaching for will-change or GPU layers. Covers composite-only properties, main-thread cost, Framer Motion, React re-renders, blur cost. For easing or duration use animate.",
     "animate": "Build an animation from scratch and write it, deciding in order: whether to animate, its purpose, tool, properties, curve and duration, interruption, and exit. Use when asked to animate something, add motion, make a component feel alive, or build a transition. To critique existing motion use review-animations; to audit a whole codebase use improve-animations.",
     "animate-expo": "Build animations in React Native and Expo with Reanimated, Gesture Handler, Expo Router, and expo-haptics: which thread, properties, spring or timing, gesture hand-off, degradation. Use when animating anything in an Expo app, adding gestures, sheets, screen transitions, press feedback, or haptics, or fixing motion that stutters on device. For web animation use animate.",
     "animation-vocabulary": "Reverse-lookup glossary that names a vaguely described web animation or motion effect (\"the bouncy thing when a popover opens\" is Pop in). Use when the user asks \"what's it called when...\" or wants the right term to prompt an AI or designer with. For naming an effect, not designing or building one.",
