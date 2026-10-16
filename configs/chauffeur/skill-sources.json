@@ -1,0 +1,65 @@
+{
+  "refresh_seconds": 86400,
+  "sources": [
+    {
+      "id": "chauffeur",
+      "type": "git",
+      "url": "https://github.com/StevenJPx2/chauffeur.git",
+      "ref": "main",
+      "paths": ["skills/chauffeur", "skills/handoff/jira-cli", "skills/handoff/slack-cli"]
+    },
+    {
+      "id": "antfu",
+      "type": "git",
+      "url": "https://github.com/antfu/skills.git",
+      "paths": ["skills/nuxt", "skills/pinia", "skills/pnpm", "skills/unocss", "skills/vite", "skills/vitepress", "skills/vitest", "skills/vue"]
+    },
+    {
+      "id": "emil",
+      "type": "git",
+      "url": "https://github.com/emilkowalski/skills.git",
+      "paths": [
+        "skills/animate", "skills/animate-expo", "skills/animation-vocabulary", "skills/apple-design",
+        "skills/ask-sonner", "skills/break-ui", "skills/emil-design-eng", "skills/find-animation-opportunities",
+        "skills/improve-animations", "skills/mobile-native", "skills/pick-ui-library", "skills/prototype",
+        "skills/review-animations", "skills/write-swift"
+      ]
+    },
+    {
+      "id": "cloudflare",
+      "type": "git",
+      "url": "https://github.com/cloudflare/skills.git",
+      "paths": ["skills/cloudflare", "skills/durable-objects", "skills/turnstile-spin", "skills/web-perf", "skills/workers-best-practices", "skills/wrangler"]
+    },
+    {
+      "id": "vuejs-ai",
+      "type": "git",
+      "url": "https://github.com/vuejs-ai/skills.git",
+      "paths": ["skills/vue-best-practices", "skills/vue-router-best-practices", "skills/vue-testing-best-practices"]
+    },
+    { "id": "mattpocock", "type": "git", "url": "https://github.com/mattpocock/skills.git", "paths": ["skills/engineering/tdd"] },
+    { "id": "rust-skills", "type": "git", "url": "https://github.com/leonardomso/rust-skills.git" },
+    { "id": "twitter-cli", "type": "git", "url": "https://github.com/jackwener/twitter-cli.git" },
+    { "id": "gdp-ts", "type": "git", "url": "https://github.com/rauchg/gdp-ts.git", "paths": ["skills/gdp-ts"] },
+    { "id": "slidev", "type": "git", "url": "https://github.com/slidevjs/slidev.git", "paths": ["skills/slidev"] },
+    { "id": "tsdown", "type": "git", "url": "https://github.com/rolldown/tsdown.git", "paths": ["skills/tsdown"] },
+    { "id": "turborepo", "type": "git", "url": "https://github.com/vercel/turborepo.git", "paths": ["skills/turborepo"] },
+    { "id": "vueuse", "type": "git", "url": "https://github.com/vueuse/vueuse.git", "paths": ["skills/vueuse-functions"] },
+    { "id": "vercel", "type": "git", "url": "https://github.com/vercel-labs/agent-skills.git", "paths": ["skills/web-design-guidelines"] }
+  ],
+  "descriptions": {
+    "animate": "Build an animation from scratch and write it, deciding in order: whether to animate, its purpose, tool, properties, curve and duration, interruption, and exit. Use when asked to animate something, add motion, make a component feel alive, or build a transition. To critique existing motion use review-animations; to audit a whole codebase use improve-animations.",
+    "animate-expo": "Build animations in React Native and Expo with Reanimated, Gesture Handler, Expo Router, and expo-haptics: which thread, properties, spring or timing, gesture hand-off, degradation. Use when animating anything in an Expo app, adding gestures, sheets, screen transitions, press feedback, or haptics, or fixing motion that stutters on device. For web animation use animate.",
+    "animation-vocabulary": "Reverse-lookup glossary that names a vaguely described web animation or motion effect (\"the bouncy thing when a popover opens\" is Pop in). Use when the user asks \"what's it called when...\" or wants the right term to prompt an AI or designer with. For naming an effect, not designing or building one.",
+    "apple-design": "Apple's approach to interface design and fluid, physical motion, for the web. Use when building or reviewing gesture-driven UI, springs, drag/swipe/sheet interactions, momentum and interruptible transitions, translucent materials and depth, typography (optical sizing, tracking, leading), reduced motion, or Apple-style foundations: feedback, spatial consistency, restraint.",
+    "ask-sonner": "Guide to Sonner, the React toast library: setting up the Toaster, toast() calls, promise and loading toasts, updating, dismissing, persisting, styling, theming, icons, positions, multiple toasters. Use when working with Sonner or when toasts don't appear, appear twice, lose styles, ignore Tailwind classes, sit behind a modal, or ignore dark mode.",
+    "break-ui": "Stress-test a piece of UI with worst-case data (long names, unbreakable emails, missing fields, huge counts, zero items, non-Latin text, emoji, extreme numbers), show it behind a \"Demo data / Worst case\" toggle, and report each break with its fix. Use when asked to stress-test, break, or find edge cases in a component or screen. For design critique use emil-design-eng; motion, review-animations.",
+    "improve-animations": "Audit a codebase's animation and motion code as a senior motion advisor and write a prioritized audit with self-contained implementation plans for other agents to execute. Read-only: it plans, it does not apply. Use when asked to \"improve the animations\", \"audit the motion\", \"make this app feel better\", or for a roadmap of animation fixes rather than a review of one diff.",
+    "mobile-native": "Make a web app feel native on a phone: sticky hover, tap highlights, the 100vh bug, inputs that zoom, laggy taps, pull-to-refresh, the notch, long-press text selection, carousels, status bars, testing on real hardware. Use when building or reviewing a web app, PWA, bottom sheet, or touch UI for mobile, or when it \"feels wrong on my phone\". For motion use animate; for React Native, animate-expo.",
+    "turborepo": "Turborepo monorepo guidance: turbo.json, task pipelines, dependsOn, caching and remote cache, the turbo CLI, --filter, --affected, CI, environment variables, internal packages, boundaries. Use when configuring tasks or pipelines, creating packages, setting up or structuring a monorepo, sharing code between apps, running affected packages, or debugging the cache.",
+    "turnstile-spin": "Set up Cloudflare Turnstile end to end: scan the codebase, create the widget through the Cloudflare API, embed it where requests need bot verification (forms, SPA actions, API endpoints, downloads), add server-side siteverify, and validate. Use when asked to add Turnstile or a CAPTCHA, protect a form or endpoint from bots, or fix a Turnstile integration.",
+    "web-perf": "Analyze web performance with Chrome DevTools MCP: Core Web Vitals (LCP, INP, CLS), FCP, TBT, Speed Index, render-blocking resources, request chains, layout shifts, caching, and accessibility gaps. Use when asked to audit, profile, debug, or optimize page load, Lighthouse scores, or site speed. Prefers current documentation over trained knowledge.",
+    "write-swift": "Writing modern Swift well: value types, Swift 6 data-race safety and approachable concurrency (@concurrent, main-actor default, actors, task groups), protocols and generics (some vs any), API design, performance and ARC, Swift Testing, macros, and newer features. Use when writing, reviewing, or migrating Swift, or fixing a concurrency error, hang, data race, retain cycle, or performance problem.",
+    "gdp-ts": "Use when adding, changing, or reviewing authorization, entitlement, or ownership checks in TypeScript that uses gdp-ts (imports of name, Named, Proof, or defineProof), when adopting the pattern, or when fixing type errors that mention Named<...> or proof types. Models preconditions as compile-time proofs (Ghosts of Departed Proofs)."
+  }
+}
