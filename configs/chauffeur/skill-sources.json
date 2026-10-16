@@ -9,10 +9,10 @@
       "paths": ["skills/chauffeur", "skills/handoff/jira-cli", "skills/handoff/slack-cli"]
     },
     {
-      "id": "antfu",
+      "id": "nuxt-ui",
       "type": "git",
-      "url": "https://github.com/antfu/skills.git",
-      "paths": ["skills"]
+      "url": "https://github.com/nuxt/ui.git",
+      "paths": ["skills/nuxt-ui"]
     },
     {
       "id": "emil",
