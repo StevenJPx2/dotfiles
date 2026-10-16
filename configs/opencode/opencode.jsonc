@@ -4,7 +4,7 @@
     "@ex-machina/opencode-anthropic-auth@2.0.0-next.6",
     "@fdcn/sourcefed@0.3.6",
     {
-      "package": "/Users/stevenjohn/.local/share/optmem/releases/2ab58ceaa012657d",
+      "package": "/Users/stevenjohn/.local/share/optmem/releases/caf5fa891cfc9116",
       "options": {
         "mode": "unified",
         "model": "openai/gpt-6-luna#xhigh",
