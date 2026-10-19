@@ -27,6 +27,8 @@ tap "tw93/tap"
 tap "universal-ctags/universal-ctags", trusted: true
 # Run your GitHub Actions locally
 brew "act"
+# Browser automation CLI for AI agents
+brew "agent-browser"
 # Companion library to apr, the Apache Portable Runtime library
 brew "apr-util"
 # Code searching, linting, rewriting
@@ -307,6 +309,8 @@ brew "jdx/tap/aube", trusted: true
 brew "jnsahaj/lumen/lumen", trusted: true
 # Drop in replacement for ueberzug written in C++
 brew "jstkdng/programs/ueberzugpp", trusted: true
+# Headless browser for AI agents and automation
+brew "lightpanda-io/browser/lightpanda", trusted: true
 # Puppeteer for terminal UIs — drive vim, htop, nethack from a CLI or agent
 brew "montanaflynn/tap/ht", trusted: true
 # Incredibly fast JavaScript runtime, bundler, transpiler and package manager - all in one.

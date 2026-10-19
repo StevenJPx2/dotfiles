@@ -1,5 +1,5 @@
 {
   "ranking": {
-    "always": ["code-discipline", "read-the-damn-docs", "browser-harness"]
+    "always": ["code-discipline", "read-the-damn-docs", "browsers", "browser-harness"]
   }
 }

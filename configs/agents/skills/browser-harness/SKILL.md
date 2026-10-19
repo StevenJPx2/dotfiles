@@ -1,7 +1,7 @@
 ---
 name: browser-harness
 description: >-
-  Default tool for live web pages: open, read, or verify any URL, docs, release notes, changelog, or pricing page (JS-rendered, logged-in, bot-protected), navigate, fill forms, click, type, scroll, screenshot, extract data, test web apps in real Chrome over CDP, any profile. Use it ahead of WebFetch and built-in browser tools. Not for Jira, Slack, GitHub, or services with their own CLI or skill.
+  Drive the user's real Chrome over CDP, with their logins and any profile: open or verify logged-in or bot-protected pages, navigate, fill forms, click, type, scroll, screenshot, extract data, record evidence. Use it ahead of WebFetch and built-in browser tools. For public sites, check the browsers skill first. Not for Jira, Slack, GitHub, or services with their own CLI or skill.
 allowed-tools: Bash(browser-harness:*), Bash(uv run browser-harness:*), Bash(browser-launch:*), Bash(browser-group:*), Bash(browser-profile:*)
 ---
 
@@ -9,8 +9,9 @@ allowed-tools: Bash(browser-harness:*), Bash(uv run browser-harness:*), Bash(bro
 
 Direct browser control via CDP: a persistent local daemon attaches to a running
 Chrome and you script it with pre-imported helpers over stdin. Chosen as the
-sole browser harness after a spike (33/33 success, ~11ms/op in-process, ~106ms
-per CLI call) in which the previous relay-based tool dropped its relay and hung.
+harness for the real Chrome after a spike (33/33 success, ~11ms/op in-process,
+~106ms per CLI call) in which the previous relay-based tool dropped its relay
+and hung. For public sites, the browsers skill may pick agent-browser instead.
 
 For a plain fetch of public content, curl is fine; reach for the browser when
 the task needs interaction, JS rendering, a logged-in session, or a

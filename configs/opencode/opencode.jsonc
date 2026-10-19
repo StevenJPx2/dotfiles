@@ -43,6 +43,13 @@
           "BH_TAB_MARKER": "1",
         },
       },
+      "agent-browser": {
+        "type": "local",
+        "command": ["agent-browser", "mcp"],
+        "environment": {
+          "AGENT_BROWSER_SESSION": "opencode",
+        },
+      },
       "iMCP": {
         "type": "local",
         "command": ["/Applications/iMCP.app/Contents/MacOS/imcp-server"],
