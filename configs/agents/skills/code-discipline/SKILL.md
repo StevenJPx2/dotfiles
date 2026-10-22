@@ -55,6 +55,10 @@ Use this order:
 
 Model first: express the domain's states and transitions in types before writing functions, so invalid states are unrepresentable and the compiler finds every site a model change touches. When behavior needs more nuance, add detail to the model rather than another `if`. Prefer concrete types and direct control flow. Add an abstraction for a present domain or capability boundary, not anticipated reuse. Validate external data once at the boundary, then use precise internal types.
 
+Keep function-specific types beside the function that defines or owns them, and export those types from that module when callers need them. Do not create a standalone `types.ts` merely to collect types; use a separate module only for a genuinely shared contract that has no natural owning function.
+
+For cohesive source subdirectories with multiple modules, add a `README.md` that explains each module/function and how the directory fits the architecture. Include practical code usage examples, Mermaid diagrams for meaningful flows, and scannable bullet points and tables where they clarify responsibilities or outcomes.
+
 **Complete when:** every new abstraction, dependency, state, and branch corresponds to a current requirement.
 
 ### 4. Implement
