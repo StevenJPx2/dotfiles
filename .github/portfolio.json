@@ -1,0 +1,22 @@
+{
+  "body": [
+    "Sets up a new Mac with a single **`install.sh`** command.",
+    "Each tool has its own folder in `configs/` with a `config.json`. Dotfiles written as `dot_` are translated to their real file names.",
+    "`just update` **diffs** your current config against the repo before applying it, and `just bundle` refreshes the **Brewfile**."
+  ],
+  "areas": [
+    "developer-tools",
+    "infrastructure-data"
+  ],
+  "technologies": {
+    "add": [
+      "shell",
+      "just",
+      "homebrew"
+    ],
+    "remove": [
+      "javascript",
+      "astro"
+    ]
+  }
+}
