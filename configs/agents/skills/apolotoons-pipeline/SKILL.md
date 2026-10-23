@@ -18,14 +18,44 @@ panels** and re-cut or fix any that came out wrong before handing back.
 ├── Characters/     ← approved character reference sheets (artcraft_*.png), flat on the folder
 │   └── candidates/ ← scratch: unapproved generation candidates (delete after promoting)
 ├── Backgrounds/    ← (some episodes) approved wide background reference sheets
+├── script.md       ← the episode script (source for shot specs)
+├── cast.json       ← characters/settings: description + reference images, style
 └── Comic Strips/
-    ├── Generated/  ← user drops raw AI-generated slides here
-    ├── Cleaned/    ← auto: speech bubbles removed via ArtCraft Nano Banana Pro
+    ├── Generated/  ← user drops raw AI-generated slides here; Generated/<slide>/ holds
+    │               candidates, sketch.png, prompt.md (pages carry bubbles; clean empties them)
+    ├── Cleaned/    ← auto: speech bubbles removed (imagegen `clean` task); fixes land here
     ├── Upscaled/   ← auto: 2x Upscayl output
     ├── Panels/     ← auto: individual cut panels (border-trimmed)
+    ├── Specs/      ← shot specs <slide>.json and <slide>.sketch.png
+    ├── Checks/     ← vision check reports and agent logs
+    ├── Fixes/      ← per-fix folders with attempts and fix.json (status, cost)
+    ├── .trash/     ← pruned candidates/fixes (never deleted)
     ├── Edited/     ← legacy manual edits (kept, unused by pipeline)
     └── Finished/   ← user's manual final composites (done by hand)
 ```
+
+**Studio:** `studio/` is a Nuxt 4 site over all of this at https://toons.stjhn.xyz
+(Cloudflare Tunnel `apolotoons-studio` + Access app "Apolotoons Studio"; add teammates
+to the Access group "SAFT team"). Start it with `studio/serve` (`--local` for
+127.0.0.1:3141 without Access). It runs the pipeline/blueprint scripts as jobs.
+
+**Structured projects:** an episode may have `project.json` (people, settings,
+slides, panels, dialogue, with stable IDs and a copy of the style template).
+When it exists it is the authority: the studio rewrites `cast.json` (including
+`style_refs`), `Comic Strips/Specs/<slide>.json` and, for created projects,
+`script.md` from it on every save, and refuses direct cast/scene/spec edits.
+Do not hand-edit those derived files in a project episode; change the project.
+Editing `project.json` directly is fine, then run (from `studio/`)
+`bun run project validate "<Episode>"` and `bun run project apply "<Episode>"`
+to check it and rewrite the outputs. `bun run project next "<Episode>" --json`
+lists each slide's next step (same rules as the storyboard). Every episode is a
+project (older ones were converted, keeping their script, specs and style);
+`bun run project convert "<Episode>"` (or `--all`) converts a folder that
+appears without `project.json`. The studio has no Markdown script editor:
+the script is the project's fields, edited in the episode's Write stage.
+The style template is `pipeline/style-template.json`; `cast.py` and
+`generate.py` send up to three `style_refs` (paths relative to the Apolotoons
+folder) as drawing-style references, last.
 
 Match this layout exactly against existing episodes (Slavery Pt. 1/2, Fine Tuning
 are the canonical references). Approved character sheets sit directly in
@@ -168,42 +198,37 @@ Fine Tuning reference: slide1=4, slide6=3, slide5=1 (dark void, whole), slide12=
 
 ## ArtCraft CLI (pipeline/artcraft_cli.py)
 
-Reverse-engineered CLI for the ArtCraft app's backend (api.storyteller.ai).
-Auth: reads the signed-session JWT from the ArtCraft app's WebKit localStorage
-(`~/Library/WebKit/ai.artcraft.app/.../localstorage.sqlite3`, key
-`artcraft_signed_session`) — user must be logged into the desktop app.
-HTTP goes through curl (Cloudflare blocks Python urllib's TLS signature).
+CLI for ArtCraft's documented unified API (api.storyteller.ai).
+Auth: `ARTCRAFT_API_KEY` / global `--api-key-file` when available; otherwise
+the signed-in desktop app's cookie jar (`~/Library/Caches/ai.artcraft.app/.cookies`).
+Old WebKit signed sessions remain a fallback. API keys are gated per account;
+this account's `api_key` feature flag is currently absent, so keep session auth.
+HTTP uses curl with desktop Origin/User-Agent headers. Secrets go through stdin,
+not process arguments. Installed ArtCraft is 0.41.0.
 
 ```bash
 python3 pipeline/artcraft_cli.py whoami
+python3 pipeline/artcraft_cli.py models --json
+python3 pipeline/artcraft_cli.py cost --model nano_banana_pro --resolution four_k
 python3 pipeline/artcraft_cli.py jobs
 python3 pipeline/artcraft_cli.py generate --prompt "..." --out out.png \
-    [--model gpt_image_2|nano_banana_2|nano_banana_pro] \
-    [--resolution one_k|two_k|four_k] [--aspect sixteen_by_nine|...] \
-    [--quality low|medium|high] [--variants 1-4] [--ref img.png ...]
+    --model nano_banana_2 --resolution two_k --aspect tall_three_by_four \
+    --variants 1 --ref character.png --ref background.png
 python3 pipeline/artcraft_cli.py edit --image in.png --prompt "..." --out out.png \
-    [--model nano_banana_pro|nano_banana|nano_banana_2] \
-    [--resolution one_k|two_k|four_k] [--aspect three_by_four|...]
+    --model nano_banana_pro --resolution two_k --aspect tall_three_by_four
+python3 pipeline/artcraft_cli.py result jinf_TOKEN --out out.png
 ```
 
-`generate` = text-to-image (optionally with `--ref` style/character references).
-`gpt_image_2` routes through the omni-gen endpoint and honours `--quality`/`--variants`
-(batches into `out-1.png`, `out-2.png`, …); `nano_banana_*` route through the
-multi_function endpoint (one image per call, `--quality`/`--variants` ignored). Use
-`nano_banana_2` for characters (see generation SOP above) — GPT Image 2 will not
-match the flat-cartoon house style.
-python3 pipeline/artcraft_cli.py whoami
-python3 pipeline/artcraft_cli.py jobs
-python3 pipeline/artcraft_cli.py edit --image in.png --prompt "..." --out out.png \
-    [--model nano_banana_pro|nano_banana|nano_banana_2] \
-    [--resolution one_k|two_k|four_k] [--aspect three_by_four|...]
-```
-
-Flow: upload → `/v1/generate/image/multi_function/nano_banana_pro` →
-poll `/v1/jobs/session` → download CDN result. Pass `--aspect three_by_four` for
-one-off edits to keep the 3:4 slide ratio (ArtCraft's UI edits can return a
-stretched ratio; the CLI with an explicit aspect fixes that). Used for one-off
-fixes like removing an element (slide 2 woman) or fixing art (slide 11 extra arm).
+All models use `/v1/omni_gen/generate/image` (model is a field). Live catalogue
+validation checks references, aspect, resolution, quality and batch count before
+generation. Explicit batch count defaults to 1 (the server's NBP default is 4).
+The CLI estimates cost before generation; output has a `.job.json` record
+so `result` can resume without a second generation. Polls `/v1/jobs/job/TOKEN`
+for session auth (Omni API job-status for keys); `attempt_failed` is retryable.
+NBP 2K costs 15 credits / 15 US cents; 4K costs 30 / 30, at last check.
+Models are user-selectable; follow the nano_banana_2 character SOP above by default.
+Old aspect aliases (three_by_four, sixteen_by_nine) still map to unified values.
+An explicit aspect reduces unwanted reframing; it doesn't guarantee exact dimensions.
 
 ## Upscayl CLI
 
@@ -214,11 +239,65 @@ fixes like removing an element (slide 2 woman) or fixing art (slide 11 extra arm
   -n high-fidelity-4x -f png
 ```
 
-## Finishing
+## Shot specs, sketches and verification (artifact control)
 
-Final lettering/composition is done **by hand** by the user (in Affinity or
-wherever) into `Comic Strips/Finished/`. There is no automated lettering step in
-this pipeline anymore.
+The user's biggest time sink is AI artifacts: wrong facing/placement, extra or
+detached limbs, hands, consistency, garbled props. Control them with specs.
+
+- **Spec:** `Comic Strips/Specs/<slide>.json`: per panel `box` (page fraction),
+  `camera`, `characters[{name, box (panel fraction), facing, looking_at, pose, limbs?}]`,
+  `props[{name, box, detail}]`, `must_not[]`. Facing is screen-relative:
+  `screen-left | screen-right | toward-viewer | away`. When the script doesn't say
+  who stands where, omit `box`/`facing` and set `"continuity": "same left-to-right order as panel N"`.
+  Never invent placement. Script lives at `<Episode>/script.md`.
+- **Sketch:** `python3 pipeline/blueprint/sketch.py Specs/slide1.json -o out.png [--panel N]`:
+  code-drawn stick figures with facing arrows and sight-lines. Use for approval
+  and as a layout reference when generating.
+- **Automated check:** `pipeline/blueprint/agent.py check <spec> <page>` (vision model via
+  `observe.py`: overview + 4 zoomed tiles + crop confirmation; Gemini free tier is ~20
+  requests/model/day, ~6 per panel). `agent.py autofix ... --budget 0.5` fixes located
+  defects with `fix.py`, proposes flips, queues the rest; never promotes.
+- **Manual verify (fallback):** `verify.py crops <spec> <page.png> --out crops/`, then look at each crop
+  (zoom in: small anatomy defects are invisible at page size) and write facts only
+  to an observations JSON (`characters[{name, box, facing, looking_at, limbs, hands_ok}]`,
+  `props[]`, `unexpected[]`, `artifacts[]`). `verify.py check <spec> <observations>`
+  decides pass/fail by code (facing, order, mirrored, continuity, limbs, missing/extra).
+  Tests: `python3 -m unittest discover -s pipeline/blueprint`.
+- **Fix:** crop the problem area, draw red guide marks on it, make a mask (white =
+  change), then `python3 pipeline/imagegen.py edit --task fix --image crop.png
+  --mask mask.png --prompt "..." --out fixed.png --max-usd 0.20`. Paste back with a
+  feathered edge and re-verify. **Text-only prompts fail for geometry; red guide
+  marks work** (where a bone/limb should go, circle the defect; ask the model to
+  remove all red marks). Max 2 attempts, then the user.
+- **Providers:** `imagegen.py` covers ArtCraft, Google, OpenAI, Ideogram 4.5, FLUX 3
+  and ImageRouter, with fallback chains and tasks in `pipeline/models.json` and
+  every spend in `pipeline/spend.jsonl`. `fix` prefers Ideogram 4.5 precise edit
+  (keeps exact pixels and crop edges, least drift over repeated edits). Check
+  `imagegen.py providers` for which keys are set.
+- Test budget is light (~$1); production spends what it needs, logged.
+
+## Finishing (lettering in Affinity, via its MCP)
+
+Affinity runs a local MCP server (localhost:6767); the `affinity` toolset reaches it.
+The agent builds the episode `.af`, the user fine-tunes positions by hand.
+
+- **Spec:** `Comic Strips/Finished/<slug>.lettering.json`: `size`, `background`,
+  `logo {path, rect}`, `slides[{name, panels[{path, rect}], dialogue[{text, rect,
+  size, tail: [x0,y0,x1,y1,bulge]}]}]`, `save`. Paths relative to the spec; rects
+  in px on a 1080x1440 slide. Write it from the script + panel aspect ratios.
+- **Affinity can only touch Desktop files** (real path checked; symlinks fail). Episode
+  folders are Google Drive sync roots by path, so never move them. Instead:
+  1. `pipeline/affinity/stage "<Episode>"`: APFS-clones Panels, Assets, spec and
+     `build_episode.js` into `~/Desktop/Apolotoons Staging/<Episode>/` (instant, no space).
+  2. Build over MCP (`eval` is blocked; `require` of a Desktop file works):
+     `affinity_execute_script` with
+     `globalThis.SPEC_PATH='<staging>/<slug>.lettering.json'; require('<staging>/build_episode.js');`
+     Export a preview with `affinity_export`, check it, then close the doc.
+  3. `pipeline/affinity/stage "<Episode>" --collect`: moves `.af`/exports into
+     `Finished/` (older copies renamed `(prev <date>)`), removes staging.
+- Builder: `pipeline/affinity/build_episode.js` (house style constants in `STYLE`).
+  Library entry for the user: Scripts panel > "Apolotoons: Build Episode (staged)".
+- Never touch other open documents; target ours via `Document.enumerateAll` + `sessionUuid`.
 
 ## Troubleshooting
 

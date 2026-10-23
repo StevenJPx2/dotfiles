@@ -1,0 +1,87 @@
+#!/usr/bin/env -S uv run --quiet --script
+# /// script
+# requires-python = ">=3.11"
+# dependencies = ["browser-harness[mcp]", "ytmusicapi"]
+# ///
+"""Write a ytmusicapi browser.json from a logged-in Chrome profile.
+
+    ytm-auth <profile> [path]      default path: ./browser.json
+
+<profile> is anything browser-profile accepts (directory, name or account
+email). If the daemon already has a music.youtube.com tab, that tab is reused
+and <profile> is ignored, so check the printed account. Otherwise this opens
+music.youtube.com in <profile> through browser-profile. It reads the tab's
+cookies over CDP and writes the headers file with mode 0600. Cookie values are
+never printed. The file is a live session token: delete it when done.
+
+ytmusicapi only treats a file as browser auth when it has an Authorization
+header containing SAPISIDHASH; without one it assumes OAuth and fails with
+"oauth_credentials not provided". This computes that header from the cookie.
+"""
+import json
+import os
+import subprocess
+import sys
+import time
+from pathlib import Path
+
+os.environ.setdefault("BU_NAME", "opencode-browser")
+
+from browser_harness.helpers import (
+    cdp, current_tab, goto_url, js, list_tabs, switch_tab, wait_for_load,
+)
+from ytmusicapi import YTMusic
+from ytmusicapi.helpers import get_authorization, sapisid_from_cookie
+
+ORIGIN = "https://music.youtube.com"
+
+
+def main(argv):
+    if not argv or argv[0] in {"-h", "--help"}:
+        print(__doc__.strip())
+        return 2
+
+    path = Path(argv[1] if len(argv) > 1 else "browser.json").expanduser().resolve()
+
+    if not current_tab()["url"].startswith(ORIGIN):
+        open_tab = next((t for t in list_tabs() if t["url"].startswith(ORIGIN)), None)
+        if open_tab:
+            switch_tab(open_tab["targetId"])
+        else:
+            subprocess.run(["browser-profile", argv[0], f"{ORIGIN}/"], check=True, stdout=subprocess.DEVNULL)
+            # The attached tab can still be about:blank, so load the page here.
+            goto_url(f"{ORIGIN}/")
+            wait_for_load()
+
+    for _ in range(30):
+        signed_in = js("window.ytcfg ? ytcfg.get('LOGGED_IN') === true : null")
+        if signed_in is not None:
+            break
+        time.sleep(0.5)
+
+    if signed_in is not True:
+        sys.exit(f"not signed in to YouTube Music in the attached tab ({current_tab()['url']})")
+
+    cookies = cdp("Network.getCookies", urls=[ORIGIN])["cookies"]
+    cookie = "; ".join(f"{c['name']}={c['value']}" for c in cookies)
+    headers = {
+        "Accept": "*/*",
+        "Content-Type": "application/json",
+        "X-Goog-AuthUser": "0",
+        "x-origin": ORIGIN,
+        "Cookie": cookie,
+        "Authorization": get_authorization(f"{sapisid_from_cookie(cookie)} {ORIGIN}"),
+    }
+
+    fd = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
+    with os.fdopen(fd, "w") as f:
+        json.dump(headers, f)
+
+    account = YTMusic(str(path)).get_account_info()
+    print(json.dumps({"path": str(path), "account": account.get("accountName"),
+                      "handle": account.get("channelHandle")}))
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main(sys.argv[1:]))

@@ -40,7 +40,9 @@
     { "id": "tsdown", "type": "git", "url": "https://github.com/rolldown/tsdown.git", "paths": ["skills/tsdown"] },
     { "id": "turborepo", "type": "git", "url": "https://github.com/vercel/turborepo.git", "paths": ["skills/turborepo"] },
     { "id": "vueuse", "type": "git", "url": "https://github.com/vueuse/vueuse.git", "paths": ["skills/vueuse-functions"] },
-    { "id": "vercel", "type": "git", "url": "https://github.com/vercel-labs/agent-skills.git", "paths": ["skills/web-design-guidelines"] }
+    { "id": "vercel", "type": "git", "url": "https://github.com/vercel-labs/agent-skills.git", "paths": ["skills/web-design-guidelines"] },
+    { "id": "mpd", "type": "git", "url": "https://github.com/StevenJPx2/merchant-performance-dashboard.git", "ref": "master", "paths": ["skills"] },
+    { "id": "fframes", "type": "git", "url": "https://github.com/dmtrKovalenko/fframes.git", "paths": ["skills/fframes-video"] }
   ],
   "descriptions": {
     "animation-performance": "Use when a web animation is janky, stutters, or drops frames; when choosing which property to animate; when deciding CSS vs WAAPI vs requestAnimationFrame on performance grounds; or when reaching for will-change or GPU layers. Covers composite-only properties, main-thread cost, Framer Motion, React re-renders, blur cost. For easing or duration use animate.",

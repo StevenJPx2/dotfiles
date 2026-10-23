@@ -50,7 +50,7 @@ function ext_loaded
 end
 
 function wait_for_cdp
-    for _ in (seq 1 40)
+    for i in (seq 1 40)
         cdp_port >/dev/null; and return 0
         sleep 0.5
     end

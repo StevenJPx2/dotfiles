@@ -1,5 +1,6 @@
 {
   "$schema": "https://opencode.ai/config.json",
+  "experimental": { "todo": true, "subagent_depth": 2, "precompute_compaction": true },
   "plugins": [
     "@ex-machina/opencode-anthropic-auth@2.0.0-next.6",
     "@fdcn/sourcefed@0.3.6",
@@ -10,7 +11,10 @@
     "servers": {
       "homeassistant": {
         "type": "local",
-        "command": ["python3", "/Users/stevenjohn/.config/opencode/homeassistant-mcp-proxy.py"],
+        "command": [
+          "python3",
+          "/Users/stevenjohn/.config/opencode/homeassistant-mcp-proxy.py",
+        ],
         "environment": {
           "HOMEASSISTANT_TOKEN": "{env:HOMEASSISTANT_TOKEN}",
         },
@@ -19,8 +23,9 @@
         "type": "remote",
         "url": "https://mcp.jina.ai/v1",
         "headers": {
-          "Authorization": "Bearer {env:JINA_API_KEY}"
-        }
+          "Authorization": "Bearer {env:JINA_API_KEY}",
+        },
+        "disabled": true,
       },
       "safari": {
         "type": "local",
@@ -30,14 +35,14 @@
         "type": "local",
         "command": ["npx", "-y", "@upstash/context7-mcp@latest"],
       },
-      "playwright": {
-        "type": "local",
-        "command": ["npx", "@playwright/mcp@latest"],
-        "disabled": true,
-      },
       "browser-harness": {
         "type": "local",
-        "command": ["uvx", "--from", "browser-harness[mcp]", "browser-harness-mcp"],
+        "command": [
+          "uvx",
+          "--from",
+          "browser-harness[mcp]",
+          "browser-harness-mcp",
+        ],
         "environment": {
           "BU_NAME": "opencode-browser",
           "BH_TAB_MARKER": "1",
@@ -56,17 +61,10 @@
       },
       "affinity": {
         "type": "local",
-        "command": ["node", "/Users/stevenjohn/Documents/Projects/affinity-mcp/dist/index.js"],
-      },
-      "nuxt-ui": {
-        "type": "remote",
-        "url": "https://ui.nuxt.com/mcp",
-        "disabled": true,
-      },
-      "nuxt": {
-        "type": "remote",
-        "url": "https://nuxt.com/mcp",
-        "disabled": true,
+        "command": [
+          "node",
+          "/Users/stevenjohn/Documents/Projects/affinity-mcp/dist/index.js",
+        ],
       },
       "grep-app": {
         "type": "remote",
@@ -112,13 +110,37 @@
   "permissions": [
     { "action": "websearch", "resource": "*", "effect": "allow" },
     { "action": "external_directory", "resource": "./*", "effect": "allow" },
-    { "action": "external_directory", "resource": "~/.claude/skills/*", "effect": "allow" },
-    { "action": "external_directory", "resource": "~/.agents/skills/*", "effect": "allow" },
+    {
+      "action": "external_directory",
+      "resource": "~/.claude/skills/*",
+      "effect": "allow",
+    },
+    {
+      "action": "external_directory",
+      "resource": "~/.agents/skills/*",
+      "effect": "allow",
+    },
     { "action": "external_directory", "resource": "/tmp/*", "effect": "allow" },
-    { "action": "external_directory", "resource": "/private/tmp/*", "effect": "allow" },
-    { "action": "external_directory", "resource": "/var/tmp/*", "effect": "allow" },
-    { "action": "external_directory", "resource": "/private/var/tmp/*", "effect": "allow" },
-    { "action": "external_directory", "resource": "/private/var/folders/*", "effect": "allow" },
+    {
+      "action": "external_directory",
+      "resource": "/private/tmp/*",
+      "effect": "allow",
+    },
+    {
+      "action": "external_directory",
+      "resource": "/var/tmp/*",
+      "effect": "allow",
+    },
+    {
+      "action": "external_directory",
+      "resource": "/private/var/tmp/*",
+      "effect": "allow",
+    },
+    {
+      "action": "external_directory",
+      "resource": "/private/var/folders/*",
+      "effect": "allow",
+    },
     { "action": "external_directory", "resource": "/dev/*", "effect": "allow" },
   ],
   "agents": {
