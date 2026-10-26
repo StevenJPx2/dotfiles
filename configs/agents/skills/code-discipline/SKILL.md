@@ -21,7 +21,7 @@ Simple does not mean easy or trivial. Preserve complexity required by the domain
 
 Before changing or reviewing code, read every applicable reference:
 
-- Rust: [references/rust.md](references/rust.md)
+- Rust: [references/rust.md](references/rust.md) — local policy integrated with BeautifulRust's `rust-best-practices`, plus `rust-review` or `rust-port` when applicable.
 - Go: [references/go.md](references/go.md)
 - TypeScript or JavaScript: [references/typescript.md](references/typescript.md)
 

@@ -2,6 +2,20 @@
 
 Apply these rules when creating, changing, reviewing, or debugging Rust.
 
+## One Rust Policy
+
+Use [BeautifulRust](https://github.com/morganlinton/BeautifulRust)'s remote `rust-best-practices` skill as the shared idiom, ownership, API-design, documentation, and performance reference. Load it before Rust work; also load `rust-review` for reviews or `rust-port` for ports. If a skill is not attached, request it by name through the skill loader (`ask_chauffeur` here). Read its references from the revision-specific paths returned by the loader, never a hard-coded cache path.
+
+This file is the local policy overlay, not a competing style guide. Repository instructions remain authoritative for project-specific commands and stricter rules. Otherwise this file and the parent Code Discipline skill take precedence over upstream examples and defaults:
+
+- No production `unwrap` or `expect`, including `main` and poisoned-lock examples. Propagate or handle failures; never discard an error by blindly substituting a default.
+- Keep the 70-line function limit, pinned-nightly development, stable MSRV compatibility, and the lint and validation gates below. Upstream's shorter checklists do not replace them.
+- Unsafe code requires explicit project permission; upstream's FFI or performance examples are not permission.
+- Crate suggestions upstream are not dependency approval. Only the Default Crates below are pre-approved; other production dependencies require discussion.
+- Preserve the bounded concurrency and real-boundary testing requirements here. Mockability alone is not proof, and ports must not silently relax required input compatibility.
+
+The older `rust-skills` collection is optional, topic-specific reference material, not another mandatory baseline. Do not copy upstream skill bodies or lint presets into this skill; keep upstream guidance maintained remotely and local exceptions here.
+
 ## Model First
 
 Start a feature with the model, not with functions: write the structs and enums that describe the domain, compile, and iterate. Compile error? Improve the code. Compiles? Improve the model. Break work into atomic, compilable chunks and never stay red for long.
@@ -15,13 +29,8 @@ Start a feature with the model, not with functions: write the structs and enums 
 
 ## Design
 
-- Borrow before cloning. Prefer a small justified clone over complicated lifetime machinery.
-- Accept `&str` and `&[T]` when ownership is unnecessary.
-- Use `Result` for expected failure and assertions for programmer invariants.
-- Match locally owned enums exhaustively; wildcard arms must not hide new states.
-- Begin internal APIs with the narrowest useful visibility.
-- Prefer concrete types. Add traits at real consumer, polymorphic, or capability boundaries.
-- Prefer functions and generics over macros; use a macro only when ordinary language constructs cannot express the job.
+Follow `rust-best-practices` for borrowing, naming, conversions, visibility, standard trait contracts, and application-versus-library APIs. Prefer a small justified clone over complicated lifetime machinery. Match locally owned enums exhaustively; wildcard arms must not hide new states.
+
 - Keep protocol crates limited to serializable contracts and invariants.
 - Keep runtime code independent of concrete provider implementations; assemble providers at a composition root.
 
@@ -44,7 +53,7 @@ Async is not the default; it is a tool for I/O-bound services. Keep domain logic
 - Use typed library errors; application entry points may aggregate errors.
 - Keep error messages lowercase and without trailing punctuation when they are composed into larger messages.
 - Log structured fields, redact secrets, preserve the error chain, and log each failure once.
-- Never `unwrap`. `unwrap` and `expect` are syntactic TODOs: fine while prototyping, never committed to production paths. Replace them with `?`, `unwrap_or_default`, `map_or`, `ok_or`, and the other `Result`/`Option` combinators; a pipeline of `map`/`and_then`/`map_err` is both safer and clearer than branching on `is_ok()`.
+- Never `unwrap`. `unwrap` and `expect` are syntactic TODOs: fine while prototyping, never committed to production paths, including `main`. Replace them with `?`, explicit matching, or clear `Result`/`Option` combinators. Use defaults only when absence or failure genuinely means the default by contract; never hide a failure to satisfy a lint.
 - Implicit panics count: indexing (`v[i]`), string slicing, unchecked arithmetic, and `as` casts are denied by the lint set below. Use `get`, `checked_*`/`saturating_*`, and `TryFrom`.
 - Tests may `unwrap`, `expect`, `panic`, and index; the `clippy.toml` below allows it there and nowhere else.
 
@@ -92,6 +101,8 @@ components = ["rustfmt", "clippy", "rust-analyzer", "rust-src"]
 ## Lints
 
 Use workspace lint inheritance so every crate gets the same set. Deny compiler warnings and give Clippy teeth; the goal is a program with no execution path that can panic at runtime. Allow a false positive only at the narrowest scope with `reason = "..."`.
+
+Keep warnings-as-errors in the check command or CI, not `#![deny(warnings)]` in source. Prefer `#[expect(clippy::name, reason = "...")]` when the toolchain supports it, so a stale exception is reported. This table is the local baseline; do not replace it with BeautifulRust's less restrictive preset. Every member crate opts in with `[lints] workspace = true`.
 
 ```toml
 [workspace.lints.rust]
