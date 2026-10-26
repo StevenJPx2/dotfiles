@@ -1,7 +1,7 @@
 ---
 name: browsers
 description: >-
-  Use before any web task to pick the tool: browser-harness for the user's real Chrome (logins, profiles, tab groups); the agent-browser MCP for public sites, forms and multi-step flows in its own headless Chrome; lightpanda fetch or Jina read_url to read a public page as text; the safari MCP for Safari. GitHub, Jira and Slack use their own CLIs.
+  Use before any web task to pick the tool: browser-harness for the user's real Chrome (logins, profiles, tab groups); the agent-browser MCP for public sites, forms and multi-step flows in its own headless Chrome; lightpanda fetch or Jina read_url to read a public page as text; the safari MCP for Safari. GitHub, Jira, Slack and X/Twitter use their own CLIs.
 ---
 
 # Browsers
@@ -15,6 +15,7 @@ Pick one tool per task. When unsure, ask: does this need the user's logins?
 | Read one public page as text | Jina `read_url`; `lightpanda fetch` for pages that need JavaScript |
 | Safari behaviour | `safari` MCP |
 | GitHub, Jira, Slack | Their CLIs or skills, not a browser |
+| X/Twitter | `twitter-cli`, not a browser. Installed via uv but `twitter` is off PATH: `uv tool run --from twitter-cli twitter …` |
 
 ## agent-browser
 

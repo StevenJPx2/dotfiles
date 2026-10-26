@@ -69,6 +69,11 @@ Skill folders must contain a `SKILL.md` with YAML `name` and `description`.
 - Skills live in `configs/agents/skills/` (local) or upstream repos (remote).
 - Do not edit installed files under `~/.config`/`~/.agents` directly; edit here and re-run `just update`.
 
+## This machine
+
+- MacBookPro18,2: M1 Max, 32 GB. Not an M5 Pro, so never present local
+  measurements as M5 Pro performance.
+
 ## Key files
 
 - `scripts/place_configs.py` — install logic

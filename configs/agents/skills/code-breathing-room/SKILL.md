@@ -86,6 +86,10 @@ Sections emerge: **normalize inputs → validate → build & persist → return.
     if (!email.includes("@")) throw new Error("bad email");
     if (!name) throw new Error("name required");
     ```
+- **Around one-line guards too** — a braceless `if (...) return;` or
+  `if (...) throw ...;` gets a blank line above and below, exactly like a braced
+  block. A run of consecutive guards is one unit: space around the run, not
+  inside it. (Venda enforces this with ESLint `padding-line-between-statements`.)
 - Between a group of related declarations and the code that consumes them.
 - Before a line introducing a **new subject** (a new variable/concept the
   following lines build on).

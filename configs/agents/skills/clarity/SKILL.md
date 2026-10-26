@@ -46,6 +46,20 @@ For academic, legal, medical, safety, reference, procedural, marketing, email, U
 slides, fiction, or narrative, also read `references/medium.md`. Medium and explicit user
 requirements outrank house preferences.
 
+## House preferences
+
+The user's standing preferences. Medium and explicit instructions for a piece
+still win.
+
+- **Few em dashes.** In prose, docs, UI strings and replies, prefer colons,
+  commas, parentheses or full stops. Page titles use a middle dot: `X · Venda`.
+- **Lists as bullets.** In docs and READMEs, write a series of items as bullet
+  points, not a run-on sentence chained with commas and "or".
+- **READMEs:**
+  - A demo GIF goes directly under the title.
+  - A project's README never mentions sibling projects; write it as if the
+    others don't exist.
+
 ## Shared safeguards
 
 These apply in every mode.
