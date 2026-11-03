@@ -1,0 +1,81 @@
+{
+  "chains": {
+    "whatsapp-search": {
+      "description": "WhatsApp open, unlocked, with its search focused",
+      "steps": [
+        { "tool": "open_app", "input": { "app": "whatsapp" } },
+        "whatsapp_chat_list",
+        "whatsapp_open_search"
+      ]
+    },
+    "whatsapp-to-chat": {
+      "description": "Type a message into a chat found by its name; sends only with complete and your approval",
+      "vars": { "chat": null, "text": null },
+      "steps": [
+        { "tool": "open_app", "input": { "app": "whatsapp" } },
+        "whatsapp_chat_list",
+        "whatsapp_open_search",
+        { "tool": "whatsapp_open_chat", "input": { "name": "${chat}" } },
+        { "tool": "whatsapp_type_draft", "input": { "text": "${text}" } },
+        {
+          "tool": "whatsapp_send",
+          "input": { "text": "${text}", "chatName": "${chat}" }
+        }
+      ]
+    },
+    "whatsapp-to-number": {
+      "description": "Type a message into the chat WhatsApp search finds for a number; sends only with complete and your approval",
+      "vars": { "number": null, "text": null },
+      "steps": [
+        { "tool": "open_app", "input": { "app": "whatsapp" } },
+        "whatsapp_chat_list",
+        "whatsapp_open_search",
+        {
+          "tool": "whatsapp_open_chat_by_number",
+          "input": { "number": "${number}" }
+        },
+        { "tool": "whatsapp_type_draft", "input": { "text": "${text}" } },
+        { "tool": "whatsapp_send", "input": { "text": "${text}" } }
+      ]
+    },
+    "note-to-self": {
+      "description": "Type a note into your own WhatsApp chat",
+      "vars": { "chat": "Saved Messages", "text": null },
+      "steps": [
+        { "tool": "open_app", "input": { "app": "whatsapp" } },
+        "whatsapp_chat_list",
+        "whatsapp_open_search",
+        { "tool": "whatsapp_open_chat", "input": { "name": "${chat}" } },
+        { "tool": "whatsapp_type_draft", "input": { "text": "${text}" } }
+      ]
+    },
+    "cred-pay": {
+      "description": "Fill a CRED UPI payment up to SEND MONEY; pays only with complete and your approval, and you enter the PIN",
+      "vars": { "vpa": null, "payee": null, "amount": null },
+      "steps": [
+        { "tool": "open_app", "input": { "app": "cred" } },
+        "cred_home",
+        "cred_open_upi",
+        "cred_open_pay_search",
+        { "tool": "cred_find_payee", "input": { "vpa": "${vpa}" } },
+        { "tool": "cred_open_payee", "input": { "vpa": "${vpa}" } },
+        {
+          "tool": "cred_enter_amount",
+          "input": {
+            "vpa": "${vpa}",
+            "payeeName": "${payee}",
+            "amountInr": "${amount}"
+          }
+        },
+        {
+          "tool": "cred_send_money",
+          "input": {
+            "vpa": "${vpa}",
+            "payeeName": "${payee}",
+            "amountInr": "${amount}"
+          }
+        }
+      ]
+    }
+  }
+}
