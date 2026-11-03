@@ -1,0 +1,3 @@
+[submodule "configs/opencode/mcp/affinity"]
+	path = configs/opencode/mcp/affinity
+	url = https://github.com/StevenJPx2/affinity-mcp.git

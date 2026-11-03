@@ -69,7 +69,7 @@
         "type": "local",
         "command": [
           "node",
-          "/Users/stevenjohn/Documents/Projects/affinity-mcp/dist/index.js",
+          "/Users/stevenjohn/.config/opencode/mcp/affinity/dist/index.js",
         ],
       },
       "grep-app": {

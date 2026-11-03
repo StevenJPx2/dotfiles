@@ -1,4 +1,4 @@
 {
   "install_path": "~/.config/opencode",
-  "post_install": "cd ~/.config/opencode && bun install --frozen-lockfile"
+  "post_install": "cd ~/.config/opencode && bun install --frozen-lockfile && cd mcp/affinity && npm ci && npm run build"
 }
