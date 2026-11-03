@@ -35,6 +35,7 @@
     { "id": "mattpocock", "type": "git", "url": "https://github.com/mattpocock/skills.git", "paths": ["skills/engineering/tdd"] },
     { "id": "rust-skills", "type": "git", "url": "https://github.com/leonardomso/rust-skills.git" },
     { "id": "twitter-cli", "type": "git", "url": "https://github.com/jackwener/twitter-cli.git" },
+    { "id": "agent-desktop", "type": "git", "url": "https://github.com/vercel-labs/agent-desktop.git", "paths": ["skills/agent-desktop", "skills/agent-desktop-macos"] },
     { "id": "gdp-ts", "type": "git", "url": "https://github.com/rauchg/gdp-ts.git", "paths": ["skills/gdp-ts"] },
     { "id": "slidev", "type": "git", "url": "https://github.com/slidevjs/slidev.git", "paths": ["skills/slidev"] },
     { "id": "tsdown", "type": "git", "url": "https://github.com/rolldown/tsdown.git", "paths": ["skills/tsdown"] },

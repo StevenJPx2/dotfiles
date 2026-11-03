@@ -22,6 +22,7 @@ Start a feature with the model, not with functions: write the structs and enums 
 
 - Make invalid states unrepresentable. Two interacting booleans (`alive`, `hungry`) are a product type that admits a hungry corpse; `enum Cat { Alive { hungry: bool }, Dead }` cannot express it.
 - Model lifecycles as state machines: an enum of states, an enum of transitions, one exhaustive `match (state, transition)` that owns every rule.
+- Use typestate when callers should only be able to invoke operations in a particular state: encode the state in a type parameter and consume the old value on transition. Prefer ordinary enums for runtime-selected states; do not add generic machinery without a concrete invariant to enforce.
 - Need more nuance? Do not add an `if`; add detail to the model and let exhaustive `match` find every site that must change.
 - Normalize data as you would tables: split repeating groups into their own structs, link by key, keep each fact once. Reach for composition, not inheritance hierarchies.
 - Wrap primitives in newtypes at the point they gain meaning (`struct Image(String)`), so a function that needs an image cannot be handed any string.
@@ -82,6 +83,22 @@ These are pre-approved: reach for them without a dependency discussion. Anything
 | Supply chain | `cargo-deny`, `cargo-audit`, `cargo-shear` | Licenses, bans, advisories, unused dependencies |
 
 GUI and web frontends (`leptos`, `dioxus`, `egui`, `tauri`) are out of scope for this list; decide per project.
+
+## Development Loop
+
+- Use the repository's existing environment and commands first. For projects that already use Nix, `devenv` can share Rust components, native libraries, tools, and services; it is optional, not a reason to introduce a second environment manager. Keep its Rust selection aligned with the project pin.
+- Inspect crate metadata, features, license, and MSRV before adding a dependency; verify current versions rather than copying a blog's manifest. `cargo-seek` is an optional discovery UI, not dependency approval.
+- Use `bacon clippy` for focused feedback or the existing `watchexec` pipeline for check/test/run. Keep quick feedback distinct from the full Gate below.
+- For scaffolding, `cargo-generate` is optional. Inspect the template and generated diff; templates do not override this policy or approve their dependencies.
+
+### Optional Accelerator: Blaze
+
+[Blaze](https://github.com/indexable-inc/blaze) is an experimental edit-loop accelerator: `blaze build`, `blaze run`, and `blaze test` reuse compiled state to rebuild changed functions. Evaluate it when rebuild latency is a measured problem; do not install it or rewrite project commands automatically.
+
+- It builds with its own toolchain, regardless of `rust-toolchain.toml`. A successful Blaze build is not evidence that the project's pinned nightly or stable MSRV passes.
+- Keep ordinary Cargo checks, tests, Clippy, and the full Gate authoritative. Never replace CI or release builds with Blaze merely because the edit loop is faster.
+- Check upstream platform support, compatibility limitations, and memory requirements before adoption. Measure representative edits locally; advertised speedups are not project guarantees.
+- Keep it opt-in and easy to bypass; do not globally alias `cargo` or enable hot reload without a project-specific need.
 
 ## Toolchain
 
@@ -175,3 +192,11 @@ cargo deny check
 ```
 
 CI runs this on the pinned nightly plus a stable MSRV check job. Run advisory checks periodically because the advisory database changes independently of source code. Add API compatibility checks when the project promises a stable public API.
+
+## Sources and Precedence
+
+- [Namtao: My 2026 Rust Toolkit](https://www.namtao.com/rust-toolkit-2026/) — toolkit, tight feedback loops, default crates, and strict lint rationale.
+- [Namtao: Rust](https://www.namtao.com/rust/) — lint configuration, optional development environment, and typestate reference.
+- [Blaze README](https://github.com/indexable-inc/blaze) and [toolchain contract](https://github.com/indexable-inc/blaze/blob/main/docs/toolchain.md) — accelerator behavior and separation from project toolchains.
+
+These are reference material, not additional policy baselines. Keep the dated nightly pin, dependency approval, and validation requirements here. Do not copy wildcard dependency versions, floating nightly defaults, production `unwrap` examples, or blanket claims that Clippy proves panic freedom. The Namtao pages differ on time crates: retain `jiff` as the local default rather than reverting to the older `chrono` example. Check current official docs before adopting or configuring any referenced tool.
