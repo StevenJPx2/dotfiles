@@ -11,9 +11,6 @@ fi
 
 curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher
 
-# macOS Harness (not on Homebrew; ships via PyPI/uv)
-uv tool install --python 3.12 --upgrade --force macos-harness
-
 # Chrome for Testing for agent-browser (its MCP launches this, never the real Chrome)
 agent-browser install
 

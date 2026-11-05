@@ -13,16 +13,13 @@
 	     (40960) and password live in OpenCode's managed service config (set by
 	     the launchd post_install), so ANY client that auto-starts the service
 	     gets the tunnel-reachable listener, not a loopback ephemeral port.
-	     `service start` is a no-op when already healthy. browser-launch
-	     brings up the real Chrome (Profile 5, DevTools port) that the
-	     browser-harness MCP relays into; without it every browser call fails.
-	     It is best-effort so a Chrome hiccup never blocks the service. -->
+	     `service start` is a no-op when already healthy. -->
 	<key>ProgramArguments</key>
 	<array>
 		<string>/opt/homebrew/bin/fish</string>
 		<string>-l</string>
 		<string>-c</string>
-		<string>browser-launch; exec opencode service start</string>
+		<string>exec opencode service start</string>
 	</array>
 	<key>RunAtLoad</key>
 	<true/>

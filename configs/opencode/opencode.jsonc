@@ -47,19 +47,6 @@
         "type": "local",
         "command": ["npx", "-y", "@upstash/context7-mcp@latest"],
       },
-      "browser-harness": {
-        "type": "local",
-        "command": [
-          "uvx",
-          "--from",
-          "browser-harness[mcp]",
-          "browser-harness-mcp",
-        ],
-        "environment": {
-          "BU_NAME": "opencode-browser",
-          "BH_TAB_MARKER": "1",
-        },
-      },
       "agent-browser": {
         "type": "local",
         "command": ["agent-browser", "mcp"],

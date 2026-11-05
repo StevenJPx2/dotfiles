@@ -116,39 +116,37 @@ branches. Never claim a visual change is verified from tests alone.
   status. From the bare `./hpdp-overlay` root use `(cd ./main && bun run dev)`; from a sibling task
   worktree use `(cd ../main && bun run dev)`. Do not create another worktree for `main`. Run feature
   builds and feature-side verification from the task worktree.
-- For CSP-strict merchants, use `bun run live-overlay <merchant> [url]`; do not substitute a
-  localhost injection that the merchant CSP will block.
-- Before browser work, run `browser-launch` (shell). It starts the real Chrome on Profile 5 if
-  needed, waits for the CDP port, and prints a four-line status (chrome / cdp / toggle /
-  extension). Every line must be OK before continuing; `browser-launch status` re-checks without
-  launching. If the toggle line is off, the user must tick it in
-  `chrome://inspect/#remote-debugging`; if the extension line is off, run `browser-launch ext`
-  and ask the user to load it unpacked. Chrome may show one "Allow remote debugging?" sheet on
-  the first connection after a Chrome launch — that is expected; ask the user to click Allow.
-- Drive Chrome through the `browser-harness` MCP (`tools["browser-harness"].*` in Code Mode).
-  The named daemon reuses the profile's cookies, IP, and human-verification state; do not launch
-  a new browser, create a new profile/session, or clear cookies between attempts. Keep one working
-  tab per merchant — check `browser_list_tabs()` and `browser_switch_tab({target})` to an existing
-  merchant tab before calling `browser_new_tab()`.
-- Immediately after attaching or opening the working tab, label it so it is distinguishable from
-  other agents' tabs in the shared Chrome: `browser-group "HPDP: <ticket>" green` (shell).
-  Harness tabs auto-land in the purple **Agents** group; this moves the current tab into a
-  per-ticket group. Run it again after `browser_new_tab()` so new tabs join the same group.
-  `browser-group --list` shows all groups.
-- Confirm the selected profile's identity (for example, `steven@adeptmind.ai`) and inspect its tabs
-  before testing. If restarting Chrome leaves only a blank tab or no warm merchant session, state
-  that caveat explicitly; do not describe the reopened profile as an existing warm session.
+- Pick the browser by what the check needs (the `browsers` skill has the details):
+  - **agent-browser** (default for verification and evidence): Chrome for Testing with exact
+    viewports, element-clipped screenshots and video. For CSP-strict merchants use
+    `bun run live-overlay <merchant> [url]`; it opens a headed agent-browser with the built
+    overlay inlined as an init script, and prints the follow-up commands. Drive that page with
+    the `agent-browser` CLI on the same session it used (the script calls it with no
+    `--session`, so omit the flag there too). Do not substitute a localhost injection that the
+    merchant CSP will block.
+  - **Yab** (`tools["yab-browser"].*`): the user's own browser, with their cookies, IP and
+    human-verification state. Use it when a merchant bot-blocks the fresh agent-browser profile
+    or answers with a challenge, and for signed-in references (Jira, Figma). Pick the work
+    account with `spaces({ site })` and `open({ url, space })`, keep one agent tab per merchant,
+    and `name` the task `HPDP: <ticket>` so its tabs group together. Don't clear cookies or
+    switch spaces between attempts. Yab's `eval` runs in an isolated world (shared DOM, none of
+    the page's globals), so `window.adeptmind` is not visible from it: load the bundle with a
+    script tag and call `enable()` from a second script tag. If the merchant CSP blocks that,
+    go back to `live-overlay`. Yab cannot set an exact viewport or record video.
+- State which browser and account each check ran in. If a merchant session was cold (fresh
+  profile, new challenge, empty cookies), say so; don't describe it as a warm session.
 - Verify the HPDP overlay itself, not only the host merchant PDP. Inject or load the applicable
   overlay bundle, confirm `#am-overlay` is mounted, and exercise the changed behavior through the
   overlay before recording a result.
-- For Safari coverage use the `safari` MCP; browser-harness controls Chrome only. Desktop Apple
+- For Safari coverage use the `safari` MCP; agent-browser is Chrome only. Desktop Apple
   Pay sheet verification requires an actual Safari session with Apple Pay configured. iOS Safari
   layout and Apple Pay button visibility can be checked in the Xcode iOS Simulator with Safari's
   Develop menu; do not claim real wallet authorization without an Apple Pay sandbox profile or a
   configured physical device.
 - Unless the user explicitly asks not to, validate every UI change at mobile, tablet, and
-  desktop resolutions. Use the available browser CLI/MCP to check the exact changed state at
-  390px, 1024px, and 1440px.
+  desktop resolutions. Check the exact changed state at 390px, 1024px, and 1440px with
+  `agent-browser set viewport 390 844 3`, `set viewport 1024 1366 2` and
+  `set viewport 1440 900 2`, re-checking the overlay after each resize.
 - Compare the rendered result with the Jira/Figma reference, not only source code.
 - Code review and live browser verification are both mandatory gates. For every user-visible
   ticket, including a no-op verification, review the relevant source/tests/diff and check the
@@ -158,46 +156,37 @@ branches. Never claim a visual change is verified from tests alone.
   interaction changes need a focused recording. Reject blank, clipped, full-page, or unrelated
   captures. For the full capture/upload workflow follow the `pr-screenshots` skill
   (repo `.agent/skills/pr-screenshots`); the bullets below are the short form.
-- Use the `browser-harness` MCP for the evidence artifact. For static changes, capture the same
-  focused element on the base and feature branches by clipping to its bounding box:
+- Use agent-browser for the evidence artifact. For static changes, capture the same focused
+  element on the base and feature branches with an element-clipped screenshot:
 
-  ```js
-  const bh = tools["browser-harness"];
-  const b = JSON.parse(await bh.browser_js({
-    expression: 'JSON.stringify(document.querySelector("<selector>").getBoundingClientRect())',
-  }));
-  const scale = await bh.browser_js({ expression: "devicePixelRatio" });
-  const shot = await bh.browser_cdp({ method: "Page.captureScreenshot", params: {
-    format: "png", clip: { x: b.x, y: b.y, width: b.width, height: b.height, scale },
-  }});
-  return shot.data; // base64 PNG — write it to /tmp/<ticket>-before.png with the shell tool
+  ```bash
+  agent-browser screenshot "<selector>" /tmp/<ticket>-before.png
   ```
 
-  Repeat on the feature branch as `/tmp/<ticket>-after.png`. Keep viewport size and scroll
-  position identical between the two captures.
+  (`agent_browser_screenshot({ selector, path })` in the MCP.) Repeat on the feature branch as
+  `/tmp/<ticket>-after.png`. Keep viewport size and scroll position identical between the two
+  captures. Pick a selector for a container that holds both the trigger and the result.
 - Focused evidence must include the actual trigger/control and the changed result together.
   For a popover or tooltip, the crop must show the icon/button that opens it and the popover's
   relationship to that control; a crop containing only the floating panel is insufficient.
-- If the clip does not match the element (device-pixel-ratio drift), capture the full viewport
-  with `browser_screenshot({path})` first and crop the identical pixel rectangle from both images
-  with `sips`. Inspect both resulting
+- If no single selector frames the evidence, capture the full viewport first and crop the
+  identical pixel rectangle from both images with `sips`. Inspect both resulting
   images before uploading; reject crops that hide the trigger, clip the result, or show unrelated
   content.
-- For interaction changes, record only the reproduction flow. Start it, drive the already-open
-  page through the same MCP tools, then stop it:
-  `browser_start_recording({name: "<ticket>"})` -> interact -> `browser_stop_recording()`.
-  Render the saved frames with the shell tool: `browser-harness video init <ticket>`,
-  `video review <ticket>`, then `video export <ticket> --reviewed`; copy the exported MP4 to
-  `/tmp/<ticket>.mp4`. Recording must be enabled once via `browser-harness recordings enable`.
+- For interaction changes, record only the reproduction flow. Start it on the already-open
+  page, drive it with the same agent-browser session, then stop it:
+  `agent-browser record start /tmp/<ticket>.webm` -> interact -> `agent-browser record stop`.
+  It records the active tab as-is (no reload), so set the viewport and reach the start state
+  first. Use an `.mp4` path instead when an MP4 is needed.
 - Record from a clean, deliberate state so the recorder captures real motion, not a near-static
   frame. Reset first (reload + re-inject, or close any open modal) so the flow starts fresh, keep
-  the viewport fixed for the whole take, and put a visible pause (`browser_wait({seconds: 1})`
-  to `2`)
+  the viewport fixed for the whole take, and put a visible pause (`agent-browser wait 1000`
+  to `2000`)
   between each step (scroll into view -> click -> focus -> type -> submit -> results). The
   DOM-driven UI settles fast, so back-to-back commands with no waits produce only a handful of
   unique frames.
 - Before sharing a recording, confirm it actually has motion:
-  `ffmpeg -i /tmp/<ticket>.mp4 -vf "mpdecimate,showinfo" -f null - 2>&1 | grep -c "n:"`. A count
+  `ffmpeg -i /tmp/<ticket>.webm -vf "mpdecimate,showinfo" -f null - 2>&1 | grep -c "n:"`. A count
   in the low single digits means the take was effectively static — re-record with the deliberate
   pauses above rather than shipping a frozen clip.
 - To share a recording as a link (e.g. a Jira/Slack request), convert the WebM to an animated GIF
