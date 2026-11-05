@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: calendar-and-reminder-via-api
+expected_outcome: |
+  Uses iMCP data tools (events_fetch for tomorrow's events, reminders_create for the reminder) instead of driving the Calendar or Reminders app UI.

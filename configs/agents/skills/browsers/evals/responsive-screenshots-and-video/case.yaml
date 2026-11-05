@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: responsive-screenshots-and-video
+expected_outcome: |
+  Uses agent-browser (isolated Chrome for Testing): sets exact viewports through the CLI on the same session as the MCP, takes element-clipped screenshots of the pricing table, and records the FAQ interaction with record start/stop, verifying the click took effect.

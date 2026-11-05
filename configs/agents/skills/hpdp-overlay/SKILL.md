@@ -130,9 +130,22 @@ branches. Never claim a visual change is verified from tests alone.
     account with `spaces({ site })` and `open({ url, space })`, keep one agent tab per merchant,
     and `name` the task `HPDP: <ticket>` so its tabs group together. Don't clear cookies or
     switch spaces between attempts. Yab's `eval` runs in an isolated world (shared DOM, none of
-    the page's globals), so `window.adeptmind` is not visible from it: load the bundle with a
-    script tag and call `enable()` from a second script tag. If the merchant CSP blocks that,
-    go back to `live-overlay`. Yab cannot set an exact viewport or record video.
+    the page's globals), so `window.adeptmind` is undefined there. Load the bundle with a
+    script tag, then call `enable()` from a second, inline script tag, which runs in the page
+    (verified on funko with the QA bundle):
+
+    ```js
+    await new Promise((ok, fail) => { const s = document.createElement("script");
+      s.src = "https://amt.adeptmind.ai/qa/opo/<merchant>.js?v=" + Date.now();
+      s.onload = ok; s.onerror = fail; document.head.appendChild(s); });
+    const t = document.createElement("script");
+    t.textContent = "window.adeptmind.opo.enable()"; document.head.appendChild(t);
+    await new Promise((r) => setTimeout(r, 3000));
+    return !!document.querySelector("#am-overlay");
+    ```
+
+    A merchant CSP that blocks inline scripts or the CDN breaks this; use `live-overlay`
+    there. Yab cannot set an exact viewport or record video.
 - State which browser and account each check ran in. If a merchant session was cold (fresh
   profile, new challenge, empty cookies), say so; don't describe it as a warm session.
 - Verify the HPDP overlay itself, not only the host merchant PDP. Inject or load the applicable

@@ -54,9 +54,14 @@ agent-desktop snapshot --root @s8f3k2p9:e3 -i --compact        # verify: re-read
 
 - Use `find --role --name --exact` when you already know the target; a small
   app needs only a plain `snapshot -i`.
+- An app with several windows (browsers, editors) answers `--app` with
+  `AMBIGUOUS_TARGET` and lists the candidates; pick one from
+  `list-windows --app <name>` and pass `--window-id w-<N>`.
 - Refs (`@<snapshot_id>:e<N>`) are valid for one snapshot. After any change,
   re-drill. `STALE_REF` or `SNAPSHOT_NOT_FOUND` mean snapshot again;
-  `AMBIGUOUS_TARGET` means narrow with `find` or `--root`.
+  `AMBIGUOUS_TARGET` on an element means narrow with `find` or `--root`.
+- Output is JSON and a full tree runs to hundreds of nodes; filter it with
+  `jq` rather than reading it whole.
 - An action that opens a menu, sheet, alert or popover lists it in
   `data.surfaces`. Target that surface next (`--surface menu|sheet|alert`);
   refs from the window behind it are the wrong target. Use `--surface menubar`

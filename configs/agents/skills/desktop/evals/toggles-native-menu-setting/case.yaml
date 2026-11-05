@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: toggles-native-menu-setting
+expected_outcome: |
+  Uses the agent-desktop CLI: loads its skills, targets the menubar surface of Notes, clicks the menu item with a qualified ref, then re-reads state to verify. Stays headless and does not use System Events keystrokes, cliclick or macos-harness.
