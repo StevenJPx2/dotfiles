@@ -1,14 +1,19 @@
 ---
 name: browsers
 description: >-
-  Use before any web task to pick the browser tool: opening or reading pages, signed-in sites, forms, clicking through flows, downloads, screenshots, scraping, responsive checks or recording a page. Yab (yab-browser MCP) is the default and the only way into the user's own sign-ins; agent-browser is for isolated headless testing, exact viewports and video; safari for Safari behaviour. For native Mac apps use the desktop skill. GitHub, Jira, Slack and X/Twitter use their own CLIs or skills.
+  Use before any web task to pick the tool: opening or reading pages, signed-in sites, Gmail or Google Docs work, forms, clicking through flows, downloads, screenshots, scraping, responsive checks or recording a page. A service's own API tool, MCP or CLI comes first (Google Workspace MCPs for Gmail, Calendar, Drive, Docs and Sheets; CLIs for GitHub, Jira, Slack and X). Otherwise Yab (yab-browser MCP) is the default browser and the only way into the user's own sign-ins; agent-browser is for isolated headless testing, exact viewports and video; safari for Safari behaviour. For native Mac apps use the desktop skill.
 ---
 
 # Browsers
 
-Pick one tool per task. Yab is the user's own browser, signed in to their
-sites, so it is the default. Reach for another tool only when the task needs a
-clean profile, an exact viewport, a recording, or Safari specifically.
+Check first whether the job needs a browser at all. When a service has its own
+API tool, MCP or CLI, use that: it returns exact data, can't misclick, and
+isn't broken by a redesign. Use a browser only when there is no such tool, it
+can't do the job, or the user wants something done on the page itself.
+
+When a browser is needed, pick one per task. Yab is the user's own browser,
+signed in to their sites, so it is the default. Reach for another only when
+the task needs a clean profile, an exact viewport, a recording, or Safari.
 
 Do not install or use Playwright, Playwright MCP, or its downloaded browsers on
 this host, including through tools that depend on it. Do not silently reinstall
@@ -20,16 +25,22 @@ which holds the same sign-ins without approval sheets or shared daemons.
 
 | Task | Tool |
 |---|---|
+| Gmail, Google Calendar, Drive, Docs, Sheets, Slides, Chat | `google-workspace-personal` / `google-workspace-work` MCP (pick the account by namespace) |
+| GitHub, Jira, Slack | Their CLIs or skills |
+| X/Twitter | `twitter-cli`. Installed via uv but `twitter` is off PATH: `uv tool run --from twitter-cli twitter …` |
+| Other services with an MCP or CLI (Cloudflare, Home Assistant, Apple apps via iMCP) | That tool |
 | Web browsing, signed-in sites, forms, multi-step flows, downloads, screenshots | `yab-browser` MCP (default) |
 | Reading one signed-in page, feed, export or JSON API | Yab `text` or `fetch` |
 | Clean-profile reproduction, exact viewport (390/1024/1440), device emulation, video | `agent-browser` MCP + CLI |
 | Read one public page as text | Jina `read_url`; `lightpanda fetch` when it needs JavaScript |
 | Safari behaviour | `safari` MCP |
 | Native Mac app UI, menus, dialogs, windows | the `desktop` skill (agent-desktop) |
-| GitHub, Jira, Slack | Their CLIs or skills, not a browser |
-| X/Twitter | `twitter-cli`, not a browser. Installed via uv but `twitter` is off PATH: `uv tool run --from twitter-cli twitter …` |
 
-## Yab (default)
+Fall back to Yab when the API tool lacks the feature, its auth has expired
+(say so, and offer to re-authenticate rather than silently switching), or the
+user asked to see or do it in the browser.
+
+## Yab (default browser)
 
 `tools["yab-browser"].*` in Code Mode. Its MCP instructions are the full
 reference; this is the short form plus what tends to go wrong. Look up exact

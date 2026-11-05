@@ -1,4 +1,4 @@
 schema_version: "1.1"
 name: routes-signed-in-gmail-task
 expected_outcome: |
-  Plans the job in Yab (yab-browser MCP): picks the personal space, opens Gmail in an agent tab, finds the mail and uses Yab's download tool. Never drives Chrome over CDP, uses browser-harness, Playwright or a headless clean profile, and never exports cookies.
+  Uses the google-workspace-personal MCP's Gmail tools (gmail_search, gmail_get, gmail_downloadAttachment) on the personal account instead of a browser. Never drives Chrome over CDP, uses browser-harness or Playwright, and never exports cookies. Yab is at most a stated fallback.

@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: routes-signed-in-site-without-api
+expected_outcome: |
+  Amazon has no API tool here, so the plan uses Yab: checks which space is signed in to amazon.in, opens the orders page in an agent tab, reads the delivery date with text or snapshot, and closes the tab. No cookie export, no CDP, no headless clean profile.
