@@ -45,7 +45,8 @@
     { "id": "mpd", "type": "git", "url": "https://github.com/StevenJPx2/merchant-performance-dashboard.git", "ref": "master", "paths": ["skills"] },
     { "id": "fframes", "type": "git", "url": "https://github.com/dmtrKovalenko/fframes.git", "paths": ["skills/fframes-video"] },
     { "id": "humanlayer", "type": "git", "url": "https://github.com/humanlayer/skills.git", "paths": ["plugins"] },
-    { "id": "beautiful-rust", "type": "git", "url": "https://github.com/morganlinton/BeautifulRust.git", "paths": ["skills/rust-best-practices", "skills/rust-review", "skills/rust-port"] }
+    { "id": "beautiful-rust", "type": "git", "url": "https://github.com/morganlinton/BeautifulRust.git", "paths": ["skills/rust-best-practices", "skills/rust-review", "skills/rust-port"] },
+    { "id": "terminal-control", "type": "git", "url": "https://github.com/anomalyco/terminal-control.git", "paths": ["skills/terminal-control"] }
   ],
   "descriptions": {
     "rust-best-practices": "Use alongside code-discipline whenever writing, changing, reviewing, debugging, or explaining Rust, Cargo configuration, ownership, traits, async code, tests, or rustdoc. BeautifulRust supplies idioms and API guidance; code-discipline's references/rust.md owns stricter local safety, dependencies, toolchain, lint, and validation policy.",
