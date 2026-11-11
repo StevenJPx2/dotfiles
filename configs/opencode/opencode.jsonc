@@ -104,6 +104,13 @@
           "cd \"$HOME/.config/google-workspace-work\" && GEMINI_CLI_WORKSPACE_FORCE_FILE_STORAGE=true exec node workspace-server/dist/index.js --debug --use-dot-names",
         ],
       },
+      "browse": {
+        "type": "local",
+        "command": ["/Users/stevenjohn/.local/bin/browse", "mcp"],
+        "environment": {
+          "OPENCODE_BROWSER_RUNTIME": "auto-update",
+        },
+      },
     },
   },
   "permissions": [
