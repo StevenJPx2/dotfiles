@@ -56,7 +56,13 @@
       },
       "iMCP": {
         "type": "local",
-        "command": ["/Applications/iMCP.app/Contents/MacOS/imcp-server"],
+        // Reads IMCP_CLIENT_CREDENTIAL from secrets.fish so it works even when the
+        // service was started from a shell that predates the secret.
+        "command": [
+          "fish",
+          "-c",
+          "source $__fish_config_dir/secrets.fish; exec /Applications/iMCP.app/Contents/MacOS/imcp-server",
+        ],
       },
       "affinity": {
         "type": "local",
