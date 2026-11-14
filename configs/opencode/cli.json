@@ -9,7 +9,8 @@
     "markdown": "rendered",
     "grouping": "none",
     "image_preview": true,
-    "new_location": "inherit"
+    "new_location": "inherit",
+    "verbosity": "high"
   },
   "tabs": {
     "indicators": "status",
