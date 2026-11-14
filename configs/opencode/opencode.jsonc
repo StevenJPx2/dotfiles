@@ -3,7 +3,7 @@
   "experimental": { "todo": true, "subagent_depth": 2, "background_compaction": true },
   "plugins": [
     "@ex-machina/opencode-anthropic-auth@2.0.0-next.6",
-    "@fdcn/sourcefed@0.4.0",
+    "@fdcn/sourcefed@0.5.1",
     "/Users/stevenjohn/Documents/Projects/opencode-todos",
     "/Users/stevenjohn/Documents/Projects/opencode-agents",
     "{env:HOME}/.config/opencode/codemode-only",
