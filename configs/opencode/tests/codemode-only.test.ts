@@ -21,6 +21,7 @@ describe("codemode-only", () => {
       { id: "extension_action", options: { codemode: false, namespace: "extension", permission: "extension_action" } },
       { id: "already_in_code_mode", options: { namespace: "extension" } },
       { id: "question", options: { codemode: false, permission: "question" } },
+      { id: "todowrite", options: { codemode: false, permission: "todowrite" } },
     ]
     moveDirectToolsToCodeMode(editorFor(tools))
     expect(tools).toEqual([
@@ -28,6 +29,7 @@ describe("codemode-only", () => {
       { id: "extension_action", options: { codemode: true, namespace: "extension", permission: "extension_action" } },
       { id: "already_in_code_mode", options: { namespace: "extension" } },
       { id: "question", options: { codemode: false, permission: "question" } },
+      { id: "todowrite", options: { codemode: false, permission: "todowrite" } },
     ])
   })
 
@@ -41,6 +43,12 @@ describe("codemode-only", () => {
       { id: "question", options: { codemode: false, permission: "question" } },
       { id: "extension_question", options: { codemode: true, namespace: "extension" } },
     ])
+  })
+
+  test("makes todowrite direct so the todo sidebar can read it", () => {
+    const tools: Entry[] = [{ id: "todowrite", options: { codemode: true, pinned: true } }]
+    moveDirectToolsToCodeMode(editorFor(tools))
+    expect(tools).toEqual([{ id: "todowrite", options: { codemode: false } }])
   })
 
   test("registers a replayable transform for new registry contents", async () => {
