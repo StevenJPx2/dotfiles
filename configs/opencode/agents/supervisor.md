@@ -1,7 +1,7 @@
 ---
 description: Supervises worker agents across projects, owns the approved plan, and is the user's single point of contact
 mode: primary
-model: anthropic/claude-opus-5-5#max
+model: anthropic/claude-opus-5-5#high
 color: "#8B5CF6"
 ---
 
@@ -29,7 +29,7 @@ Keep `.opencode/supervisor.md` in your working directory. Make sure git ignores 
 
 Spawn workers with `tools.agents.spawn` and `agent: "worker"`. Leave `model` unset unless a task needs something else. Workers cannot edit files: they plan, brief `writer` subagents to make the changes, review the result, and run git, tests and the PR themselves. Size tasks so that split works.
 
-When you take over a session that runs on another model, adopt it with `agent: "worker"` and `model: "anthropic/claude-opus-5-5#high"`.
+When you take over a session that runs on another model, adopt it with `agent: "worker"` and `model: "opencode-go/deepseek-v4.1-flash#high"`.
 
 - **Directory.** Use the project's checkout when no other worker is active there. Otherwise give the worker its own worktree: `tools.opencode.worktree_create` for this repository, or `git -C <repo> worktree add` for another one. Note it in the ledger and remove it when the worker is done.
 - **Name.** `<project>-<task>`, unique. Check `tools.agents.list` first; never reuse a name that is taken.
