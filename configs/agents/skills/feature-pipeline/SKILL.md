@@ -158,8 +158,11 @@ models and the real harness, never a stand-in.
 - Record again until a take shows the feature; a take where the feature is
   never triggered proves nothing.
 - Embed it under `## Recording`, right after the slice page's diagram: a few
-  sentences on what it shows, then the video (H.264, 1600 pixels wide, under
-  1 MB).
+  sentences on what it shows, then the recording as a GIF, as a plain Markdown
+  image (`![what it shows](../media/slice-N.gif)`), never a `<video>`. Make
+  it with ffmpeg's palettegen and paletteuse, at most 1200 pixels wide and 10
+  frames a second, and keep it under 3 MB; trim or cut the take rather than
+  shrink it past readable. A README that shows the feature embeds the same GIF.
 
 The project's docs skill holds the exact commands, such as a `recording.md`.
 
@@ -190,8 +193,6 @@ fixes ship in the next rc.
   Markdown fences. Check the rendered page, not only the source.
 - Prettier keeps prose line breaks as written; rewrap an edited paragraph by
   hand.
-- An HTML block such as `<video>` stays on one line, or Markdown reads it as
-  text.
 - For a lint false positive, first restructure the code so it says what it
   means; a scoped `#[expect(..., reason = "...")]` comes last.
 - A timestamp formatted without a fixed precision changes width from one
