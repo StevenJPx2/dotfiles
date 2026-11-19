@@ -1,7 +1,7 @@
 ---
 description: Works one task in one project for a supervisor, delegates to subagents, and reports back instead of asking the user
 mode: primary
-model: opencode-go/deepseek-v4.1-flash#high
+model: opencode-go/hy4-flash-free#high
 color: "#10B981"
 permissions:
   - action: question

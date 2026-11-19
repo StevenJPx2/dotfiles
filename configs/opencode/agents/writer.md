@@ -1,7 +1,7 @@
 ---
 description: Makes file changes for a worker from a precise brief, verifies them, and reports the diff. Use for every edit, new file or test.
 mode: subagent
-model: opencode-go/deepseek-v4.1-flash#max
+model: opencode-go/hy4-flash-free#high
 color: "#F59E0B"
 permissions:
   - action: question
