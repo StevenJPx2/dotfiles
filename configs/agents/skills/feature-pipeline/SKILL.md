@@ -145,8 +145,12 @@ and state folders, so it never disturbs the stable install.
 
 ## 6. Record
 
-Show the released candidate working end to end: the installed rc, its real
-models and the real harness, never a stand-in.
+Show the released candidate WORKING end to end, not just installed: the
+real harness or caller triggers the feature on a real event, the agent or
+service visibly acts on it, and the recording shows that sequence. Installation
+steps, a version print and a list of passing verdicts are setup, not evidence;
+a take that only shows them proves nothing. If the feature never visibly runs,
+record again.
 
 - Drive the terminal with `termctrl` (the `terminal-control` skill). Record
   the harness and the system's own log as two panes, marked at the same
