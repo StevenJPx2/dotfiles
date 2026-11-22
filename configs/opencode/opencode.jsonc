@@ -1,13 +1,12 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "experimental": { "todo": true, "subagent_depth": 2, "background_compaction": true },
+  "experimental": { "todo": true, "subagent_depth": 2, "background_compaction": true, "full_codemode": true },
   "plugins": [
     "@ex-machina/opencode-anthropic-auth@2.0.0-next.6",
     "/Users/stevenjohn/.local/share/sourcefed/wrkhse-rc3/node_modules/@wrkhse/sourcefed", // @wrkhse/sourcefed 0.6.0-rc.3 (published, with issue-comment events)
     "/Users/stevenjohn/opt/oc-antigravity/node_modules/opencode-antigravity-auth",
     "/Users/stevenjohn/Documents/Projects/opencode-todos",
     "/Users/stevenjohn/Documents/Projects/opencode-agents",
-    "{env:HOME}/.config/opencode/codemode-only",
     // opencode-history loads from plugins/opencode-history, which `bun run release` in that repo points at a release.
   ],
   "model": "opencode-go/hy4-flash-free",
