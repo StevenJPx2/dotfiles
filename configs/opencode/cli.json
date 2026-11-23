@@ -3,7 +3,10 @@
   "plugins": [
     "../../Documents/Projects/opencode-plugins/packages/quick-quote"
   ],
-  "theme": { "name": "gruvbox" },
+  "theme": {
+    "name": "gruvbox",
+    "mode": "dark"
+  },
   "animations": true,
   "session": {
     "sidebar": "auto",
@@ -30,5 +33,9 @@
   "debug": {
     "devtools": true,
     "turn_tokens": true
+  },
+  "experimental": {
+    "new-designs": true,
+    "client-mcp": true
   }
 }
