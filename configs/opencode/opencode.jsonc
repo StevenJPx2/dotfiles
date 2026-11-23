@@ -5,7 +5,7 @@
     "@ex-machina/opencode-anthropic-auth@2.0.0-next.6",
     "/Users/stevenjohn/.local/share/sourcefed/wrkhse-rc3/node_modules/@wrkhse/sourcefed", // @wrkhse/sourcefed 0.6.0-rc.3 (published, with issue-comment events)
     "/Users/stevenjohn/opt/oc-antigravity/node_modules/opencode-antigravity-auth",
-    "/Users/stevenjohn/Documents/Projects/opencode-todos",
+    "{env:HOME}/Documents/Projects/opencode-plugins/packages/todos",
     "/Users/stevenjohn/Documents/Projects/opencode-agents",
     "{env:HOME}/Documents/Projects/opencode-plugins/packages/codemode-only",
     "{env:HOME}/Documents/Projects/opencode-plugins/packages/pdf-ocr",
