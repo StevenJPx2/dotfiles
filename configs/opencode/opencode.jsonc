@@ -12,7 +12,6 @@
     "{env:HOME}/Documents/Projects/opencode-plugins/packages/artifacts",
     "{env:HOME}/Documents/Projects/opencode-plugins/packages/ntfy-notify",
     "{env:HOME}/Documents/Projects/opencode-plugins/packages/openai-context-limit",
-    "{env:HOME}/Documents/Projects/opencode-plugins/packages/quick-quote",
     // opencode-history loads from plugins/opencode-history, which `bun run release` in that repo points at a release.
   ],
   "model": "opencode-go/hy4-flash-free",
