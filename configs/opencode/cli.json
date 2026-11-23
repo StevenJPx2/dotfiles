@@ -1,9 +1,12 @@
 {
   "$schema": "https://opencode.ai/v2/cli.json",
   "plugins": [
-    "/Users/stevenjohn/Documents/Projects/opencode-plugins/packages/quick-quote"
+    "../../Documents/Projects/opencode-plugins/packages/quick-quote"
   ],
-  "theme": { "name": "gruvbox" },
+  "theme": {
+    "name": "gruvbox",
+    "mode": "dark"
+  },
   "animations": true,
   "session": {
     "sidebar": "auto",
@@ -30,5 +33,9 @@
   "debug": {
     "devtools": true,
     "turn_tokens": true
+  },
+  "experimental": {
+    "new-designs": true,
+    "client-mcp": true
   }
 }
