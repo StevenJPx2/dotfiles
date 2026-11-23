@@ -1,4 +1,4 @@
 {
   "install_path": "~/.config/opencode",
-  "post_install": "cd ~/.config/opencode && bun install --frozen-lockfile && cd mcp/affinity && npm ci && npm run build"
+  "post_install": "cd ~/.config/opencode && bun install --frozen-lockfile && cd mcp/affinity && npm ci && npm run build && (command -v indra-ocr >/dev/null 2>&1 || uv tool install --python 3.12 indra-ocr)"
 }
