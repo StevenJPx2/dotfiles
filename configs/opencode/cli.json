@@ -1,7 +1,7 @@
 {
   "$schema": "https://opencode.ai/v2/cli.json",
   "plugins": [
-    "/Users/stevenjohn/Documents/Projects/opencode-plugins/packages/quick-quote"
+    "{env:HOME}/Documents/Projects/opencode-plugins/packages/quick-quote"
   ],
   "theme": { "name": "gruvbox" },
   "animations": true,

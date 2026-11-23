@@ -3,15 +3,15 @@
   "experimental": { "todo": true, "subagent_depth": 2, "background_compaction": true },
   "plugins": [
     "@ex-machina/opencode-anthropic-auth@2.0.0-next.6",
-    "/Users/stevenjohn/.local/share/sourcefed/wrkhse-rc3/node_modules/@wrkhse/sourcefed", // @wrkhse/sourcefed 0.6.0-rc.3 (published, with issue-comment events)
-    "/Users/stevenjohn/opt/oc-antigravity/node_modules/opencode-antigravity-auth",
-    "{env:HOME}/Documents/Projects/opencode-plugins/packages/todos",
-    "/Users/stevenjohn/Documents/Projects/opencode-agents",
-    "{env:HOME}/Documents/Projects/opencode-plugins/packages/codemode-only",
-    "{env:HOME}/Documents/Projects/opencode-plugins/packages/pdf-ocr",
-    "{env:HOME}/Documents/Projects/opencode-plugins/packages/artifacts",
-    "{env:HOME}/Documents/Projects/opencode-plugins/packages/ntfy-notify",
-    "{env:HOME}/Documents/Projects/opencode-plugins/packages/openai-context-limit",
+    "{env:HOME}/.local/share/sourcefed/wrkhse-rc3/node_modules/@wrkhse/sourcefed", // @wrkhse/sourcefed 0.6.0-rc.3 (published, with issue-comment events)
+    "{env:HOME}/opt/oc-antigravity/node_modules/opencode-antigravity-auth",
+    "github:StevenJPx2/opencode-plugins#main::path:packages/todos",
+    "{env:HOME}/Documents/Projects/opencode-agents",
+    "github:StevenJPx2/opencode-plugins#main::path:packages/codemode-only",
+    "github:StevenJPx2/opencode-plugins#main::path:packages/pdf-ocr",
+    "github:StevenJPx2/opencode-plugins#main::path:packages/artifacts",
+    "github:StevenJPx2/opencode-plugins#main::path:packages/ntfy-notify",
+    "github:StevenJPx2/opencode-plugins#main::path:packages/openai-context-limit",
     // opencode-history loads from plugins/opencode-history, which `bun run release` in that repo points at a release.
   ],
   "model": "opencode-go/hy4-flash-free",
@@ -26,7 +26,7 @@
         "type": "local",
         "command": [
           "python3",
-          "/Users/stevenjohn/.config/opencode/homeassistant-mcp-proxy.py",
+          "{env:HOME}/.config/opencode/homeassistant-mcp-proxy.py",
         ],
         "environment": {
           "HOMEASSISTANT_TOKEN": "{env:HOMEASSISTANT_TOKEN}",
@@ -73,7 +73,7 @@
         "type": "local",
         "command": [
           "node",
-          "/Users/stevenjohn/.config/opencode/mcp/affinity/dist/index.js",
+          "{env:HOME}/.config/opencode/mcp/affinity/dist/index.js",
         ],
       },
       "grep-app": {
@@ -117,7 +117,7 @@
       },
       "browse": {
         "type": "local",
-        "command": ["/Users/stevenjohn/.local/bin/browse", "mcp"],
+        "command": ["{env:HOME}/.local/bin/browse", "mcp"],
         "environment": {
           "OPENCODE_BROWSER_RUNTIME": "auto-update",
         },
