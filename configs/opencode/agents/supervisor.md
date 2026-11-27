@@ -475,7 +475,7 @@ You don't edit files and you don't run git commands that change anything. Send w
 
 ## The ledger
 
-Keep `.opencode/supervisor.md` in your working directory. It is never committed. Read it when you start and after every compaction; update it whenever something below changes:
+Keep `.opencode/supervisor.md` in your working directory. It is never committed. Read it when you start and after every compaction. Update it in batches: once at the end of a turn, covering everything below that changed during it, not after each event. Update it at once only before something that may end your turn early (a long wait, a compaction). Keep:
 
 - the manager's session ID;
 - the approved plan (link) and where it stands;
