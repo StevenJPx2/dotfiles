@@ -162,7 +162,13 @@
   ],
   "agents": {
     "explore": {
-      "permissions": [{ "action": "execute", "resource": "*", "effect": "allow" }],
+      "permissions": [
+        { "action": "execute", "resource": "*", "effect": "allow" },
+        { "action": "agents_*", "resource": "*", "effect": "deny" },
+      ],
+    },
+    "general": {
+      "permissions": [{ "action": "agents_*", "resource": "*", "effect": "deny" }],
     },
     "title": {
       "model": "opencode/minimax-m2.5-free",

@@ -10,10 +10,7 @@ permissions:
   - action: subagent
     resource: "*"
     effect: deny
-  - action: agents_spawn
-    resource: "*"
-    effect: deny
-  - action: agents_adopt
+  - action: "agents_*"
     resource: "*"
     effect: deny
   - action: shell
@@ -30,6 +27,105 @@ permissions:
     effect: deny
   - action: shell
     resource: "gh *"
+    effect: deny
+  - action: shell
+    resource: "gh pr merge *"
+    effect: deny
+  - action: shell
+    resource: "gh secret *"
+    effect: deny
+  - action: shell
+    resource: "gh variable *"
+    effect: deny
+  - action: shell
+    resource: "gh auth *"
+    effect: deny
+  - action: shell
+    resource: "gh repo delete *"
+    effect: deny
+  - action: shell
+    resource: "gh release delete *"
+    effect: deny
+  - action: shell
+    resource: "gh api *DELETE*"
+    effect: deny
+  - action: shell
+    resource: "cargo mutants *"
+    effect: deny
+  - action: shell
+    resource: "cargo fuzz *"
+    effect: deny
+  - action: shell
+    resource: "kill *"
+    effect: deny
+  - action: shell
+    resource: "pkill *"
+    effect: deny
+  - action: shell
+    resource: "killall *"
+    effect: deny
+  - action: shell
+    resource: "launchctl *"
+    effect: deny
+  - action: shell
+    resource: "brew *"
+    effect: deny
+  - action: shell
+    resource: "sudo *"
+    effect: deny
+  - action: shell
+    resource: "git push *--force *"
+    effect: deny
+  - action: shell
+    resource: "git push *--force"
+    effect: deny
+  - action: shell
+    resource: "git push *-f *"
+    effect: deny
+  - action: shell
+    resource: "git push *-f"
+    effect: deny
+  - action: shell
+    resource: "git -C * push *--force *"
+    effect: deny
+  - action: shell
+    resource: "git -C * push *--force"
+    effect: deny
+  - action: shell
+    resource: "git -C * push *-f *"
+    effect: deny
+  - action: shell
+    resource: "git -C * push *-f"
+    effect: deny
+  - action: shell
+    resource: "git -C * commit*"
+    effect: deny
+  - action: shell
+    resource: "git -C * push*"
+    effect: deny
+  - action: shell
+    resource: "git -C * reset*"
+    effect: deny
+  - action: shell
+    resource: "git -C * checkout*"
+    effect: deny
+  - action: shell
+    resource: "git -C * switch*"
+    effect: deny
+  - action: shell
+    resource: "git -C * rebase*"
+    effect: deny
+  - action: shell
+    resource: "git -C * stash*"
+    effect: deny
+  - action: shell
+    resource: "git switch*"
+    effect: deny
+  - action: shell
+    resource: "git rebase*"
+    effect: deny
+  - action: shell
+    resource: "git stash*"
     effect: deny
 ---
 
