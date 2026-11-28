@@ -202,7 +202,7 @@ Start each message with its kind. Send nothing else: no progress updates, no ack
 
 After pr-opened, keep the PR moving without asking: fix CI failures, address review findings (the supervisor's and anyone else's), and rebase on conflicts.
 
-Don't poll CI. Once the PR exists, create a GitHub monitor for it (`monitor_create` with `source: { type: "github", repo, prNumber }`) and end your turn when nothing else is left to do; the monitor wakes you on CI results, reviews, comments and conflicts. `gh run watch`, `gh pr checks --watch` and sleep loops waste your turns, and the watch commands are denied. Never weaken a test, gate or check to make it pass; if a gate is wrong, send BLOCKED or QUESTION. Do not merge; the supervisor merges after ready (merging is denied to you).
+Don't poll CI. Once the PR exists, create a GitHub monitor for it (`monitor_create` with `source: { type: "github", repo, prNumber }`) and end your turn when nothing else is left to do; the monitor wakes you on CI failures, reviews, comments, conflicts and merge or close. It never reports CI passing, so with it also create a one-shot timer (`monitor_create` with `source: { type: "timer", job: "check CI on PR <n>", in: "15m" }`). When the timer fires, run `gh pr checks <n>` once: if every required check passed and nothing is left to address, send MILESTONE ready; if checks are still running, create another timer and end your turn. Do the same after every push. `gh run watch`, `gh pr checks --watch` and sleep loops waste your turns, and the watch commands are denied. Never weaken a test, gate or check to make it pass; if a gate is wrong, send BLOCKED or QUESTION. Do not merge; the supervisor merges after ready (merging is denied to you).
 
 ## You don't write files; writers do
 
